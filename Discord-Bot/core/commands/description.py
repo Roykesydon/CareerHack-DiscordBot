@@ -20,7 +20,7 @@ class DescriptionCommand(commands.Cog):
 
             # send description
             description = LANG_DATA["description"]
-            await interaction.channel.send(description)
+            await interaction.response.send_message(description)
 
 
 async def setup(bot):
