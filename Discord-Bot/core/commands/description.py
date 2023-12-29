@@ -1,8 +1,8 @@
 import discord
+from core.config import LANG_DATA
+from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
-
-from core.config import LANG_DATA
 
 
 class DescriptionCommand(commands.Cog):
@@ -14,14 +14,17 @@ class DescriptionCommand(commands.Cog):
         description=LANG_DATA["commands"]["description"]["description"],
     )
     async def show_description(self, interaction):
-        async with interaction.channel.typing():
-            # send logo
-            logo = discord.File("./assets/logo.png")
-            await interaction.channel.send(file=logo)
+        if not Validator.in_dm_or_enabled_channel(interaction.channel):
+            await interaction.response.send_message(
+                f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+            )
+            return
 
-            # send description
+        async with interaction.channel.typing():
+            logo = discord.File("./assets/logo.png")
             description = LANG_DATA["description"]
-            await interaction.response.send_message(description)
+
+            await interaction.response.send_message(description, file=logo)
 
 
 async def setup(bot):

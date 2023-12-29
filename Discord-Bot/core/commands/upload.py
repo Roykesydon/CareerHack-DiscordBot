@@ -2,11 +2,11 @@ import time
 
 import discord
 import requests
-from discord import app_commands
-from discord.ext import commands
-
 from core.config import CONFIG, LANG_DATA
 from core.database import mongo_database
+from core.validator import Validator
+from discord import app_commands
+from discord.ext import commands
 
 
 class UploadFileCommand(commands.Cog):
@@ -17,6 +17,12 @@ class UploadFileCommand(commands.Cog):
         name="upload", description=LANG_DATA["commands"]["upload"]["description"]
     )
     async def upload_document(self, interaction, attachment: discord.Attachment):
+        if not Validator.in_dm_or_enabled_channel(interaction.channel):
+            await interaction.response.send_message(
+                f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+            )
+            return
+
         async with interaction.channel.typing():
             """
             TODO: check document type, size
@@ -45,6 +51,10 @@ class UploadFileCommand(commands.Cog):
         return await interaction.response.send_message(
             LANG_DATA["commands"]["upload"]["success"]
         )
+
+    def cog_check(self, ctx):
+        # check if the command is used in a channel that is enabled or in a DM
+        return not isinstance(ctx.channel, discord.DMChannel)
 
 
 async def setup(bot):
