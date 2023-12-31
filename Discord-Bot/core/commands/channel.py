@@ -1,7 +1,7 @@
 import asyncio
 
 import discord
-from core.config import LANG_DATA
+from core.text_manager import TextManager
 from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
@@ -13,9 +13,13 @@ class ChannelCommand(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="channel", description=f"{LANG_DATA['commands']['channel']['description']}"
+        name="channel",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["channel"]["description"],
     )
     async def channel_control(self, interaction):
+        text_manager = TextManager()
+        LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
+
         # check not in DM
         if isinstance(interaction.channel, discord.DMChannel):
             await interaction.response.send_message(

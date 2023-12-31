@@ -1,4 +1,6 @@
 {
+    "label": "English",
+    "value": "en",
     "description": "Hello there! 👋 I'm your friendly Discord Bot, designed to assist you with expert knowledge and answers based on your uploaded documents. Whether you have technical queries, need insights on specific topics, or just want to explore new information, I'm here to help. Just upload your document, ask your question, and I'll do my best to provide you with a precise and informative response. Let's make learning and information gathering easy and fun!",
     "commands": {
         "help": {
@@ -22,6 +24,12 @@
             "current-status-prefix": "Current status:",
             "enable-response": "Bot enabled for this channel",
             "disable-response": "Bot disabled for this channel"
+        },
+        "language": {
+            "description": "Set the language of the bot",
+            "message": "Please select your language:",
+            "placeholder": "Select the language you wish to set",
+            "success": "Language set to English"
         }
     },
     "permission":{

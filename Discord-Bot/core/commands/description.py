@@ -1,5 +1,5 @@
 import discord
-from core.config import LANG_DATA
+from core.text_manager import TextManager
 from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
@@ -11,9 +11,14 @@ class DescriptionCommand(commands.Cog):
 
     @app_commands.command(
         name="description",
-        description=LANG_DATA["commands"]["description"]["description"],
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["description"][
+            "description"
+        ],
     )
     async def show_description(self, interaction):
+        text_manager = TextManager()
+        LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
+
         if not Validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
