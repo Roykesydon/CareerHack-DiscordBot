@@ -26,7 +26,7 @@
     $ git add .
     $ git commit -m "COMMIT_MSG"
     ```
-4. 回到 main 再次獲取 origin/develop 的最新版本、與自己的修正合併並修正出現的 conflict
+4. 回到 develop 再次獲取 origin/develop 的最新版本、與自己的修正合併並修正出現的 conflict
     ```shell
     $ git checkout develop
     $ git pull
