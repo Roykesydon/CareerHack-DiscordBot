@@ -1,10 +1,10 @@
 import asyncio
 
 import discord
-from core.text_manager import TextManager
-from core.validator import Validator
-from core.upload_file_manager import UploadFileManager
 from core.events.directly_chat import DirectlyChat
+from core.text_manager import TextManager
+from core.upload_file_manager import UploadFileManager
+from core.validator import Validator
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
 from discord.ui import Button, View
@@ -22,8 +22,10 @@ class AskScopeSelect(ui.Select):
     def __init__(self, channel_id, user_id):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
-        
-        options = [SelectOption(label=LANG_DATA["commands"]["ask"]["all_file"], value="all")]
+
+        options = [
+            SelectOption(label=LANG_DATA["commands"]["ask"]["all_file"], value="all")
+        ]
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
@@ -47,15 +49,14 @@ class AskScopeSelect(ui.Select):
             LANG_DATA["commands"]["ask"]["success"],
         )
 
+
 class AskCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
         name="ask",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"][
-            "description"
-        ],
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"]["description"],
     )
     async def ask_questions(self, interaction):
         text_manager = TextManager()
@@ -68,7 +69,9 @@ class AskCommand(commands.Cog):
             return
 
         async with interaction.channel.typing():
-            view = AskScopeSelectView(str(interaction.channel_id), str(interaction.user.id))
+            view = AskScopeSelectView(
+                str(interaction.channel_id), str(interaction.user.id)
+            )
             await interaction.response.send_message(
                 LANG_DATA["commands"]["ask"]["message"], view=view
             )

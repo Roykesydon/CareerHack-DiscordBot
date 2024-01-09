@@ -6,7 +6,7 @@ from core.config import CONFIG
 from core.database import mongo_database
 from core.text_manager import TextManager
 from core.validator import Validator
-from discord import app_commands, ui, SelectOption
+from discord import SelectOption, app_commands, ui
 from discord.ext import commands
 
 
@@ -15,13 +15,13 @@ class UploadFileCommand(commands.Cog):
         "text/plain": "txt",
         "application/pdf": "pdf",
     }
-    
+
     def __init__(self, bot):
         self.bot = bot
 
-    def check_file_format(self, file_type: str) -> bool:
+    def check_file_format(self, file_type) -> bool:
         return file_type in UploadFileCommand.AVAILABLE_FILE_TYPE_DICT
-    
+
     @app_commands.command(
         name="upload",
         description=TextManager.DEFAULT_LANG_DATA["commands"]["upload"]["description"],
@@ -29,10 +29,16 @@ class UploadFileCommand(commands.Cog):
     @app_commands.choices(
         file_scope=[
             app_commands.Choice(name="共享文件", value="shared"),
-            app_commands.Choice(name="私人使用", value="private")
+            app_commands.Choice(name="私人使用", value="private"),
         ]
     )
-    async def upload_document(self, interaction, file_scope: str, custom_file_name: str, attachment: discord.Attachment):
+    async def upload_document(
+        self,
+        interaction,
+        file_scope: str,
+        custom_file_name: str,
+        attachment: discord.Attachment,
+    ):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
@@ -47,7 +53,7 @@ class UploadFileCommand(commands.Cog):
             TODO: check document type, size
             """
             response = requests.get(attachment.url)
-            
+
             """
             Check file format
             """
@@ -59,7 +65,9 @@ class UploadFileCommand(commands.Cog):
             file_name = attachment.filename
             insert_data = {
                 "file_name": file_name,
-                "custom_file_name": custom_file_name if custom_file_name != "" else file_name,
+                "custom_file_name": custom_file_name
+                if custom_file_name != ""
+                else file_name,
                 "file_type": attachment.content_type,
                 "file_url": attachment.url,
                 "file_time": int(time.time()),
@@ -74,8 +82,12 @@ class UploadFileCommand(commands.Cog):
             if file is not None:
                 file_name = str(file["_id"])
 
-            with open(f"{CONFIG['storage_path']}/{file_name}.{UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}", "wb") as file:
-                file.write(response.content)
+            if attachment.content_type is not None:
+                with open(
+                    f"{CONFIG['storage_path']}/{file_name}.{UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}",
+                    "wb",
+                ) as file:
+                    file.write(response.content)
 
         return await interaction.response.send_message(
             LANG_DATA["commands"]["upload"]["success"]
