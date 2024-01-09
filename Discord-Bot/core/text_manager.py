@@ -7,7 +7,9 @@ _bot_language = CONFIG["language"]
 with open(f"lang/{_bot_language}.json", "r", encoding="utf8") as f:
     _DEFAULT_LANG_DATA = json.load(f)
 
-
+"""
+Manage all fixed text in response or ui
+"""
 class TextManager:
     _channel_session = {}
     _language_text = {}
@@ -43,7 +45,7 @@ class TextManager:
 
     def get_selected_language(self, channel_id: str) -> dict:
         if channel_id not in TextManager._channel_session:
-            TextManager._channel_session[channel_id] = "en"
+            TextManager._channel_session[channel_id] = "zh-tw"
 
         selected_language = TextManager._channel_session[channel_id]
 
@@ -52,17 +54,6 @@ class TextManager:
             TextManager._load_language_text()
 
         return TextManager._language_text[selected_language]
-
-    """
-    This method is for command description
-    """
-
-    @staticmethod
-    def get_en_text() -> str:
-        if "en" not in TextManager._language_text:
-            TextManager._load_language_text()
-
-        return TextManager._language_text["en"]
 
     def select_language(self, channel_id, new_lang):
         TextManager._channel_session[channel_id] = new_lang
