@@ -8,7 +8,7 @@
     ```
 
 - Look at [Developer Guide](docs/DEVELOPER.md) for more details about how to start developing this repository.
-- Refer to [Contributing Guidelines](CONTRIBUTING.md) for the conventions and rules that contributors should follow.
+- Refer to [Contributing Guidelines](docs/CONTRIBUTING.md) for the conventions and rules that contributors should follow.
 
 
 ## how to maintain this repo
