@@ -2,12 +2,13 @@ import time
 
 import discord
 import requests
+from discord import SelectOption, app_commands, ui
+from discord.ext import commands
+
 from core.config import CONFIG
 from core.database import mongo_database
 from core.text_manager import TextManager
 from core.validator import Validator
-from discord import SelectOption, app_commands, ui
-from discord.ext import commands
 
 
 class UploadFileCommand(commands.Cog):

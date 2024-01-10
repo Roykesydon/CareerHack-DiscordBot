@@ -1,11 +1,10 @@
 import chromadb
-from langchain.docstore.document import Document
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings.sentence_transformer import (
-    SentenceTransformerEmbeddings,
-)
-
 from config import CONFIG
+from langchain.docstore.document import Document
+from langchain_community.embeddings.sentence_transformer import \
+    SentenceTransformerEmbeddings
+from langchain_community.vectorstores import Chroma
+
 
 class VectordbManager:
     _emb_fn = SentenceTransformerEmbeddings(
