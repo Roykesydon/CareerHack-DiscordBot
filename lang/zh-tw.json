@@ -36,8 +36,16 @@
             "all_file": "所有可用文件",
             "description": "設置詢問的文件範圍並向機器人提問",
             "placeholder": "請選擇文件範圍",
-            "success": "已成功設置文件範圍，可以開始提問了！",
-            "message": "請設置您想要使用的文件範圍，並提出你想詢問的問題\n要結束提問只需輸入 /end 即可"
+            "success": "您選擇的文件範圍是：",
+            "success2": "已成功設置文件範圍，可以開始提問了！",
+            "message": "請設置您想要使用的文件範圍，並提出你想詢問的問題\n要結束提問只需輸入 /end 即可",
+            "end": "已關閉問答功能"
+        },
+        "delete-uploaded-file": {
+            "description": "刪除已上傳的文件",
+            "placeholder": "請選擇要刪除的文件",
+            "success": "文件已成功刪除",
+            "message": "請選擇您想要刪除的文件"
         }
     },
     "permission": {
