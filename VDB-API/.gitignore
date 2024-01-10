@@ -1,0 +1,5 @@
+*.pdf
+chromadb_example.py
+chromadb_manager.py
+/docs
+__pycache__

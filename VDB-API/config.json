@@ -1,0 +1,12 @@
+{
+    "HuggingFace": {
+        "api_key": "YOUR_API_KEY",
+        "model_name": "sentence-transformers/distiluse-base-multilingual-cased-v1"
+    },
+
+    "db_path": "./chroma_db",
+    
+    "collections": {
+        "basic": "basic"
+    }
+}
