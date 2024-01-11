@@ -1,12 +1,10 @@
 import os
+from typing import List
+
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import (
-    TextLoader,
-    PyPDFLoader,
-    JSONLoader,
-    Docx2txtLoader,
-)
+from langchain_community.document_loaders import (Docx2txtLoader, JSONLoader,
+                                                  PyPDFLoader, TextLoader)
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
 CHUNK_SIZE = 100
@@ -29,7 +27,7 @@ def _get_loader(file_type, file_path):
         return None
 
 
-def get_split_data(file_path) -> list[Document]:
+def get_split_data(file_path) -> List[Document]:
     file_name = os.path.basename(file_path)
     _, file_extension = os.path.splitext(file_path)
     loader = _get_loader(file_extension, file_path)

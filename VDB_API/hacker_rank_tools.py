@@ -1,11 +1,12 @@
-from dotenv import load_dotenv
-from langchain_openai import OpenAI
+from typing import List
 
+from dotenv import load_dotenv
 # from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.prompts.prompt import PromptTemplate
+from langchain_openai import OpenAI
 
-from utils import file_processor
-from vectordb_manager import VectordbManager
+from VDB_API.utils import file_processor
+from VDB_API.vectordb_manager import VectordbManager
 
 load_dotenv()  # 加載.env檔案
 
@@ -23,7 +24,7 @@ class HackerRankTools:
         else:
             print("set to offline model，待辦!")
 
-    def add_documents_to_vdb(self, file_paths: list[str]):
+    def add_documents_to_vdb(self, file_paths: List[str]):
         """
         Arg:
             file_paths: 文件路徑 list (需含檔名)
@@ -33,7 +34,7 @@ class HackerRankTools:
             self.vectordb_manager.add(texts)
 
     # 刪除 _collection 裡的指定資料
-    def delete(self, fileNameList) -> list[str]:
+    def delete(self, fileNameList) -> List[str]:
         """
         Arg:
             fileNameList: list of specified reference file names
@@ -51,7 +52,7 @@ class HackerRankTools:
     # 無任何參考資料，直接問答
     def chat(
         self, query, refFileNameList=None, refAll=False
-    ) -> (str, list[str], list[dict]):
+    ) -> (str, List[str], List[dict]):
         """
         Args:
             query: user query
@@ -74,7 +75,9 @@ class HackerRankTools:
             where = {"$or": [{"source": name} for name in refFileNameList]}
 
         # 從 vector database 取得指定文件
-        contents, metadatas = self.vectordb_manager.query(query, n_results=3, where=where)
+        contents, metadatas = self.vectordb_manager.query(
+            query, n_results=3, where=where
+        )
         templated_query = self.prompt.format(
             context="\n".join(contents), question=query
         )
