@@ -45,28 +45,44 @@ class AskScopeSelect(ui.Select):
 
     async def callback(self, interaction):
         text_manager = TextManager()
+        upload_file_manager = UploadFileManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
         return_message = LANG_DATA["commands"]["ask"]["success"]
 
         selected_file_scope = self.values
+        print(selected_file_scope)
         selected_file_scope = [x.split("-") for x in selected_file_scope]
+        print(selected_file_scope)
 
         # check if "all" is selected with lambda
         if any(list(map(lambda x: x[0] == "all", selected_file_scope))):
-            selected_file_scope = "all"
-            return_message += LANG_DATA["commands"]["ask"]["all_file"]
+            selected_file_id_list = upload_file_manager.get_available_file_list(
+                str(interaction.user.id)
+            )
+            selected_file_id_list = list(
+                map(lambda x: x["file_id"], selected_file_id_list)
+            )
 
+            return_message += LANG_DATA["commands"]["ask"]["all_file"]
         else:
+            selected_file_id_list = list(map(lambda x: x[0], selected_file_scope))
             selected_file_name_list = list(map(lambda x: x[1], selected_file_scope))
+
             return_message += ", ".join(selected_file_name_list)
 
         return_message += "\n" + LANG_DATA["commands"]["ask"]["success2"]
 
         DirectlyChat.insert_start_chat_channel(str(interaction.channel_id))
+        print(selected_file_id_list)
+        DirectlyChat.set_channel_file_scope(
+            str(interaction.channel_id), selected_file_id_list
+        )
 
-        await interaction.response.edit_message(view=None)
+        # disable select
+        self.disabled = True
 
+        await interaction.response.edit_message(view=self.view)
         await interaction.followup.send(return_message)
 
 

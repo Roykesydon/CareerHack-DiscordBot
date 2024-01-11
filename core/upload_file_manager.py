@@ -1,6 +1,9 @@
+import os
+
 from bson import ObjectId
 
 from core.database import mongo_database
+from main import hacker_rank_tools
 
 
 class UploadFileManager:
@@ -25,5 +28,15 @@ class UploadFileManager:
 
         return file_with_id_list
 
-    def delete_file(self, file_id: str):
-        mongo_database["UserUploadFile"].delete_one({"_id": ObjectId(file_id)})
+    def delete_file(self, file_id_list: list):
+        for file_id in file_id_list:
+            # get file extension
+            doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
+            file_name = doc["custom_file_name"]
+            extension = doc["filename_extension"]
+
+            mongo_database["UserUploadFile"].delete_one({"_id": ObjectId(file_id)})
+            # hacker_rank_tools.delete([f"{file_id}.{extension}"])
+
+            # remove file from storage
+            os.remove(f"storage/{file_id}.{extension}")

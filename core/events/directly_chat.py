@@ -1,12 +1,18 @@
 import discord
+from bson.objectid import ObjectId
 from discord.ext import commands
+from discord.ui import Button, View
 
+from core.config import CONFIG
+from core.database import mongo_database
 from core.text_manager import TextManager
 from core.validator import Validator
+from main import hacker_rank_tools
 
 
 class DirectlyChat(commands.Cog):
     START_CHAT_CHANNEL_SET = set()
+    CHANNEL_FILE_SCOPE_DICT = {}
 
     @staticmethod
     def insert_start_chat_channel(channel_id: str):
@@ -15,6 +21,20 @@ class DirectlyChat(commands.Cog):
     @staticmethod
     def remove_start_chat_channel(channel_id: str):
         DirectlyChat.START_CHAT_CHANNEL_SET.remove(channel_id)
+
+    @staticmethod
+    def set_channel_file_scope(channel_id: str, file_id_list: list):
+        filename_list = []
+        db_collection = mongo_database.get_collection("UserUploadFile")
+
+        for file_id in file_id_list:
+            # search for filename_extension
+            extension = db_collection.find_one({"_id": ObjectId(file_id)})[
+                "filename_extension"
+            ]
+            filename_list.append(f"{file_id}.{extension}")
+
+        DirectlyChat.CHANNEL_FILE_SCOPE_DICT[channel_id] = filename_list
 
     def __init__(self, bot):
         self.bot = bot
@@ -49,12 +69,79 @@ class DirectlyChat(commands.Cog):
             return
 
         async with message.channel.typing():
-            """
-            TODO: get response from chatbot
-            """
-            chatbot_message = "測試用 LLM 回覆訊息"
+            query = message.content
 
-        return await message.channel.send(chatbot_message)
+            ans, contents, metadatas = hacker_rank_tools.chat(
+                query, DirectlyChat.CHANNEL_FILE_SCOPE_DICT[str(message.channel.id)]
+            )
+            # ans = "test"
+            # contents = [
+            #     "view REALM as a generalization of the above work to the",
+            #     "likelihood. However, REALM adds a novel language",
+            #     "in Figure 1.\nThe key intuition of REALM is to train the retriever us-",
+            # ]
+            # metadatas = [
+            #     {"page": 7, "source": "659fef6b6a3c8d018f19f74d.pdf"},
+            #     {"page": 5, "source": "659fef6b6a3c8d018f19f74d.pdf"},
+            #     {"page": 1, "source": "659fef6b6a3c8d018f19f74d.pdf"},
+            # ]
+
+            # print("======")
+            # print(f"query: {query}")
+            # print(f"ans: {ans}")
+            # print(f"contents: {contents}")
+            # print(f"metadatas: {metadatas}")
+            # print("======")
+
+            view = View()
+            # check refernece button
+            reference_button = Button(
+                label=LANG_DATA["events"]["directly_chat"]["reference_button_text"],
+                style=discord.ButtonStyle.primary,
+            )
+
+            async def show_reference(interaction):
+                color = CONFIG["primary_color"]
+                color_int = int(color.replace("#", ""), 16)
+                embed = discord.Embed(
+                    title=LANG_DATA["events"]["directly_chat"]["reference_embed_title"],
+                    color=color_int,
+                )
+
+                collection = mongo_database.get_collection("UserUploadFile")
+
+                for index, metadata in enumerate(metadatas):
+                    # get custom_file_name
+                    custom_file_name = collection.find_one(
+                        {"_id": ObjectId(metadata["source"].split(".")[0])}
+                    )["custom_file_name"]
+                    # with divider
+                    if index != 0:
+                        embed.add_field(
+                            name="\n",
+                            value="",
+                            inline=True,
+                        )
+                    source_content = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
+                        {contents[index]}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
+                            {custom_file_name}\n{LANG_DATA['events']['directly_chat']['page_prefix']}\
+                                {metadata['page']+1}"
+                    embed.add_field(
+                        name=f"{LANG_DATA['events']['directly_chat']['field_name']} {index+1}",
+                        value=source_content,
+                        inline=False,
+                    )
+
+                # disable button
+                reference_button.disabled = True
+
+                await interaction.response.edit_message(view=view)
+                await interaction.followup.send(embed=embed)
+
+            reference_button.callback = show_reference
+            view.add_item(reference_button)
+
+        return await message.channel.send(ans, view=view)
 
 
 async def setup(bot):

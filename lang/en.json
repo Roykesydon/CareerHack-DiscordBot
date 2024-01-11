@@ -55,6 +55,16 @@
             "message": "Please select the file you wish to delete"
         }
     },
+    "events": {
+        "directly_chat":{
+            "reference_button_text": "View Reference",
+            "reference_embed_title": "Reference",
+            "content_prefix": "Content: ",
+            "source_prefix": "Source: ",
+            "page_prefix": "Page: ",
+            "field_name": "Source"
+        }
+    },
     "permission":{
         "dm-not-allowed": "This command is not allowed in DMs",
         "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels"
