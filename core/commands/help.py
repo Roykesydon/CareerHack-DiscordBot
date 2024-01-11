@@ -30,6 +30,7 @@ class HelpCommand(commands.Cog):
             for command in self.bot.tree.walk_commands():
                 commands_list_with_description.append(
                     {
+                        "emb-title": LANG_DATA["commands"][command.name]["emb-title"],
                         "name": command.name,
                         "icon": LANG_DATA["commands"][command.name]["icon"],
                         "description": LANG_DATA["commands"][command.name][
@@ -39,11 +40,34 @@ class HelpCommand(commands.Cog):
                 )
 
             # set commands list description
-            description = ""
-            for command in commands_list_with_description:
-                description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
+            # description = ""
+            # for command in commands_list_with_description:
+            #     description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
 
-            message = Message(text=description)
+            # message = Message(text=description)
+                
+            # define custom order
+            custom_order = [
+                "📚 使用指南",
+                "🗨 問答",
+                "📄 文件操作",
+                "⚙ 頻道管理/設定",
+            ]
+
+            # sort commands using custom order
+            commands_list_with_description.sort(
+                key=lambda x: custom_order.index(x["emb-title"])
+            )
+                
+            embed_text = {}
+            for command in commands_list_with_description:
+                emb_title = command['emb-title']
+                if emb_title in embed_text:
+                    embed_text[emb_title] += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
+                else:
+                    embed_text[emb_title] = f"{command['icon']} `/{command['name']}` - {command['description']}\n"
+
+            message = Message(text=embed_text)
 
             embed = message.get_embed_format(
                 title=LANG_DATA["commands"]["help"]["title"]
