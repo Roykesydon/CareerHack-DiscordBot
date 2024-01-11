@@ -38,7 +38,7 @@ class DeleteUploadedFileSelect(ui.Select):
         )
 
     async def callback(self, interaction):
-        selected_file = self.values[0]
+        selected_file = self.values
         text_manager = TextManager()
         upload_file_manager = UploadFileManager()
 
@@ -46,7 +46,8 @@ class DeleteUploadedFileSelect(ui.Select):
 
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        await interaction.response.edit_message(view=None)
+        self.disabled = True
+        await interaction.response.edit_message(view=self.view)
 
         await interaction.followup.send(
             LANG_DATA["commands"]["delete-uploaded-file"]["success"]

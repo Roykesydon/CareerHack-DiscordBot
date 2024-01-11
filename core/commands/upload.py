@@ -9,6 +9,7 @@ from core.config import CONFIG
 from core.database import mongo_database
 from core.text_manager import TextManager
 from core.validator import Validator
+from main import hacker_rank_tools
 
 
 class UploadFileCommand(commands.Cog):
@@ -63,6 +64,8 @@ class UploadFileCommand(commands.Cog):
                     LANG_DATA["commands"]["upload"]["invalid-file-type"]
                 )
 
+            await interaction.response.defer()
+
             file_name = attachment.filename
             insert_data = {
                 "file_name": file_name,
@@ -74,6 +77,9 @@ class UploadFileCommand(commands.Cog):
                 "file_time": int(time.time()),
                 "file_scope": file_scope,
                 "user_id": str(interaction.user.id),
+                "filename_extension": UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[
+                    attachment.content_type
+                ],
             }
             mongo_database["UserUploadFile"].insert_one(insert_data)
 
@@ -90,7 +96,12 @@ class UploadFileCommand(commands.Cog):
                 ) as file:
                     file.write(response.content)
 
-        return await interaction.response.send_message(
+                file_paths = [
+                    f"{CONFIG['storage_path']}/{file_name}.{UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}"
+                ]
+                hacker_rank_tools.add_documents_to_vdb(file_paths)
+
+        return await interaction.followup.send(
             LANG_DATA["commands"]["upload"]["success"]
         )
 
