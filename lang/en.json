@@ -4,18 +4,22 @@
     "description": "Hello there! 👋 I'm your friendly Discord Bot, designed to assist you with expert knowledge and answers based on your uploaded documents. Whether you have technical queries, need insights on specific topics, or just want to explore new information, I'm here to help. Just upload your document, ask your question, and I'll do my best to provide you with a precise and informative response. Let's make learning and information gathering easy and fun!",
     "commands": {
         "help": {
+            "icon": "❓",
             "title": "Command List",
             "description": "Show commands list"
         },
         "description":{
+            "icon": "🤖",
             "description": "Show description of the bot"
         },
         "upload": {
+            "icon": "📤",
             "description": "Upload a document to the bot",
             "success": "Document uploaded successfully",
             "invalid-file-type": "Invalid file type."
         },
         "channel": {
+            "icon": "🚥",
             "description": "Enable/Disable the bot in the current channel.",
             "enable": "Enable",
             "disable": "Disable",
@@ -27,12 +31,14 @@
             "disable-response": "Bot disabled for this channel"
         },
         "language": {
+            "icon": "🌐",
             "description": "Set the language of the bot",
             "message": "Please select your language:",
             "placeholder": "Select the language you wish to set",
             "success": "Language set to English"
         },
         "ask":{
+            "icon": "💬",
             "all_file": "All available documents",
             "description": "Set the document scope and ask the bot a question",
             "placeholder": "Select the document scope",
@@ -42,6 +48,7 @@
             "end": "The Q&A session has been closed"
         },
         "delete-uploaded-file": {
+            "icon": "🗑️",
             "description": "Delete uploaded file",
             "placeholder": "Please select the file you wish to delete",
             "success": "File deleted successfully",

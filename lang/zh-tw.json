@@ -4,19 +4,23 @@
     "description": "哈囉！👋 我是您的友善 Discord 機器人，專為協助您根據上傳文件提供專業知識和答案而設計。無論您有技術問題、需要特定主題的見解，或只是想探索新資訊，我都在這裡幫忙。只需上傳您的文件、提出問題，我將盡我所能為您提供精確和資訊豐富的回應。讓學習和信息收集變得簡單又有趣！",
     "commands": {
         "help": {
+            "icon": "❓",
             "title": "指令列表",
             "description": "顯示指令列表"
         },
         "description": {
+            "icon": "🤖",
             "description": "顯示機器人的描述"
         },
         "upload": {
+            "icon": "📤",
             "description": "向機器人上傳文件",
             "success": "文件上傳成功",
             "invalid-file-type": "無效的文件類型"
         },
         "channel": {
-            "description": "在當前頻道啟用/禁用機器人。",
+            "icon": "🚥",
+            "description": "在當前頻道啟用/禁用機器人",
             "enable": "啟用",
             "disable": "禁用",
             "enabled": "已啟用",
@@ -27,12 +31,14 @@
             "disable-response": "已為此頻道禁用機器人"
         },
         "language": {
+            "icon": "🌐",
             "description": "更改機器人的語言",
             "message": "請選擇您的語言：",
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
         },
         "ask":{
+            "icon": "💬",
             "all_file": "所有可用文件",
             "description": "設置詢問的文件範圍並向機器人提問",
             "placeholder": "請選擇文件範圍",
@@ -42,6 +48,7 @@
             "end": "已關閉問答功能"
         },
         "delete-uploaded-file": {
+            "icon": "🗑️",
             "description": "刪除已上傳的文件",
             "placeholder": "請選擇要刪除的文件",
             "success": "文件已成功刪除",
