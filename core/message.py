@@ -13,12 +13,22 @@ class Message:
         # set embed color
         color_int = int(color.replace("#", ""), 16)
 
-        # send commands list
-        return discord.Embed(
+        embed = discord.Embed(
             title=title,
-            description=self.get_text(),
             color=color_int,
         )
+
+        for emb_title, emb_text in self.get_text().items():
+            embed.add_field(name=emb_title, value=emb_text, inline=False)
+
+        return embed
+
+        # send commands list
+        # return discord.Embed(
+        #     title=title,
+        #     description=self.get_text(),
+        #     color=color_int,
+        # )
 
     # getters and setters
 
