@@ -12,6 +12,10 @@
     ```
 - Write `./config.json`
     - You need to apply discord bot token from [Discord Developer Portal](https://discord.com/developers/applications)
+    - ```cp config.example.json config.json```
+- Write `.env`
+    - You need to apply OpenAI API and HuggingFace API token from [OpenAI](https://openai.com/blog/openai-api) and [HuggingFace](https://huggingface.co/inference-api)
+    - ```cp .env.example .env```
 - Run the code
     ```shell
     $ python main.py
