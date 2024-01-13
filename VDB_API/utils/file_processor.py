@@ -7,8 +7,8 @@ from langchain_community.document_loaders import (Docx2txtLoader, JSONLoader,
                                                   PyPDFLoader, TextLoader)
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
-CHUNK_SIZE = 100
-CHUNK_OVERLAP = 20
+CHUNK_SIZE = 300
+CHUNK_OVERLAP = 100
 
 
 def _get_loader(file_type, file_path):
