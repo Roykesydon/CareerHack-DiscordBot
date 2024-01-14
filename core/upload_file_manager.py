@@ -2,6 +2,7 @@ import os
 
 from bson import ObjectId
 
+from core.config import CONFIG
 from core.database import mongo_database
 from main import hacker_rank_tools
 
@@ -36,7 +37,13 @@ class UploadFileManager:
             extension = doc["filename_extension"]
 
             mongo_database["UserUploadFile"].delete_one({"_id": ObjectId(file_id)})
-            # hacker_rank_tools.delete([f"{file_id}.{extension}"])
+            hacker_rank_tools.delete([f"{file_id}.{extension}"])
 
             # remove file from storage
             os.remove(f"storage/{file_id}.{extension}")
+
+    def get_file_path(self, file_id: str):
+        doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
+        extension = doc["filename_extension"]
+
+        return f"{CONFIG['storage_path']}/{file_id}.{extension}"
