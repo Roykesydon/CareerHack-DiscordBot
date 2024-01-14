@@ -21,7 +21,7 @@ class VectordbManager:
             embedding_function=VectordbManager._emb_fn,
             persist_directory=CONFIG["db_path"],
             collection_name=CONFIG["collections"]["basic"],
-            collection_metadata={"hnsw:space": "cosine"} # l2 is the default
+            collection_metadata={"hnsw:space": "cosine"},  # l2 is the default
         )
 
     # 切換 collection，若不存在則自動創建
@@ -31,7 +31,7 @@ class VectordbManager:
             embedding_function=VectordbManager._emb_fn,
             persist_directory=CONFIG["db_path"],
             collection_name=collection_name,
-            collection_metadata={"hnsw:space": "cosine"} # l2 is the default
+            collection_metadata={"hnsw:space": "cosine"},  # l2 is the default
         )
         print("set collection to", collection_name)
 

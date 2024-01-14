@@ -36,14 +36,14 @@ class ChannelCommand(commands.Cog):
 
             async def enable_callback(interaction):
                 Validator.enable_channel(interaction.channel.id)
-                
+
                 await interaction.message.delete()
                 await interaction.channel.send(CHANNEL_TEXT_DICT["enable-response"])
 
             async def disable_callback(interaction):
                 Validator.disable_channel(interaction.channel.id)
-                
-                await interaction.message.delete()          
+
+                await interaction.message.delete()
                 await interaction.channel.send(CHANNEL_TEXT_DICT["disable-response"])
 
             # show current status
