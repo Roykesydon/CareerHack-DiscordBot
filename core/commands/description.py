@@ -33,18 +33,26 @@ class DescriptionCommand(commands.Cog):
 
             # set embed fields
             embed_fields = {}
-            for field_name, field_info in LANG_DATA["description"]["embed"]["fields"].items():
-                embed_fields[field_info['name']] = field_info['value']
+            for field_name, field_info in LANG_DATA["description"]["embed"][
+                "fields"
+            ].items():
+                embed_fields[field_info["name"]] = field_info["value"]
 
             for command in self.bot.tree.walk_commands():
                 field_title = LANG_DATA["commands"][command.name]["field-name"]
                 if field_title == LANG_DATA["commands"]["help"]["field-name"]:
                     icon = LANG_DATA["commands"][command.name]["icon"]
-                    command_description = LANG_DATA["commands"][command.name]["description"]
+                    command_description = LANG_DATA["commands"][command.name][
+                        "description"
+                    ]
                     if field_title in embed_fields:
-                        embed_fields[field_title] += f"{icon} `/{command.name}` - {command_description}\n"
+                        embed_fields[
+                            field_title
+                        ] += f"{icon} `/{command.name}` - {command_description}\n"
                     else:
-                        embed_fields[field_title] = f"{icon} `/{command.name}` - {command_description}\n"
+                        embed_fields[
+                            field_title
+                        ] = f"{icon} `/{command.name}` - {command_description}\n"
 
             message = Message(text=description, field=embed_fields, img=logo)
 
