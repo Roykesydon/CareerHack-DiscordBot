@@ -31,7 +31,7 @@ class DescriptionCommand(commands.Cog):
             logo = discord.File("./assets/logo.png")
             description = LANG_DATA["description"]["content"]
 
-            # add embed fields
+            # set embed fields
             embed_fields = {}
             for field_name, field_info in LANG_DATA["description"]["embed"]["fields"].items():
                 embed_fields[field_info['name']] = field_info['value']
@@ -46,7 +46,7 @@ class DescriptionCommand(commands.Cog):
                     else:
                         embed_fields[field_title] = f"{icon} `/{command.name}` - {command_description}\n"
 
-            message = Message(text=description,field=embed_fields, img=logo)
+            message = Message(text=description, field=embed_fields, img=logo)
 
             embed = message.get_embed_format(
                 title=LANG_DATA["description"]["embed"]["title"]
