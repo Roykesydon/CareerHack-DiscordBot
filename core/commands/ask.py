@@ -78,11 +78,9 @@ class AskScopeSelect(ui.Select):
             str(interaction.channel_id), selected_file_id_list
         )
 
-        # disable select
-        self.disabled = True
+        await interaction.message.delete()
 
-        await interaction.response.edit_message(view=self.view)
-        await interaction.followup.send(return_message)
+        await interaction.channel.send(return_message)
 
 
 class AskCommand(commands.Cog):
@@ -111,7 +109,7 @@ class AskCommand(commands.Cog):
             return_message = LANG_DATA["commands"]["ask"]["message"]
 
             await interaction.response.send_message(
-                LANG_DATA["commands"]["ask"]["message"], view=view, ephemeral=True
+                LANG_DATA["commands"]["ask"]["message"], view=view
             )
 
 
