@@ -7,9 +7,18 @@ from langchain_community.document_loaders import (Docx2txtLoader, JSONLoader,
                                                   PyPDFLoader, TextLoader)
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
-CHUNK_SIZE = 300
-CHUNK_OVERLAP = 100
+EN_CHUNK_SIZE = 1000
+EN_CHUNK_OVERLAP = 400
+ZH_CHUNK_SIZE = 400
+ZH_CHUNK_OVERLAP = 200
 
+# 根據檔案前面的 2000 長度的字串，檢驗是否含有中文字符
+def _is_contains_chinese(str, size=2000):
+    sample_str = str[:size]
+    for _char in sample_str:
+        if '\u4e00' <= _char <= '\u9fa5':
+            return True
+    return False
 
 def _get_loader(file_type, file_path):
     if file_type == ".pdf":
@@ -31,11 +40,18 @@ def get_split_data(file_path) -> List[Document]:
     file_name = os.path.basename(file_path)
     _, file_extension = os.path.splitext(file_path)
     loader = _get_loader(file_extension, file_path)
+
     if loader is not None:
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP, length_function=len
-        )
-        texts = loader.load_and_split(splitter)
+        doc = loader.load()
+        if _is_contains_chinese(doc[0].page_content):
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=ZH_CHUNK_SIZE, chunk_overlap=ZH_CHUNK_OVERLAP, length_function=len
+            )
+        else:
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=EN_CHUNK_SIZE, chunk_overlap=EN_CHUNK_OVERLAP, length_function=len
+            )
+        texts = splitter.split_documents(doc)
 
         for text in texts:  # 修改 metadata 的 source 成檔名
             text.metadata["source"] = file_name
