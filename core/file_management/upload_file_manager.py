@@ -2,8 +2,8 @@ import os
 
 from bson import ObjectId
 
-from core.config import CONFIG
-from core.database import mongo_database
+from core.utils.config import CONFIG
+from core.utils.database import mongo_database
 from main import hacker_rank_tools
 
 

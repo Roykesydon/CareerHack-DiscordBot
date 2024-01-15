@@ -1,9 +1,9 @@
 from discord import app_commands
 from discord.ext import commands
 
-from core.message import Message
-from core.text_manager import TextManager
-from core.validator import Validator
+from core.utils.message import Message
+from core.utils.text_manager import TextManager
+from core.validate.channel_validator import ChannelValidator
 
 
 class HelpCommand(commands.Cog):
@@ -18,7 +18,7 @@ class HelpCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        if not Validator.in_dm_or_enabled_channel(interaction.channel):
+        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )
@@ -74,7 +74,7 @@ class HelpCommand(commands.Cog):
             await interaction.response.send_message(embed=embed)
 
     def cog_check(self, ctx):
-        return Validator.in_dm_or_enabled_channel(ctx)
+        return ChannelValidator.in_dm_or_enabled_channel(ctx)
 
 
 async def setup(bot):

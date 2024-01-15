@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from core.config import CONFIG
+from core.utils.config import CONFIG
 
 mongo_db_url = (
     f"mongodb://{CONFIG['mongo']['user']}:{CONFIG['mongo']['password']}@"
