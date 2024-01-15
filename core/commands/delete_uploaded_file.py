@@ -46,11 +46,15 @@ class DeleteUploadedFileSelect(ui.Select):
 
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        await interaction.message.delete()
+        if interaction.message is not None:
+            await interaction.message.delete()
 
-        await interaction.channel.send(
-            LANG_DATA["commands"]["delete-uploaded-file"]["success"]
-        )
+        if isinstance(interaction.channel, discord.channel.TextChannel) or isinstance(
+            interaction.channel, discord.channel.DMChannel
+        ):
+            await interaction.channel.send(
+                LANG_DATA["commands"]["delete-uploaded-file"]["success"]
+            )
 
 
 class DeleteUploadedFileCommand(commands.Cog):

@@ -76,6 +76,13 @@
             "placeholder": "Please select the file you wish to delete",
             "success": "File deleted successfully",
             "message": "Please select the file you wish to delete"
+        },
+        "download": {
+            "field-name": "📄 File Operations",
+            "icon": "📥",
+            "description": "Download uploaded file",
+            "placeholder": "Please select the file you wish to download",
+            "message": "Please select the file you wish to download"
         }
     },
     "events": {

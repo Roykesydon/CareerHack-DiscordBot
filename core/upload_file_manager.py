@@ -33,6 +33,10 @@ class UploadFileManager:
         for file_id in file_id_list:
             # get file extension
             doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
+
+            if doc is None:
+                continue
+
             file_name = doc["custom_file_name"]
             extension = doc["filename_extension"]
 
@@ -44,6 +48,9 @@ class UploadFileManager:
 
     def get_file_path(self, file_id: str):
         doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
+        if doc is None:
+            return None
+
         extension = doc["filename_extension"]
 
         return f"{CONFIG['storage_path']}/{file_id}.{extension}"

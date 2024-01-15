@@ -66,6 +66,9 @@ class UploadFileCommand(commands.Cog):
 
             await interaction.response.defer()
 
+            if attachment.content_type is None:
+                attachment.content_type = "text/plain"
+
             file_name = attachment.filename
             insert_data = {
                 "file_name": file_name,

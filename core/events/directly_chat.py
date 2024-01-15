@@ -29,9 +29,9 @@ class DirectlyChat(commands.Cog):
 
         for file_id in file_id_list:
             # search for filename_extension
-            extension = db_collection.find_one({"_id": ObjectId(file_id)})[
-                "filename_extension"
-            ]
+            extension = db_collection.find_one({"_id": ObjectId(file_id)})
+            if extension is not None:
+                extension = extension["filename_extension"]
             filename_list.append(f"{file_id}.{extension}")
 
         DirectlyChat.CHANNEL_FILE_SCOPE_DICT[channel_id] = filename_list
@@ -92,33 +92,39 @@ class DirectlyChat(commands.Cog):
 
                 collection = mongo_database.get_collection("UserUploadFile")
 
-                for index, metadata in enumerate(metadatas):
-                    # get custom_file_name
-                    custom_file_name = collection.find_one(
-                        {"_id": ObjectId(metadata["source"].split(".")[0])}
-                    )["custom_file_name"]
-                    # with divider
-                    if index != 0:
-                        embed.add_field(
-                            name="\n",
-                            value="",
-                            inline=True,
+                if metadatas is not None:
+                    for index, metadata in enumerate(metadatas):
+                        # get custom_file_name
+                        custom_file_name = collection.find_one(
+                            {"_id": ObjectId(metadata["source"].split(".")[0])}
                         )
-                    source_content = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
-                        {contents[index]}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
-                            {custom_file_name}\n{LANG_DATA['events']['directly_chat']['page_prefix']}\
-                                {metadata['page']+1}"
-                    embed.add_field(
-                        name=f"{LANG_DATA['events']['directly_chat']['field_name']} {index+1}",
-                        value=source_content,
-                        inline=False,
-                    )
 
-                # disable button
-                reference_button.disabled = True
+                        if custom_file_name is not None:
+                            custom_file_name = custom_file_name["custom_file_name"]
+                        # with divider
+                        if index != 0:
+                            embed.add_field(
+                                name="\n",
+                                value="",
+                                inline=True,
+                            )
+                        if contents is not None:
+                            source_content = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
+                                {contents[index]}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
+                                    {custom_file_name}\n{LANG_DATA['events']['directly_chat']['page_prefix']}\
+                                        {metadata['page']+1}"
 
-                await interaction.response.edit_message(view=view)
-                await interaction.followup.send(embed=embed)
+                            embed.add_field(
+                                name=f"{LANG_DATA['events']['directly_chat']['field_name']} {index+1}",
+                                value=source_content,
+                                inline=False,
+                            )
+
+                    # disable button
+                    reference_button.disabled = True
+
+                    await interaction.response.edit_message(view=view)
+                    await interaction.followup.send(embed=embed)
 
             reference_button.callback = show_reference
             view.add_item(reference_button)

@@ -60,9 +60,11 @@ class DownloadSelect(ui.Select):
 
             # send filename message with file
             await interaction.user.send(f"{custom_file_name}：")
-            await interaction.user.send(file=discord.File(file_path))
+            if file_path is not None:
+                await interaction.user.send(file=discord.File(file_path))
 
-        await interaction.message.delete()
+        if interaction.message is not None:
+            await interaction.message.delete()
 
 
 class DownloadCommand(commands.Cog):

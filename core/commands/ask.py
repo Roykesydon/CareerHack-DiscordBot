@@ -1,3 +1,4 @@
+import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
 
@@ -78,9 +79,13 @@ class AskScopeSelect(ui.Select):
             str(interaction.channel_id), selected_file_id_list
         )
 
-        await interaction.message.delete()
+        if interaction.message is not None:
+            await interaction.message.delete()
 
-        await interaction.channel.send(return_message)
+        if isinstance(interaction.channel, discord.channel.TextChannel) or isinstance(
+            interaction.channel, discord.channel.DMChannel
+        ):
+            await interaction.channel.send(return_message)
 
 
 class AskCommand(commands.Cog):
