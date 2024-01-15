@@ -1,0 +1,18 @@
+{
+    "mongo":{
+        "host": "",
+        "port": "",
+        "db": "discord-bot",
+        "user": "",
+        "password": ""
+    },
+
+    "discord":{
+        "token": ""
+    },
+
+    "language": "en",
+    "primary_color": "#a070ff",
+
+    "storage_path": "./storage"
+}
