@@ -83,6 +83,19 @@
             "description": "下載已上傳的文件",
             "placeholder": "請選擇要下載的文件",
             "message": "請選擇您想要下載的文件"
+        },
+        "switch-model":{
+            "field-name": "🗨 問答",
+            "icon": "🔄",
+            "description": "切換線上 / 線下模型",
+            "current-model-prefix": "當前模型：",
+            "button-above-message": "選擇線上 / 線下語言模型：",
+            "online-model": "線上模型",
+            "offline-model": "線下模型",
+            "online-button": "線上模型",
+            "offline-button": "線下模型",
+            "online-response": "已切換至線上模型",
+            "offline-response": "已切換至線下模型"
         }
     },
     "events": {
