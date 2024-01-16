@@ -32,6 +32,8 @@
 │   └── logo.png
 ├── config.example.json
 ├── config.json
+├── .example.env
+├── .env
 ├── core # business logic
 │   ├── commands # all coomands
 │   │   ├── description.py
