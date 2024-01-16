@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import discord
-from core.config import CONFIG
 from discord.ext import commands
+
+from core.config import CONFIG
 
 
 # Load commands

@@ -2,10 +2,11 @@ import time
 
 import discord
 import requests
-from core.config import CONFIG, LANG_DATA
-from core.database import mongo_database
 from discord import app_commands
 from discord.ext import commands
+
+from core.config import CONFIG, LANG_DATA
+from core.database import mongo_database
 
 
 class UploadFileCommand(commands.Cog):
