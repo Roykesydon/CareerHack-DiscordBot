@@ -41,7 +41,7 @@ class UploadFileCommand(commands.Cog):
             with open(f"{CONFIG['storage_path']}/{file_name}", "wb") as file:
                 file.write(response.content)
 
-        return await interaction.channel.send(
+        return await interaction.response.send_message(
             LANG_DATA["commands"]["upload"]["success"]
         )
 
