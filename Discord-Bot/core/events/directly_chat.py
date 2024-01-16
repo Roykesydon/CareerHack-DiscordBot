@@ -1,4 +1,5 @@
 import discord
+from core.validator import Validator
 from discord.ext import commands
 
 
@@ -14,6 +15,10 @@ class DirectlyChat(commands.Cog):
 
         # Ignore message that start with /
         if message.content.startswith("/"):
+            return
+
+        # check if the command is used in a channel that is enabled or in a DM
+        if not Validator.in_dm_or_enabled_channel(message.channel):
             return
 
         async with message.channel.typing():

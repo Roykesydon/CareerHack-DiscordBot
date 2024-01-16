@@ -11,6 +11,21 @@
         "upload": {
             "description": "Upload a document to the bot",
             "success": "Document uploaded successfully"
+        },
+        "channel": {
+            "description": "Enable/Disable the bot in the current channel.",
+            "enable": "Enable",
+            "disable": "Disable",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
+            "button-above-message": "Enable or disable the bot for this channel:",
+            "current-status-prefix": "Current status:",
+            "enable-response": "Bot enabled for this channel",
+            "disable-response": "Bot disabled for this channel"
         }
+    },
+    "permission":{
+        "dm-not-allowed": "This command is not allowed in DMs",
+        "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels"
     }
 }

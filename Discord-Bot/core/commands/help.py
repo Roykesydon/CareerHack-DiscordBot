@@ -1,8 +1,8 @@
-from discord import app_commands
-from discord.ext import commands
-
 from core.config import LANG_DATA
 from core.message import Message
+from core.validator import Validator
+from discord import app_commands
+from discord.ext import commands
 
 
 class HelpCommand(commands.Cog):
@@ -13,6 +13,12 @@ class HelpCommand(commands.Cog):
         name="help", description=LANG_DATA["commands"]["help"]["description"]
     )
     async def show_command_list(self, interaction):
+        if not Validator.in_dm_or_enabled_channel(interaction.channel):
+            await interaction.response.send_message(
+                f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+            )
+            return
+
         async with interaction.channel.typing():
             # list all commands extension
             commands_list_with_description = []
@@ -38,6 +44,9 @@ class HelpCommand(commands.Cog):
             )
 
             await interaction.response.send_message(embed=embed)
+
+    def cog_check(self, ctx):
+        return Validator.in_dm_or_enabled_channel(ctx)
 
 
 async def setup(bot):
