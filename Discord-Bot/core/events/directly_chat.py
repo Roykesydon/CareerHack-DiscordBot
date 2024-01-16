@@ -5,11 +5,11 @@ from discord.ext import commands
 
 class DirectlyChat(commands.Cog):
     START_CHAT_CHANNEL_SET = set()
-    
+
     @staticmethod
     def insert_start_chat_channel(channel_id: str):
         DirectlyChat.START_CHAT_CHANNEL_SET.add(channel_id)
-    
+
     @staticmethod
     def remove_start_chat_channel(channel_id: str):
         DirectlyChat.START_CHAT_CHANNEL_SET.remove(channel_id)

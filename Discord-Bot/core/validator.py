@@ -3,6 +3,8 @@ import discord
 """
 Bot response permission Control
 """
+
+
 class Validator:
     _enabled_channels = set()
 

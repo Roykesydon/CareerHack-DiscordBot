@@ -10,6 +10,8 @@ with open(f"lang/{_bot_language}.json", "r", encoding="utf8") as f:
 """
 Manage all fixed text in response or ui
 """
+
+
 class TextManager:
     _channel_session = {}
     _language_text = {}
