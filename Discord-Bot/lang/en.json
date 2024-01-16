@@ -12,7 +12,8 @@
         },
         "upload": {
             "description": "Upload a document to the bot",
-            "success": "Document uploaded successfully"
+            "success": "Document uploaded successfully",
+            "invalid-file-type": "Invalid file type."
         },
         "channel": {
             "description": "Enable/Disable the bot in the current channel.",
@@ -30,6 +31,13 @@
             "message": "Please select your language:",
             "placeholder": "Select the language you wish to set",
             "success": "Language set to English"
+        },
+        "ask":{
+            "all_file": "All available documents",
+            "description": "Set the document scope and ask the bot a question",
+            "placeholder": "Select the document scope",
+            "success": "Document scope set successfully, you can start asking questions!",
+            "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end"
         }
     },
     "permission":{

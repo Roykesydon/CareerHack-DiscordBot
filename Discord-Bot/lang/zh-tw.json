@@ -12,7 +12,8 @@
         },
         "upload": {
             "description": "向機器人上傳文件",
-            "success": "文件上傳成功"
+            "success": "文件上傳成功",
+            "invalid-file-type": "無效的文件類型"
         },
         "channel": {
             "description": "在當前頻道啟用/禁用機器人。",
@@ -30,6 +31,13 @@
             "message": "請選擇您的語言：",
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
+        },
+        "ask":{
+            "all_file": "所有可用文件",
+            "description": "設置詢問的文件範圍並向機器人提問",
+            "placeholder": "請選擇文件範圍",
+            "success": "已成功設置文件範圍，可以開始提問了！",
+            "message": "請設置您想要使用的文件範圍，並提出你想詢問的問題\n要結束提問只需輸入 /end 即可"
         }
     },
     "permission": {
