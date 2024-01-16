@@ -1,5 +1,5 @@
-from core.config import LANG_DATA
 from core.message import Message
+from core.text_manager import TextManager
 from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
@@ -10,9 +10,13 @@ class HelpCommand(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="help", description=LANG_DATA["commands"]["help"]["description"]
+        name="help",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["help"]["description"],
     )
     async def show_command_list(self, interaction):
+        text_manager = TextManager()
+        LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
+
         if not Validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"

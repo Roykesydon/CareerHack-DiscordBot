@@ -2,8 +2,9 @@ import time
 
 import discord
 import requests
-from core.config import CONFIG, LANG_DATA
+from core.config import CONFIG
 from core.database import mongo_database
+from core.text_manager import TextManager
 from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
@@ -14,9 +15,13 @@ class UploadFileCommand(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="upload", description=LANG_DATA["commands"]["upload"]["description"]
+        name="upload",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["upload"]["description"],
     )
     async def upload_document(self, interaction, attachment: discord.Attachment):
+        text_manager = TextManager()
+        LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
+
         if not Validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
