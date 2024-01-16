@@ -1,0 +1,39 @@
+{
+    "label": "中文",
+    "value": "zh-tw",
+    "description": "哈囉！👋 我是您的友善 Discord 機器人，專為協助您根據上傳文件提供專業知識和答案而設計。無論您有技術問題、需要特定主題的見解，或只是想探索新資訊，我都在這裡幫忙。只需上傳您的文件、提出問題，我將盡我所能為您提供精確和資訊豐富的回應。讓學習和信息收集變得簡單又有趣！",
+    "commands": {
+        "help": {
+            "title": "指令列表",
+            "description": "顯示指令列表"
+        },
+        "description": {
+            "description": "顯示機器人的描述"
+        },
+        "upload": {
+            "description": "向機器人上傳文件",
+            "success": "文件上傳成功"
+        },
+        "channel": {
+            "description": "在當前頻道啟用/禁用機器人。",
+            "enable": "啟用",
+            "disable": "禁用",
+            "enabled": "已啟用",
+            "disabled": "已禁用",
+            "button-above-message": "為這個頻道啟用或禁用機器人：",
+            "current-status-prefix": "當前狀態：",
+            "enable-response": "已為此頻道啟用機器人",
+            "disable-response": "已為此頻道禁用機器人"
+        },
+        "language": {
+            "description": "更改機器人的語言",
+            "message": "請選擇您的語言：",
+            "placeholder": "請選擇想設置的語言",
+            "success": "語言已更改為中文"
+        }
+    },
+    "permission": {
+        "dm-not-allowed": "此指令在私訊中不允許使用",
+        "dm-or-enabled-channel-only": "此指令僅允許在私訊或已啟用的頻道中使用"
+    }
+}
