@@ -1,11 +1,12 @@
 import asyncio
 
 import discord
-from core.text_manager import TextManager
-from core.validator import Validator
 from discord import app_commands
 from discord.ext import commands
 from discord.ui import Button, View
+
+from core.text_manager import TextManager
+from core.validator import Validator
 
 
 class ChannelCommand(commands.Cog):

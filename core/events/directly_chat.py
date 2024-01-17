@@ -1,6 +1,7 @@
 import discord
-from core.validator import Validator
 from discord.ext import commands
+
+from core.validator import Validator
 
 
 class DirectlyChat(commands.Cog):

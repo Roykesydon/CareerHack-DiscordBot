@@ -1,9 +1,9 @@
-from vectordb_manager import VectordbManager
+import os
+
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import TextLoader, PyPDFLoader
-
-import os
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
+from vectordb_manager import VectordbManager
 
 vectordb_manager = VectordbManager()
 
@@ -40,7 +40,7 @@ splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
 texts = loader.load_and_split(splitter)
 # 修改 metadata
 for text in texts:
-    text.metadata['source'] = file_name
+    text.metadata["source"] = file_name
 vectordb_manager.add(texts)
 
 # 列印 collection 裡的 document 數量

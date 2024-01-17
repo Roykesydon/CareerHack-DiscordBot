@@ -1,4 +1,5 @@
 import discord
+
 from core.config import CONFIG
 
 

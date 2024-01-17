@@ -1,13 +1,14 @@
 import asyncio
 
 import discord
+from discord import SelectOption, app_commands, ui
+from discord.ext import commands
+from discord.ui import Button, View
+
 from core.events.directly_chat import DirectlyChat
 from core.text_manager import TextManager
 from core.upload_file_manager import UploadFileManager
 from core.validator import Validator
-from discord import SelectOption, app_commands, ui
-from discord.ext import commands
-from discord.ui import Button, View
 
 
 class AskScopeSelectView(ui.View):
