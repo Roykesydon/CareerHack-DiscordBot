@@ -1,9 +1,5 @@
-import asyncio
-
-import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
-from discord.ui import Button, View
 
 from core.events.directly_chat import DirectlyChat
 from core.text_manager import TextManager
@@ -25,30 +21,53 @@ class AskScopeSelect(ui.Select):
         LANG_DATA = text_manager.get_selected_language(channel_id)
 
         options = [
-            SelectOption(label=LANG_DATA["commands"]["ask"]["all_file"], value="all")
+            SelectOption(
+                label=LANG_DATA["commands"]["ask"]["all_file"],
+                value=f"all-{LANG_DATA['commands']['ask']['all_file']}",
+            ),
         ]
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
-            options.append(SelectOption(label=file["file_name"], value=file["file_id"]))
+            options.append(
+                SelectOption(
+                    label=file["file_name"],
+                    value=f"{file['file_id']}-{file['file_name']}",
+                )
+            )
 
         super().__init__(
             placeholder=LANG_DATA["commands"]["ask"]["placeholder"],
             min_values=1,
-            max_values=1,
+            max_values=min(15, len(options)),
             options=options,
         )
 
     async def callback(self, interaction):
-        selected_file_scope = self.values[0]
         text_manager = TextManager()
-        DirectlyChat.insert_start_chat_channel(str(interaction.channel_id))
-
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        await interaction.response.send_message(
-            LANG_DATA["commands"]["ask"]["success"],
-        )
+        return_message = LANG_DATA["commands"]["ask"]["success"]
+
+        selected_file_scope = self.values
+        selected_file_scope = [x.split("-") for x in selected_file_scope]
+
+        # check if "all" is selected with lambda
+        if any(list(map(lambda x: x[0] == "all", selected_file_scope))):
+            selected_file_scope = "all"
+            return_message += LANG_DATA["commands"]["ask"]["all_file"]
+
+        else:
+            selected_file_name_list = list(map(lambda x: x[1], selected_file_scope))
+            return_message += ", ".join(selected_file_name_list)
+
+        return_message += "\n" + LANG_DATA["commands"]["ask"]["success2"]
+
+        DirectlyChat.insert_start_chat_channel(str(interaction.channel_id))
+
+        await interaction.response.edit_message(view=None)
+
+        await interaction.followup.send(return_message)
 
 
 class AskCommand(commands.Cog):
@@ -73,8 +92,11 @@ class AskCommand(commands.Cog):
             view = AskScopeSelectView(
                 str(interaction.channel_id), str(interaction.user.id)
             )
+
+            return_message = LANG_DATA["commands"]["ask"]["message"]
+
             await interaction.response.send_message(
-                LANG_DATA["commands"]["ask"]["message"], view=view
+                LANG_DATA["commands"]["ask"]["message"], view=view, ephemeral=True
             )
 
 
