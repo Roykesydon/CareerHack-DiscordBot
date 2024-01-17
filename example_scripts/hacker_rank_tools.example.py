@@ -10,11 +10,14 @@ tools = HackerRankTools()
 tools.vectordb_manager.set_vector_db("test_db")
 
 # 添加資料
-file_paths = ["./docs/112,訴,1085,20240110,1.pdf", "./docs/tt.txt"]
+file_paths = ["./docs/112,訴,1085,20240110,1.pdf", "./docs/tt.txt", "tt.docx"]
 tools.add_documents_to_vdb(file_paths)
 
 # 設置線上/線下模型
 tools.set_llm_type(isOnline=True)
+
+# 刪除指定文件資料
+# tools.delete(["Retentive Network_A Successor to Transformer.pdf"])
 
 # 純問答
 query = "這個案件涉及甚麼法條?"
