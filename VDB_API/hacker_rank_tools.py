@@ -48,7 +48,7 @@ class HackerRankTools:
         print(f"刪除 {fileNameList} 相關資料")
         return fileNameList
 
-    # 無任何參考資料，直接問答
+    # 模型問答
     def chat(
         self, query, refFileNameList=None, refAll=False
     ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
