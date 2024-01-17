@@ -36,8 +36,16 @@
             "all_file": "All available documents",
             "description": "Set the document scope and ask the bot a question",
             "placeholder": "Select the document scope",
-            "success": "Document scope set successfully, you can start asking questions!",
-            "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end"
+            "success": "The document scope you selected is:",
+            "success2": "The document scope has been set successfully, you can start asking questions now!",
+            "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end",
+            "end": "The Q&A session has been closed"
+        },
+        "delete-uploaded-file": {
+            "description": "Delete uploaded file",
+            "placeholder": "Please select the file you wish to delete",
+            "success": "File deleted successfully",
+            "message": "Please select the file you wish to delete"
         }
     },
     "permission":{

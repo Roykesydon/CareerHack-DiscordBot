@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from core.database import mongo_database
 
 
@@ -22,3 +24,6 @@ class UploadFileManager:
             )
 
         return file_with_id_list
+
+    def delete_file(self, file_id: str):
+        mongo_database["UserUploadFile"].delete_one({"_id": ObjectId(file_id)})
