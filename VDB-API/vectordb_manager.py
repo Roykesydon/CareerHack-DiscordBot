@@ -1,10 +1,11 @@
 import chromadb
-from config import CONFIG
 from langchain.docstore.document import Document
-from langchain_community.embeddings.sentence_transformer import \
-    SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
 
+from utils.config import CONFIG
 
 class VectordbManager:
     _emb_fn = SentenceTransformerEmbeddings(
@@ -19,7 +20,7 @@ class VectordbManager:
             client=VectordbManager._chroma_client,
             embedding_function=VectordbManager._emb_fn,
             persist_directory=CONFIG["db_path"],
-            collection_name=CONFIG["collections"]["basic"],
+            collection_name=CONFIG["collections"]["basic"]
         )
 
     # 切換 collection，若不存在則自動創建
@@ -49,32 +50,54 @@ class VectordbManager:
         self.vectordb.persist()  # ensure the embeddings are written to disk
         return ids
 
-    # 獲取指定條件的資料
+    # 獲取指定條件的 document (文件段落)
     def get(self, where: dict[str]) -> list[str]:
         """Args example:
-        where: {"source": "pdf-1"}
+        where =
+            (single condition)   {"source": "pdf-1"}
+            (multiple condition) {"$or": [{"source": "pdf-1"}, {"source": "pdf-4"}]}
         """
         retrieved_data = self.vectordb._collection.get(where=where)
         retrieved_text = (
-            retrieved_data["documents"][0]
+            retrieved_data["documents"]
             if len(retrieved_data["documents"]) > 0
             else []
         )
         return retrieved_text
+    
+    # 獲取 collection 中所有資料的來源檔名
+    def get_all_source_name(self) -> list[str]:
+        all_data = self.vectordb._collection.get()
+        source_name_list = [data['source'] for data in all_data['metadatas']]
+        source_name_list = list(set(source_name_list))  # Remove duplicates
+        return source_name_list
 
     # 回傳與問題相關的資料
-    def query(self, query, n_results=1, where=None) -> dict[str]:
-        """Args example:
-        where: {"source": "pdf-1"}
+    def query(self, query, n_results=1, where=None) -> list[Document]:
+        """
+            Args example:
+                where =
+                    (single condition)   {"source": "pdf-1"}
+                    (multiple condition) {"$or": [{"source": "pdf-1"}, {"source": "pdf-4"}]}
+            Returns:
+                Document(
+                    page_content: 文章段落,
+                    metadata: {
+                        'page': 段落所在頁碼(int),
+                        'source':  段落來源檔名(str)
+                    }
+                )       
         """
         docs = self.vectordb.similarity_search(query, k=n_results, filter=where)
-        content_list = [docs[i].page_content for i in range(len(docs))]
-        return content_list
+        # docs = self.vectordb.max_marginal_relevance_search(query, k=n_results, filter=where)
+        return docs 
 
     # 刪除 _collection 裡的資料
     def delete(self, where: dict[str]):
         """Args example:
-        where: {"source": "pdf-1"}
+        where =
+            (single condition)   {"source": "pdf-1"}
+            (multiple condition) {"$or": [{"source": "pdf-1"}, {"source": "pdf-4"}]}
         """
         self.vectordb._collection.delete(where=where)
 
