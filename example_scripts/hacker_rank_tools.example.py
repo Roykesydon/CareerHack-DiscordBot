@@ -2,8 +2,7 @@
     testing of HackerRankTools
 """
 
-from hacker_rank_tools import HackerRankTools
-
+from VDB_API.hacker_rank_tools import HackerRankTools
 
 tools = HackerRankTools()
 

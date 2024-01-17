@@ -1,12 +1,13 @@
 """
     testing of VectordbManager
 """
-from langchain.docstore.document import Document
-from vectordb_manager import VectordbManager
-from utils import file_processor
 import os
 
-vectordb_manager = VectordbManager() 
+from langchain.docstore.document import Document
+from utils import file_processor
+from vectordb_manager import VectordbManager
+
+vectordb_manager = VectordbManager()
 vectordb_manager.set_vector_db("test_db")
 
 # 列印現有的 collection
@@ -65,7 +66,9 @@ print(f"內文資訊(metadata) : {metadatas}")
 
 
 # 獲取指定條件的資料
-contents, metadatas = vectordb_manager.get(where={"$or": [{"source": "(20230217)課程_智慧工廠資訊系統.pdf"}, {"source": "pdf-4"}]})
+contents, metadatas = vectordb_manager.get(
+    where={"$or": [{"source": "(20230217)課程_智慧工廠資訊系統.pdf"}, {"source": "pdf-4"}]}
+)
 print(f"\n指定條件取出內文 : {contents}")
 print(f"內文資訊(metadata) : {metadatas}")
 
