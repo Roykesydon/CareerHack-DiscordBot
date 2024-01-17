@@ -7,8 +7,7 @@ from langchain_community.embeddings.sentence_transformer import (
 
 from config import CONFIG
 
-
-class LangchainManager:
+class VectordbManager:
     _emb_fn = SentenceTransformerEmbeddings(
         model_name=CONFIG["HuggingFace"]["model_name"]
     )
@@ -18,8 +17,8 @@ class LangchainManager:
 
     def __init__(self):
         self.vectordb = Chroma(
-            client=LangchainManager._chroma_client,
-            embedding_function=LangchainManager._emb_fn,
+            client=VectordbManager._chroma_client,
+            embedding_function=VectordbManager._emb_fn,
             persist_directory=CONFIG["db_path"],
             collection_name=CONFIG["collections"]["basic"],
         )
@@ -27,8 +26,8 @@ class LangchainManager:
     # 切換 collection，若不存在則自動創建
     def set_vector_db(self, collection_name: str):
         self.vectordb = Chroma(
-            client=LangchainManager._chroma_client,
-            embedding_function=LangchainManager._emb_fn,
+            client=VectordbManager._chroma_client,
+            embedding_function=VectordbManager._emb_fn,
             persist_directory=CONFIG["db_path"],
             collection_name=collection_name,
         )
@@ -36,7 +35,7 @@ class LangchainManager:
 
     # 回傳所有的 collection name
     def get_collection_name_list(self) -> list[str]:
-        collection_list = LangchainManager._chroma_client.list_collections()
+        collection_list = VectordbManager._chroma_client.list_collections()
         name_list = [collection.name for collection in collection_list]
         return name_list
 
