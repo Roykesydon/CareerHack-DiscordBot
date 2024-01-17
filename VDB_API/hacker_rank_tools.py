@@ -2,6 +2,7 @@ from typing import List, Tuple, Union
 
 from dotenv import load_dotenv
 # from langchain_community.embeddings import OpenAIEmbeddings
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
 
@@ -14,6 +15,8 @@ load_dotenv()  # 加載.env檔案
 class HackerRankTools:
     def __init__(self):
         self.llm = OpenAI(temperature=0)
+        self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
+
         self.template = "根據以下資料(Docs)回答問題(Question)，若你認為這份資料與問題並沒有太大相關性，請在回答(Answer)時提醒，但同時還是告訴用戶可以參考文件\n{context}\n\nQuestion: {question}\n\nAnswer: "
         self.prompt = PromptTemplate.from_template(self.template)
         self.vectordb_manager = VectordbManager()
@@ -60,7 +63,7 @@ class HackerRankTools:
             refAll: if True, ignore refFileNameList, use all reference files
         Returns:
             ans: model reply
-            ref_contents: list of reference document paragraphs
+            contents: list of reference document paragraphs
             metadatas: list of reference document info
                 pdf: {'source': 檔名, 'page': 頁碼}
                 txt: {'source': 檔名}
@@ -73,14 +76,16 @@ class HackerRankTools:
             where = {"source": refFileNameList[0]}
         else:
             where = {"$or": [{"source": name} for name in refFileNameList]}
+        docs = self.vectordb_manager.query(query, n_results=3, where=where)
 
-        # 從 vector database 取得指定文件
-        contents, metadatas = self.vectordb_manager.query(
-            query, n_results=3, where=where
-        )
-        templated_query = self.prompt.format(
-            context="\n".join(contents), question=query
-        )
-        ans = self.llm(prompt=templated_query)
+        contents, metadatas = [], []
+        for doc in docs:
+            contents.append(doc.page_content)
+            metadatas.append(doc.metadata)
+
+        ans = self.chain(
+            {"input_documents": docs, "question": query}, return_only_outputs=True
+        )["output_text"]
+        ans = ans.split("\nSOURCES:")[0]
 
         return ans, contents, metadatas
