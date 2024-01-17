@@ -31,6 +31,7 @@ class HelpCommand(commands.Cog):
                 commands_list_with_description.append(
                     {
                         "name": command.name,
+                        "icon": LANG_DATA["commands"][command.name]["icon"],
                         "description": LANG_DATA["commands"][command.name][
                             "description"
                         ],
@@ -40,7 +41,7 @@ class HelpCommand(commands.Cog):
             # set commands list description
             description = ""
             for command in commands_list_with_description:
-                description += f"**/{command['name']}** - {command['description']}\n"
+                description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
 
             message = Message(text=description)
 
