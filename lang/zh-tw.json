@@ -89,7 +89,7 @@
             "icon": "🔄",
             "description": "切換線上 / 線下模型",
             "current-model-prefix": "當前模型：",
-            "button-above-message": "選擇線上 / 線下語言模型：",
+            "button-above-message": "點選以下按鈕，切換聊天模型的模式：",
             "online-model": "線上模型",
             "offline-model": "線下模型",
             "online-button": "線上模型",
