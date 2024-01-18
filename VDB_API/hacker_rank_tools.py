@@ -45,8 +45,8 @@ class HackerRankTools:
             where = {"source": fileNameList[0]}
         else:
             where = {"$or": [{"source": name} for name in fileNameList]}
-        self.vectordb._collection.delete(where=where)
-        print("刪除 {fileNameList} 相關資料")
+        self.vectordb_manager.delete(where=where)
+        print(f"刪除 {fileNameList} 相關資料")
         return fileNameList
 
     # 無任何參考資料，直接問答
