@@ -9,8 +9,12 @@ from VDB_API.hacker_rank_tools import HackerRankTools
 hacker_rank_tools = HackerRankTools()
 hacker_rank_tools.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
 
+hacker_rank_tools_offline = HackerRankTools()
+hacker_rank_tools_offline.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
+
 # 設置線上/線下模型
 hacker_rank_tools.set_llm_type(isOnline=True)
+hacker_rank_tools_offline.set_llm_type(isOnline=False)
 
 
 # Load commands
