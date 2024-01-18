@@ -74,7 +74,9 @@ class HackerRankTools:
             where = {"$or": [{"source": name} for name in refFileNameList]}
 
         # 從 vector database 取得指定文件
-        contents, metadatas = self.vectordb_manager.query(query, n_results=3, where=where)
+        contents, metadatas = self.vectordb_manager.query(
+            query, n_results=3, where=where
+        )
         templated_query = self.prompt.format(
             context="\n".join(contents), question=query
         )
