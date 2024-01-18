@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  hacker-rank-discord-bot:
+    build: .
+    restart: always
+    volumes:
+      - ./config.json:/app/config.json
+      - ./.env:/app/.env
