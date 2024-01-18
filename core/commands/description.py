@@ -30,7 +30,7 @@ class DescriptionCommand(commands.Cog):
             logo = discord.File("./assets/logo.png")
             description = LANG_DATA["description"]
 
-            await interaction.response.send_message(description, file=logo)
+            return await interaction.response.send_message(description, file=logo)
 
 
 async def setup(bot):
