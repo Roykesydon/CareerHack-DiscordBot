@@ -14,5 +14,7 @@
     "language": "zh-tw",
     "primary_color": "#a070ff",
 
-    "storage_path": "./storage"
+    "storage_path": "./storage",
+
+    "vector_db_name": "test_db"
 }
