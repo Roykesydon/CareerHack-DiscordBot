@@ -13,7 +13,7 @@ class VectordbManager:
     )
     _chroma_client = chromadb.PersistentClient(
         path=CONFIG["db_path"]
-    )  # Load the Database from disk (就算 langchain_db 是空的也可以)
+    )  # Load the Database from disk
 
     def __init__(self):
         self.vectordb = Chroma(
@@ -39,7 +39,7 @@ class VectordbManager:
         name_list = [collection.name for collection in collection_list]
         return name_list
 
-    # 回傳所有 collection 的名稱
+    # 回傳當前使用 collection 的名稱
     def get_current_collection_name(self):
         return self.vectordb._collection.name
 
@@ -58,7 +58,7 @@ class VectordbManager:
         self.vectordb.persist()  # ensure the embeddings are written to disk
         return ids
 
-    # 獲取指定條件的 document (文件段落)
+    # 獲取指定條件的 document (文件段落)、document information (文件資訊)
     def get(self, where):
         """
         Args example:
@@ -92,7 +92,7 @@ class VectordbManager:
         source_name_list = list(set(source_name_list))  # Remove duplicates
         return source_name_list
 
-    # 回傳與問題相關的資料
+    # 獲取與問題相關的 document (文件段落)、document information (文件資訊)
     def query(self, query, n_results=1, where=None):
         """
         Args example:
@@ -115,7 +115,7 @@ class VectordbManager:
             metadatas.append(doc.metadata)
         return contents, metadatas
 
-    # 刪除 _collection 裡的資料
+    # 刪除 _collection 中指定條件的資料
     def delete(self, where):
         """
         Args example:

@@ -4,8 +4,8 @@
 import os
 
 from langchain.docstore.document import Document
-from utils import file_processor
-from vectordb_manager import VectordbManager
+from VDB_API.utils import file_processor
+from VDB_API.vectordb_manager import VectordbManager
 
 vectordb_manager = VectordbManager()
 vectordb_manager.set_vector_db("test_db")

@@ -4,21 +4,25 @@
     "description": "Hello there! 👋 I'm your friendly Discord Bot, designed to assist you with expert knowledge and answers based on your uploaded documents. Whether you have technical queries, need insights on specific topics, or just want to explore new information, I'm here to help. Just upload your document, ask your question, and I'll do my best to provide you with a precise and informative response. Let's make learning and information gathering easy and fun!",
     "commands": {
         "help": {
+            "emb-title": "📚 User's Guidance",
             "icon": "❓",
             "title": "Command List",
             "description": "Show commands list"
         },
         "description":{
+            "emb-title": "📚 User's Guidance",
             "icon": "🤖",
             "description": "Show description of the bot"
         },
         "upload": {
+            "emb-title": "📄 File Operations",
             "icon": "📤",
             "description": "Upload a document to the bot",
             "success": "Document uploaded successfully",
             "invalid-file-type": "Invalid file type."
         },
         "channel": {
+            "emb-title": "⚙ Channel Management/Settings",
             "icon": "🚥",
             "description": "Enable/Disable the bot in the current channel.",
             "enable": "Enable",
@@ -31,6 +35,7 @@
             "disable-response": "Bot disabled for this channel"
         },
         "language": {
+            "emb-title": "⚙ Channel Management/Settings",
             "icon": "🌐",
             "description": "Set the language of the bot",
             "message": "Please select your language:",
@@ -38,6 +43,7 @@
             "success": "Language set to English"
         },
         "ask":{
+            "emb-title": "🗨 Q&A",
             "icon": "💬",
             "all_file": "All available documents",
             "description": "Set the document scope and ask the bot a question",
@@ -48,6 +54,7 @@
             "end": "The Q&A session has been closed"
         },
         "delete-uploaded-file": {
+            "emb-title": "📄 File Operations",
             "icon": "🗑️",
             "description": "Delete uploaded file",
             "placeholder": "Please select the file you wish to delete",

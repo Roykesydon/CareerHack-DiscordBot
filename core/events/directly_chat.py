@@ -74,24 +74,6 @@ class DirectlyChat(commands.Cog):
             ans, contents, metadatas = hacker_rank_tools.chat(
                 query, DirectlyChat.CHANNEL_FILE_SCOPE_DICT[str(message.channel.id)]
             )
-            # ans = "test"
-            # contents = [
-            #     "view REALM as a generalization of the above work to the",
-            #     "likelihood. However, REALM adds a novel language",
-            #     "in Figure 1.\nThe key intuition of REALM is to train the retriever us-",
-            # ]
-            # metadatas = [
-            #     {"page": 7, "source": "659fef6b6a3c8d018f19f74d.pdf"},
-            #     {"page": 5, "source": "659fef6b6a3c8d018f19f74d.pdf"},
-            #     {"page": 1, "source": "659fef6b6a3c8d018f19f74d.pdf"},
-            # ]
-
-            # print("======")
-            # print(f"query: {query}")
-            # print(f"ans: {ans}")
-            # print(f"contents: {contents}")
-            # print(f"metadatas: {metadatas}")
-            # print("======")
 
             view = View()
             # check refernece button
