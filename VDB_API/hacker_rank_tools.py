@@ -14,7 +14,7 @@ load_dotenv()  # 加載.env檔案
 class HackerRankTools:
     def __init__(self):
         self.llm = OpenAI(temperature=0)
-        self.template = "Based on the following documents:\n{context}\n\nQuestion: {question}\n\nAnswer: "
+        self.template = "If the following documents are related to the question, please answer the question based on the documents:\n{context}\n\nQuestion: {question}\n\nAnswer: "
         self.prompt = PromptTemplate.from_template(self.template)
         self.vectordb_manager = VectordbManager()
 
