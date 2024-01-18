@@ -45,7 +45,7 @@ class HelpCommand(commands.Cog):
             #     description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
 
             # message = Message(text=description)
-                
+
             # define custom order
             custom_order = [
                 LANG_DATA["commands"]["help"]["emb-title"],
@@ -58,14 +58,18 @@ class HelpCommand(commands.Cog):
             commands_list_with_description.sort(
                 key=lambda x: custom_order.index(x["emb-title"])
             )
-                
+
             embed_text = {}
             for command in commands_list_with_description:
-                emb_title = command['emb-title']
+                emb_title = command["emb-title"]
                 if emb_title in embed_text:
-                    embed_text[emb_title] += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
+                    embed_text[
+                        emb_title
+                    ] += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
                 else:
-                    embed_text[emb_title] = f"{command['icon']} `/{command['name']}` - {command['description']}\n"
+                    embed_text[
+                        emb_title
+                    ] = f"{command['icon']} `/{command['name']}` - {command['description']}\n"
 
             message = Message(text=embed_text)
 
