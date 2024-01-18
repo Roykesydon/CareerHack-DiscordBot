@@ -7,7 +7,7 @@ from hacker_rank_tools import HackerRankTools
 
 tools = HackerRankTools()
 
-# 設置到測試用的 vector database
+# 設置到測試用的 vector database collection
 tools.vectordb_manager.set_vector_db("test_db")
 
 # 添加資料
