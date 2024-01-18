@@ -16,6 +16,7 @@ class UploadFileCommand(commands.Cog):
     AVAILABLE_FILE_TYPE_DICT = {
         "text/plain": "txt",
         "application/pdf": "pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     }
 
     def __init__(self, bot):
@@ -60,9 +61,10 @@ class UploadFileCommand(commands.Cog):
             Check file format
             """
             if not self.check_file_format(attachment.content_type):
-                return await interaction.response.send_message(
+                await interaction.response.send_message(
                     LANG_DATA["commands"]["upload"]["invalid-file-type"]
                 )
+                return
 
             await interaction.response.defer()
 
