@@ -3,6 +3,8 @@
 data_connection.py
 chromadb_example.py
 chromadb_manager.py
+hacker_rank_tools.example.py
+vectordb_manager.example.py
 
 /docs
 __pycache__
