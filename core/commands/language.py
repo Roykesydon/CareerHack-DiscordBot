@@ -43,11 +43,10 @@ class LanguageSelect(ui.Select):
 
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        self.disabled = True
-        await interaction.response.edit_message(view=self.view)
+        await interaction.message.delete()
 
         # Here you can add code to update the user's language preference
-        await interaction.followup.send(
+        await interaction.channel.send(
             LANG_DATA["commands"]["language"]["success"],
         )
 
