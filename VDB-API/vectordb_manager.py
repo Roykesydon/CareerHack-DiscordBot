@@ -14,7 +14,7 @@ class VectordbManager:
     )
     _chroma_client = chromadb.PersistentClient(
         path=CONFIG["db_path"]
-    )  # Load the Database from disk (就算 langchain_db 是空的也可以)
+    )  # Load the Database from disk
 
     def __init__(self):
         self.vectordb = Chroma(
