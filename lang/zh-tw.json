@@ -55,6 +55,16 @@
             "message": "請選擇您想要刪除的文件"
         }
     },
+    "events": {
+        "directly_chat":{
+            "reference_button_text": "查看參考資料",
+            "reference_embed_title": "參考來源",
+            "content_prefix": "內容：",
+            "source_prefix": "來源：",
+            "page_prefix": "頁數：",
+            "field_name": "來源"
+        }
+    },
     "permission": {
         "dm-not-allowed": "此指令在私訊中不允許使用",
         "dm-or-enabled-channel-only": "此指令僅允許在私訊或已啟用的頻道中使用"

@@ -4,6 +4,13 @@ import discord
 from discord.ext import commands
 
 from core.config import CONFIG
+from VDB_API.hacker_rank_tools import HackerRankTools
+
+hacker_rank_tools = HackerRankTools()
+hacker_rank_tools.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
+
+# 設置線上/線下模型
+hacker_rank_tools.set_llm_type(isOnline=True)
 
 
 # Load commands
