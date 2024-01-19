@@ -3,12 +3,8 @@ from typing import List
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import (
-    Docx2txtLoader,
-    JSONLoader,
-    PyPDFLoader,
-    TextLoader,
-)
+from langchain_community.document_loaders import (Docx2txtLoader, JSONLoader,
+                                                  PyPDFLoader, TextLoader)
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
 EN_CHUNK_SIZE = 1000
