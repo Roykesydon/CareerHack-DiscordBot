@@ -1,4 +1,5 @@
 import chromadb
+import torch
 from langchain.docstore.document import Document
 from langchain_community.embeddings.sentence_transformer import \
     SentenceTransformerEmbeddings
@@ -8,8 +9,10 @@ from VDB_API.utils.config import CONFIG
 
 
 class VectordbManager:
+    _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("你的裝置是：", _device)
     _emb_fn = SentenceTransformerEmbeddings(
-        model_name=CONFIG["HuggingFace"]["model_name"]
+        model_name=CONFIG["HuggingFace"]["model_name"], model_kwargs={"device": _device}
     )
     _chroma_client = chromadb.PersistentClient(
         path=CONFIG["db_path"]
@@ -102,20 +105,10 @@ class VectordbManager:
                 (single condition)   {"source": "pdf-1"}
                 (multiple condition) {"$or": [{"source": "pdf-1"}, {"source": "pdf-4"}]}
         Returns:
-            contents: list of document's page_content. list[str]
-            metadatas: list of document's infomation. list[dict[str]]
-                [{
-                    'source': 段落來源檔名(str),
-                    'page': 段落所在頁碼(int) # 只有 pdf 才有
-                    }, {}, ...
-                ]
+            docs: list of documents.
         """
         docs = self.vectordb.similarity_search(query, k=n_results, filter=where)
-        contents, metadatas = [], []
-        for doc in docs:
-            contents.append(doc.page_content)
-            metadatas.append(doc.metadata)
-        return contents, metadatas
+        return docs
 
     # 刪除 _collection 中指定條件的資料
     def delete(self, where):
