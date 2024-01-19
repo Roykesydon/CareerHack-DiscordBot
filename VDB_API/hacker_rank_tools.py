@@ -1,9 +1,7 @@
 from typing import List, Tuple, Union
 
 from dotenv import load_dotenv
-# from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-from langchain.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
 
 from VDB_API.utils import file_processor
@@ -16,14 +14,12 @@ class HackerRankTools:
     def __init__(self):
         self.llm = OpenAI(temperature=0)
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
-
-        self.template = "根據以下資料(Docs)回答問題(Question)，若你認為這份資料與問題並沒有太大相關性，請在回答(Answer)時提醒，但同時還是告訴用戶可以參考文件\n{context}\n\nQuestion: {question}\n\nAnswer: "
-        self.prompt = PromptTemplate.from_template(self.template)
         self.vectordb_manager = VectordbManager()
 
     def set_llm_type(self, isOnline: bool):
         if isOnline:
             self.llm = OpenAI(temperature=0)
+            self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         else:
             print("set to offline model，待辦!")
 
