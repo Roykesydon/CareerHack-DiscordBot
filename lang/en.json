@@ -83,6 +83,19 @@
             "description": "Download uploaded file",
             "placeholder": "Please select the file you wish to download",
             "message": "Please select the file you wish to download"
+        },
+        "switch-model":{
+            "field-name": "🗨 Q&A",
+            "icon": "🔄",
+            "description": "Switch between online and offline models",
+            "current-model-prefix": "Current model: ",
+            "button-above-message": "Select online/offline language model: ",
+            "online-model": "Online model",
+            "offline-model": "Offline model",
+            "online-button": "Online model",
+            "offline-button": "Offline model",
+            "online-response": "Switched to online model",
+            "offline-response": "Switched to offline model"
         }
     },
     "events": {
