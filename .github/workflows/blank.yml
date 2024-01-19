@@ -25,12 +25,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Set up SSH
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 7414 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh -p 7414 -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} '
+            cd /home/${{ secrets.SSH_USER }}/Hacker-Rank-Discord-Bot
+            ssh-agent -s
+            eval `ssh-agent -s`
+            ssh-add ~/.ssh/id_rsa_github
+            git pull
+            conda activate hacker_rank
+            pip install -r requirements.txt
+            tmux kill-session -t hacker_rank_app || true
+            tmux new-session -d -s hacker_rank_app "python main.py"
+          '
+
+
