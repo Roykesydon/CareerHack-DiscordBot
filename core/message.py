@@ -35,10 +35,8 @@ class Message:
                 embed.set_thumbnail(url=f"attachment://{self._img.filename}")
             else:
                 embed.set_thumbnail(url=str(self._img))
-        
-        
-        return embed
 
+        return embed
 
     # getters and setters
     def get_text(self) -> str:
@@ -49,12 +47,12 @@ class Message:
 
     def get_field(self) -> dict:
         return self._field
-    
+
     def set_field(self, field: dict):
         self._field = field
 
     def get_img(self) -> discord.File:
         return self._img
-    
+
     def set_img(self, img: discord.File):
         self._img = img
