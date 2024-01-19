@@ -1,6 +1,7 @@
 from typing import List, Tuple, Union
 
 from dotenv import load_dotenv
+
 # from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
