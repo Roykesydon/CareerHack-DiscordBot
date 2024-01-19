@@ -1,6 +1,6 @@
 import asyncio
-
 import os
+
 import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
@@ -44,22 +44,23 @@ class DownloadSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
-        
-        available_file_list = upload_file_manager.get_available_file_list(str(interaction.user.id))
-        
+
+        available_file_list = upload_file_manager.get_available_file_list(
+            str(interaction.user.id)
+        )
+
         for file_id in selected_file:
             file_path = upload_file_manager.get_file_path(file_id)
-            
+
             custom_file_name = ""
             for file in available_file_list:
                 if file["file_id"] == file_id:
                     custom_file_name = file["file_name"]
                     break
-            
+
             # send filename message with file
             await interaction.user.send(f"{custom_file_name}：")
             await interaction.user.send(file=discord.File(file_path))
-            
 
         await interaction.message.delete()
 
