@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple, Union
 
 from dotenv import load_dotenv
 # from langchain_community.embeddings import OpenAIEmbeddings
@@ -52,7 +52,7 @@ class HackerRankTools:
     # 無任何參考資料，直接問答
     def chat(
         self, query, refFileNameList=None, refAll=False
-    ) -> (str, List[str], List[dict]):
+    ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
         """
         Args:
             query: user query

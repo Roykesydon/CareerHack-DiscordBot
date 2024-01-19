@@ -1,3 +1,5 @@
+from typing import Union
+
 import discord
 
 from core.config import CONFIG
@@ -45,13 +47,13 @@ class Message:
     def set_text(self, text: str):
         self._text = text
 
-    def get_field(self) -> dict:
+    def get_field(self) -> Union[dict, None]:
         return self._field
 
     def set_field(self, field: dict):
         self._field = field
 
-    def get_img(self) -> discord.File:
+    def get_img(self) -> Union[discord.File, None]:
         return self._img
 
     def set_img(self, img: discord.File):

@@ -43,12 +43,16 @@ class LanguageSelect(ui.Select):
 
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        await interaction.message.delete()
+        if interaction.message is not None:
+            await interaction.message.delete()
 
         # Here you can add code to update the user's language preference
-        await interaction.channel.send(
-            LANG_DATA["commands"]["language"]["success"],
-        )
+        if isinstance(interaction.channel, discord.channel.TextChannel) or isinstance(
+            interaction.channel, discord.channel.DMChannel
+        ):
+            await interaction.channel.send(
+                LANG_DATA["commands"]["language"]["success"],
+            )
 
 
 class LanguageCommand(commands.Cog):
