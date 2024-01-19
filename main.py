@@ -3,7 +3,7 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
-from core.config import CONFIG
+from core.utils.config import CONFIG
 from VDB_API.hacker_rank_tools import HackerRankTools
 
 hacker_rank_tools = HackerRankTools()

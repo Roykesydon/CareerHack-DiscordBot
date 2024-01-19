@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from core.config import CONFIG
+from core.utils.config import CONFIG
 
 _bot_language = CONFIG["language"]
 with open(f"lang/{_bot_language}.json", "r", encoding="utf8") as f:

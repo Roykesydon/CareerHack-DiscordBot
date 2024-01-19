@@ -2,7 +2,7 @@ from typing import Union
 
 import discord
 
-from core.config import CONFIG
+from core.utils.config import CONFIG
 
 
 class Message:

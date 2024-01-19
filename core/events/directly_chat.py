@@ -3,10 +3,10 @@ from bson.objectid import ObjectId
 from discord.ext import commands
 from discord.ui import Button, View
 
-from core.config import CONFIG
-from core.database import mongo_database
-from core.text_manager import TextManager
-from core.validator import Validator
+from core.utils.config import CONFIG
+from core.utils.database import mongo_database
+from core.utils.text_manager import TextManager
+from core.validate.channel_validator import ChannelValidator
 from main import hacker_rank_tools
 
 
@@ -61,7 +61,7 @@ class DirectlyChat(commands.Cog):
             return
 
         # check if the command is used in a channel that is enabled or in a DM
-        if not Validator.in_dm_or_enabled_channel(message.channel):
+        if not ChannelValidator.in_dm_or_enabled_channel(message.channel):
             return
 
         # check if this channel start chat
