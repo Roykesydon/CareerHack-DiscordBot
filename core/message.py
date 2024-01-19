@@ -28,8 +28,6 @@ class Message:
         if self._field:
             for field_name, field_value in self._field.items():
                 embed.add_field(name=field_name, value=field_value, inline=False)
-            # for emb_title, emb_text in self.get_text().items():
-            #     embed.add_field(name=emb_title, value=emb_text, inline=False)
 
         # Add image if available
         if self._img:
@@ -40,13 +38,6 @@ class Message:
         
         
         return embed
-
-        # send commands list
-        # return discord.Embed(
-        #     title=title,
-        #     description=self.get_text(),
-        #     color=color_int,
-        # )
 
 
     # getters and setters

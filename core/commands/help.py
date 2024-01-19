@@ -39,13 +39,6 @@ class HelpCommand(commands.Cog):
                     }
                 )
 
-            # set commands list description
-            # description = ""
-            # for command in commands_list_with_description:
-            #     description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
-
-            # message = Message(text=description)
-
             # define custom order
             custom_order = [
                 LANG_DATA["commands"]["help"]["field-name"],
@@ -59,6 +52,7 @@ class HelpCommand(commands.Cog):
                 key=lambda x: custom_order.index(x["field-name"])
             )
 
+            # set embed fields
             embed_text = {}
             for command in commands_list_with_description:
                 field_title = command["field-name"]
