@@ -30,7 +30,7 @@ class HelpCommand(commands.Cog):
             for command in self.bot.tree.walk_commands():
                 commands_list_with_description.append(
                     {
-                        "emb-title": LANG_DATA["commands"][command.name]["emb-title"],
+                        "field-name": LANG_DATA["commands"][command.name]["field-name"],
                         "name": command.name,
                         "icon": LANG_DATA["commands"][command.name]["icon"],
                         "description": LANG_DATA["commands"][command.name][
@@ -39,39 +39,33 @@ class HelpCommand(commands.Cog):
                     }
                 )
 
-            # set commands list description
-            # description = ""
-            # for command in commands_list_with_description:
-            #     description += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
-
-            # message = Message(text=description)
-
             # define custom order
             custom_order = [
-                LANG_DATA["commands"]["help"]["emb-title"],
-                LANG_DATA["commands"]["ask"]["emb-title"],
-                LANG_DATA["commands"]["upload"]["emb-title"],
-                LANG_DATA["commands"]["channel"]["emb-title"],
+                LANG_DATA["commands"]["help"]["field-name"],
+                LANG_DATA["commands"]["ask"]["field-name"],
+                LANG_DATA["commands"]["upload"]["field-name"],
+                LANG_DATA["commands"]["channel"]["field-name"],
             ]
 
             # sort commands using custom order
             commands_list_with_description.sort(
-                key=lambda x: custom_order.index(x["emb-title"])
+                key=lambda x: custom_order.index(x["field-name"])
             )
 
+            # set embed fields
             embed_text = {}
             for command in commands_list_with_description:
-                emb_title = command["emb-title"]
-                if emb_title in embed_text:
+                field_title = command["field-name"]
+                if field_title in embed_text:
                     embed_text[
-                        emb_title
+                        field_title
                     ] += f"{command['icon']} `/{command['name']}` - {command['description']}\n"
                 else:
                     embed_text[
-                        emb_title
+                        field_title
                     ] = f"{command['icon']} `/{command['name']}` - {command['description']}\n"
 
-            message = Message(text=embed_text)
+            message = Message(field=embed_text)
 
             embed = message.get_embed_format(
                 title=LANG_DATA["commands"]["help"]["title"]
