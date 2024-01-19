@@ -3,7 +3,9 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
+from core.chat_bot.chat_bot import ChatBot
 from core.utils.config import CONFIG
+from core.validate.channel_validator import ChannelValidator
 from VDB_API.hacker_rank_tools import HackerRankTools
 
 hacker_rank_tools = HackerRankTools()
@@ -15,6 +17,9 @@ hacker_rank_tools_offline.vectordb_manager.set_vector_db(CONFIG["vector_db_name"
 # 設置線上/線下模型
 hacker_rank_tools.set_llm_type(isOnline=True)
 hacker_rank_tools_offline.set_llm_type(isOnline=False)
+
+chat_bot = ChatBot()
+channel_validator = ChannelValidator()
 
 
 # Load commands
