@@ -29,7 +29,11 @@ class DownloadSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
-            options.append(SelectOption(label=file["file_name"], value=file["file_id"]))
+            options.append(
+                SelectOption(
+                    label=file["file_name"], emoji=file["emoji"], value=file["file_id"]
+                )
+            )
 
         super().__init__(
             placeholder=LANG_DATA["commands"]["download"]["placeholder"],

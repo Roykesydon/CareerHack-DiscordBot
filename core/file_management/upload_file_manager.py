@@ -15,7 +15,12 @@ class UploadFileManager:
         docs = mongo_database["UserUploadFile"].find({"file_scope": "shared"})
         for doc in docs:
             file_with_id_list.append(
-                {"file_id": str(doc["_id"]), "file_name": doc["custom_file_name"]}
+                {
+                    "file_id": str(doc["_id"]),
+                    "file_name": doc["custom_file_name"],
+                    "file_scope": doc["file_scope"],
+                    "emoji": "🌐",
+                }
             )
 
         # get user's private file
@@ -24,7 +29,12 @@ class UploadFileManager:
         )
         for doc in docs:
             file_with_id_list.append(
-                {"file_id": str(doc["_id"]), "file_name": doc["custom_file_name"]}
+                {
+                    "file_id": str(doc["_id"]),
+                    "file_name": doc["custom_file_name"],
+                    "file_scope": doc["file_scope"],
+                    "emoji": "🔒",
+                }
             )
 
         return file_with_id_list
