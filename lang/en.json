@@ -68,6 +68,7 @@
             "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end",
             "end": "The Q&A session has been closed",
             "no_file": "Please upload a document first",
+            "processing": "🖥️ Processing, please wait...",
             "reference": {
                 "reference_button_text": "View Reference",
                 "reference_embed_title": "Reference",
