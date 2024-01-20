@@ -28,8 +28,13 @@ class Message:
 
         # Add embed fields
         if self._field:
-            for field_name, field_value in self._field.items():
-                embed.add_field(name=field_name, value=field_value, inline=False)
+            for index, (field_name, field_value) in enumerate(self._field.items()):
+                value = field_value
+
+                if index != len(self._field) - 1:
+                    value = value + "\u200b"
+
+                embed.add_field(name=field_name, value=value, inline=False)
 
         # Add image if available
         if self._img:
