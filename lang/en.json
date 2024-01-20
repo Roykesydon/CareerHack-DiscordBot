@@ -89,7 +89,7 @@
             "icon": "🔄",
             "description": "Switch between online and offline models",
             "current-model-prefix": "Current model: ",
-            "button-above-message": "Select online/offline language model: ",
+            "button-above-message": "Click the button below to switch the chat model mode: ",
             "online-model": "Online model",
             "offline-model": "Offline model",
             "online-button": "Online model",
