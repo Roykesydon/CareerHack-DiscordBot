@@ -1,22 +1,19 @@
 {
-    "mongo":{
+    "mongo": {
         "host": "",
         "port": "",
         "db": "discord-bot",
         "user": "",
         "password": ""
     },
-
-    "discord":{
+    "discord": {
         "token": ""
     },
-
-    "admin_username_list": [""],
-
+    "admin_username_list": [
+        ""
+    ],
     "language": "zh-tw",
     "primary_color": "#a070ff",
-
     "storage_path": "./storage",
-
     "vector_db_name": "test_db"
 }
