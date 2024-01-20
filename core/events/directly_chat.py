@@ -7,7 +7,7 @@ from core.commands.switch_model import SwitchModelCommand
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
-from main import channel_validator, chat_bot
+from main import channel_validator, chat_bot, feedback_manager
 
 
 class DirectlyChat(commands.Cog):
@@ -64,6 +64,18 @@ class DirectlyChat(commands.Cog):
                 ],
                 style=discord.ButtonStyle.primary,
             )
+            good_response_button = Button(
+                label=LANG_DATA["commands"]["ask"]["feedback"][
+                    "good_response_button_text"
+                ],
+                style=discord.ButtonStyle.success,
+            )
+            bad_response_button = Button(
+                label=LANG_DATA["commands"]["ask"]["feedback"][
+                    "bad_response_button_text"
+                ],
+                style=discord.ButtonStyle.danger,
+            )
 
             reference_button.callback = chat_bot.get_show_reference_callback(
                 channel_id=str(message.channel.id),
@@ -72,7 +84,30 @@ class DirectlyChat(commands.Cog):
                 reference_button=reference_button,
                 view=view,
             )
+            good_response_button.callback = feedback_manager.get_good_response_callback(
+                channel_id=str(message.channel.id),
+                good_response_button=good_response_button,
+                bad_response_button=bad_response_button,
+                view=view,
+                query=query,
+                answer=ans,
+                contents=contents,
+                metadatas=metadatas,
+            )
+            bad_response_button.callback = feedback_manager.get_bad_response_callback(
+                channel_id=str(message.channel.id),
+                good_response_button=good_response_button,
+                bad_response_button=bad_response_button,
+                view=view,
+                query=query,
+                answer=ans,
+                contents=contents,
+                metadatas=metadatas,
+            )
+
             view.add_item(reference_button)
+            view.add_item(good_response_button)
+            view.add_item(bad_response_button)
 
             await processing_message.delete()
 
