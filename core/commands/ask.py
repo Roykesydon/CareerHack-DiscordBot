@@ -5,7 +5,7 @@ from discord.ext import commands
 from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator, chat_bot
 
 
 class AskScopeSelectView(ui.View):
@@ -74,8 +74,8 @@ class AskScopeSelect(ui.Select):
 
         return_message += "\n" + LANG_DATA["commands"]["ask"]["success2"]
 
-        DirectlyChat.insert_start_chat_channel(str(interaction.channel_id))
-        DirectlyChat.set_channel_file_scope(
+        chat_bot.insert_start_chat_channel(str(interaction.channel_id))
+        chat_bot.set_channel_file_scope(
             str(interaction.channel_id), selected_file_id_list
         )
 
@@ -100,7 +100,7 @@ class AskCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
+        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )

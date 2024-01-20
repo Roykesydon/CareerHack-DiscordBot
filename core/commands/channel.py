@@ -6,7 +6,7 @@ from discord.ext import commands
 from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator
 
 
 class ChannelCommand(commands.Cog):
@@ -35,19 +35,19 @@ class ChannelCommand(commands.Cog):
             CHANNEL_TEXT_DICT = LANG_DATA["commands"]["channel"]
 
             async def enable_callback(interaction):
-                ChannelValidator.enable_channel(interaction.channel.id)
+                channel_validator.enable_channel(interaction.channel.id)
 
                 await interaction.message.delete()
                 await interaction.channel.send(CHANNEL_TEXT_DICT["enable-response"])
 
             async def disable_callback(interaction):
-                ChannelValidator.disable_channel(interaction.channel.id)
+                channel_validator.disable_channel(interaction.channel.id)
 
                 await interaction.message.delete()
                 await interaction.channel.send(CHANNEL_TEXT_DICT["disable-response"])
 
             # show current status
-            enabled = interaction.channel.id in ChannelValidator.get_enabled_channels()
+            enabled = interaction.channel.id in channel_validator.get_enabled_channels()
             prefix = "✅" if enabled else "❌"
             status = f"{CHANNEL_TEXT_DICT['current-status-prefix']} {prefix} {CHANNEL_TEXT_DICT['enabled'] if enabled else CHANNEL_TEXT_DICT['disabled']}"
 

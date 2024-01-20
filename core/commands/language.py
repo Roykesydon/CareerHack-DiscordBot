@@ -6,7 +6,6 @@ from discord.ext import commands
 from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
 
 
 class LanguageSelectView(ui.View):

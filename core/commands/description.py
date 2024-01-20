@@ -4,7 +4,7 @@ from discord.ext import commands
 
 from core.utils.message import Message
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator
 
 
 class DescriptionCommand(commands.Cog):
@@ -21,7 +21,7 @@ class DescriptionCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
+        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )
