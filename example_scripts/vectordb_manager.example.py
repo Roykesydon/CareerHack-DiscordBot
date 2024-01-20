@@ -3,8 +3,6 @@
 """
 import os
 
-from langchain.docstore.document import Document
-
 from VDB_API.utils import file_processor
 from VDB_API.vectordb_manager import VectordbManager
 
@@ -31,13 +29,13 @@ print("current collection : ", current_name)
 #     Document(page_content=documents[i], metadata=metadatas[i])
 #     for i in range(len(documents))
 # ]
-# vectordb_manager.add(texts)
+# ids = vectordb_manager.add(texts)
 
 # # 添加資料 2
 file_path = "./docs/(20230217)課程_智慧工廠資訊系統.pdf"
 file_name = os.path.basename(file_path)
 texts = file_processor.get_split_data(file_path)
-vectordb_manager.add(texts)
+ids = vectordb_manager.add(texts)
 
 # 列印出資料庫中資料的所有來源
 print("所有來源檔案名 : ", vectordb_manager.get_all_source_name())
@@ -53,17 +51,15 @@ print(f"當前共有 {count} 筆資料")
 
 # 查詢
 n_results = 1
-contents, metadatas = vectordb_manager.query("首項目是誰?", n_results=n_results)
-print(f"最相關的 {n_results} 筆 : {contents}")
-print(f"內文資訊(metadata) : {metadatas}")
+docs = vectordb_manager.query("首項目是誰?", n_results=n_results)
+print(f"最相關的 {n_results} 筆 : {docs}")
 
 
 # 指定範圍內的查詢
 n_results = 1
 where = {"source": "pdf-2"}
-contents, metadatas = vectordb_manager.query("首項目是誰?", n_results=n_results, where=where)
-print(f"\n有範圍的最相關 {n_results} 筆 : {contents}")
-print(f"內文資訊(metadata) : {metadatas}")
+docs = vectordb_manager.query("首項目是誰?", n_results=n_results, where=where)
+print(f"\n有範圍的最相關 {n_results} 筆 : {docs}")
 
 
 # 獲取指定條件的資料

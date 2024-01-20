@@ -3,9 +3,8 @@ from typing import List
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import (Docx2txtLoader, JSONLoader,
+from langchain_community.document_loaders import (Docx2txtLoader,
                                                   PyPDFLoader, TextLoader)
-from langchain_community.document_loaders.csv_loader import CSVLoader
 
 EN_CHUNK_SIZE = 1000
 EN_CHUNK_OVERLAP = 400
@@ -27,12 +26,8 @@ def _get_loader(file_type, file_path):
         return PyPDFLoader(file_path)
     elif file_type == ".txt" or file_type == ".md":
         return TextLoader(file_path, encoding="UTF-8")
-    # elif file_type == ".json":
-    #     return JSONLoader(file_path)
-    # elif file_type == ".csv":
-    #     return CSVLoader(file_path)
-    # elif file_type == ".docx" or file_type == ".doc":
-    #     return Docx2txtLoader(file_path)
+    elif file_type == ".docx" or file_type == ".doc":
+        return Docx2txtLoader(file_path)
     else:
         print("file type not supported")
         return None
