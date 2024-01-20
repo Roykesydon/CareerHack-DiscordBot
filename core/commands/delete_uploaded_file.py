@@ -8,19 +8,19 @@ from discord.ui import Button, View
 from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from main import channel_validator
+from main import admin_validator, channel_validator
 
 
 class DeleteUploadedFileSelectView(ui.View):
-    def __init__(self, channel_id, user_id):
+    def __init__(self, channel_id, user_id, username):
         super().__init__()
 
         # Add the dropdown to our view object
-        self.add_item(DeleteUploadedFileSelect(channel_id, user_id))
+        self.add_item(DeleteUploadedFileSelect(channel_id, user_id, username))
 
 
 class DeleteUploadedFileSelect(ui.Select):
-    def __init__(self, channel_id, user_id):
+    def __init__(self, channel_id, user_id, username):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
 
@@ -28,6 +28,9 @@ class DeleteUploadedFileSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
+            if not admin_validator.is_admin(user_id) and file["file_scope"] == "shared":
+                continue
+
             options.append(
                 SelectOption(
                     label=file["file_name"], emoji=file["emoji"], value=file["file_id"]
@@ -81,12 +84,11 @@ class DeleteUploadedFileCommand(commands.Cog):
             )
             return
 
-        # print username
-        print(f"User {interaction.user.name}#{interaction.user.discriminator} ")
-
         async with interaction.channel.typing():
             view = DeleteUploadedFileSelectView(
-                str(interaction.channel_id), str(interaction.user.id)
+                str(interaction.channel_id),
+                str(interaction.user.id),
+                str(interaction.user.name),
             )
             await interaction.response.send_message(
                 LANG_DATA["commands"]["delete-uploaded-file"]["message"], view=view

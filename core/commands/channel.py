@@ -6,7 +6,7 @@ from discord.ext import commands
 from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
-from main import channel_validator
+from main import admin_validator, channel_validator
 
 
 class ChannelCommand(commands.Cog):
@@ -25,6 +25,13 @@ class ChannelCommand(commands.Cog):
         if isinstance(interaction.channel, discord.DMChannel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-not-allowed']}"
+            )
+            return
+
+        # check if user is admin
+        if not admin_validator.is_admin(interaction.user.name):
+            await interaction.response.send_message(
+                f"{LANG_DATA['permission']['admin-only']}"
             )
             return
 

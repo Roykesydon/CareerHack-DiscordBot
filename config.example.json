@@ -11,6 +11,8 @@
         "token": ""
     },
 
+    "admin_username_list": [""],
+
     "language": "zh-tw",
     "primary_color": "#a070ff",
 

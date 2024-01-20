@@ -56,6 +56,14 @@ class AskAdvancedScopeSelect(ui.Select):
         selected_file_scope = self.values
         selected_file_scope = [x.split("-") for x in selected_file_scope]
 
+        if (
+            len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
+            == 0
+        ):
+            return_message = LANG_DATA["commands"]["ask"]["no_file"]
+            await interaction.response.send_message(return_message)
+            return
+
         # check if "all" is selected with lambda
         if any(list(map(lambda x: x[0] == "all", selected_file_scope))):
             selected_file_id_list = upload_file_manager.get_available_file_list(

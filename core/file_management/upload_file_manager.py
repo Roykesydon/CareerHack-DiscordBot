@@ -56,6 +56,22 @@ class UploadFileManager:
             # remove file from storage
             os.remove(f"storage/{file_id}.{extension}")
 
+    def toggle_file_scope(self, file_id_list: list):
+        for file_id in file_id_list:
+            doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
+
+            if doc is None:
+                continue
+
+            if doc["file_scope"] == "private":
+                mongo_database["UserUploadFile"].update_one(
+                    {"_id": ObjectId(file_id)}, {"$set": {"file_scope": "shared"}}
+                )
+            else:
+                mongo_database["UserUploadFile"].update_one(
+                    {"_id": ObjectId(file_id)}, {"$set": {"file_scope": "private"}}
+                )
+
     def get_file_path(self, file_id: str):
         doc = mongo_database["UserUploadFile"].find_one({"_id": ObjectId(file_id)})
         if doc is None:

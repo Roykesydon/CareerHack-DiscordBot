@@ -9,18 +9,18 @@ from discord.ui import Button, View
 from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from main import channel_validator
+from main import admin_validator, channel_validator
 
 
-class DownloadSelectView(ui.View):
+class TransformFileScopeSelectView(ui.View):
     def __init__(self, channel_id, user_id):
         super().__init__()
 
         # Add the dropdown to our view object
-        self.add_item(DownloadSelect(channel_id, user_id))
+        self.add_item(TransformFileScopeSelect(channel_id, user_id))
 
 
-class DownloadSelect(ui.Select):
+class TransformFileScopeSelect(ui.Select):
     def __init__(self, channel_id, user_id):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
@@ -36,7 +36,7 @@ class DownloadSelect(ui.Select):
             )
 
         super().__init__(
-            placeholder=LANG_DATA["commands"]["download"]["placeholder"],
+            placeholder=LANG_DATA["commands"]["transfrom-file-scope"]["placeholder"],
             min_values=1,
             max_values=min(15, len(options)),
             options=options,
@@ -53,38 +53,32 @@ class DownloadSelect(ui.Select):
             str(interaction.user.id)
         )
 
-        for file_id in selected_file:
-            file_path = upload_file_manager.get_file_path(file_id)
-
-            custom_file_name = ""
-            for file in available_file_list:
-                if file["file_id"] == file_id:
-                    custom_file_name = file["file_name"]
-                    break
-
-            # send filename message with file
-            await interaction.user.send(f"{custom_file_name}：")
-            if file_path is not None:
-                await interaction.user.send(file=discord.File(file_path))
+        upload_file_manager.toggle_file_scope(selected_file)
 
         if interaction.message is not None:
             await interaction.message.delete()
 
+        if isinstance(interaction.channel, discord.channel.TextChannel) or isinstance(
+            interaction.channel, discord.channel.DMChannel
+        ):
+            await interaction.channel.send(
+                LANG_DATA["commands"]["transfrom-file-scope"]["success"]
+            )
 
-class DownloadCommand(commands.Cog):
+
+class TransformFileScopeCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="download",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["download"][
+        name="transfrom-file-scope",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["transfrom-file-scope"][
             "description"
         ],
     )
     async def ask_questions(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
-        upload_file_manager = UploadFileManager()
 
         if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
@@ -92,23 +86,20 @@ class DownloadCommand(commands.Cog):
             )
             return
 
-        if (
-            len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
-            == 0
-        ):
+        if not admin_validator.is_admin(interaction.user.name):
             await interaction.response.send_message(
-                f"{LANG_DATA['commands']['download']['no-file']}"
+                f"{LANG_DATA['permission']['admin-only']}"
             )
             return
 
         async with interaction.channel.typing():
-            view = DownloadSelectView(
+            view = TransformFileScopeSelectView(
                 str(interaction.channel_id), str(interaction.user.id)
             )
             await interaction.response.send_message(
-                LANG_DATA["commands"]["download"]["message"], view=view
+                LANG_DATA["commands"]["transfrom-file-scope"]["message"], view=view
             )
 
 
 async def setup(bot):
-    await bot.add_cog(DownloadCommand(bot))
+    await bot.add_cog(TransformFileScopeCommand(bot))

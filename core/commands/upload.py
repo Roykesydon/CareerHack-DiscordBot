@@ -28,16 +28,9 @@ class UploadFileCommand(commands.Cog):
         name="upload",
         description=TextManager.DEFAULT_LANG_DATA["commands"]["upload"]["description"],
     )
-    @app_commands.choices(
-        file_scope=[
-            app_commands.Choice(name="共享文件", value="shared"),
-            app_commands.Choice(name="私人使用", value="private"),
-        ]
-    )
     async def upload_document(
         self,
         interaction,
-        file_scope: str,
         custom_file_name: str,
         attachment: discord.Attachment,
     ):
@@ -79,7 +72,7 @@ class UploadFileCommand(commands.Cog):
                 "file_type": attachment.content_type,
                 "file_url": attachment.url,
                 "file_time": int(time.time()),
-                "file_scope": file_scope,
+                "file_scope": "private",
                 "user_id": str(interaction.user.id),
                 "filename_extension": UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[
                     attachment.content_type
