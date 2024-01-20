@@ -36,6 +36,20 @@ class AskQuickCommand(commands.Cog):
             selected_file_id_list = upload_file_manager.get_available_file_list(
                 str(interaction.user.id)
             )
+
+            if (
+                len(
+                    upload_file_manager.get_available_file_list(
+                        str(interaction.user.id)
+                    )
+                )
+                == 0
+            ):
+                await interaction.response.send_message(
+                    f"{LANG_DATA['commands']['ask']['no-file']}"
+                )
+                return
+
             selected_file_id_list = list(
                 map(lambda x: x["file_id"], selected_file_id_list)
             )

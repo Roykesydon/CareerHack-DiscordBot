@@ -67,7 +67,7 @@
             "success2": "The document scope has been set successfully, you can start asking questions now!",
             "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end",
             "end": "The Q&A session has been closed",
-            "no_file": "Please upload a document first",
+            "no-file": "Please upload a document first",
             "processing": "🖥️ Processing, please wait...",
             "reference": {
                 "reference_button_text": "View Reference",
@@ -100,7 +100,8 @@
             "description": "Delete uploaded file",
             "placeholder": "Please select the file you wish to delete",
             "success": "File deleted successfully",
-            "message": "Please select the file you wish to delete"
+            "message": "Please select the file you wish to delete",
+            "no-file": "No file uploaded"
         },
         "download": {
             "field-name": "📄 File Operations",
@@ -129,7 +130,8 @@
             "description": "Admin only - Convert the specified file to shared / private",
             "placeholder": "Please select the file you wish to convert",
             "message": "Please select the file you wish to convert",
-            "success": "File converted successfully"
+            "success": "File converted successfully",
+            "no-file": "No file uploaded"
         }
     },
     "events": {},

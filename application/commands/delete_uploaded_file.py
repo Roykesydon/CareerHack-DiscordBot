@@ -74,9 +74,25 @@ class DeleteUploadedFileCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
+        upload_file_manager = UploadFileManager()
+
         if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+            )
+            return
+
+        private_only = not admin_validator.is_admin(str(interaction.user.id))
+        if (
+            len(
+                upload_file_manager.get_available_file_list(
+                    str(interaction.user.id), private_only=private_only
+                )
+            )
+            == 0
+        ):
+            await interaction.response.send_message(
+                f"{LANG_DATA['commands']['download']['no-file']}"
             )
             return
 
