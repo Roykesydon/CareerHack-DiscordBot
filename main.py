@@ -17,15 +17,15 @@ feedback_manager = FeedbackManager()
 
 # Load commands
 async def load_commands(bot):
-    for cog in [path.stem for path in Path("./core/commands").glob("*.py")]:
-        await bot.load_extension(f"core.commands.{cog}")
+    for cog in [path.stem for path in Path("./application/commands").glob("*.py")]:
+        await bot.load_extension(f"application.commands.{cog}")
         print(f"Loaded Command - {cog}")
 
 
 # Load events
 async def load_events(bot):
-    for cog in [path.stem for path in Path("./core/events").glob("*.py")]:
-        await bot.load_extension(f"core.events.{cog}")
+    for cog in [path.stem for path in Path("./application/events").glob("*.py")]:
+        await bot.load_extension(f"application.events.{cog}")
         print(f"Loaded Event - {cog}")
 
 
