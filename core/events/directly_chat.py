@@ -46,6 +46,10 @@ class DirectlyChat(commands.Cog):
         async with message.channel.typing():
             query = message.content
 
+            processing_message = await message.channel.send(
+                LANG_DATA["commands"]["ask"]["processing"]
+            )
+
             ans, contents, metadatas = chat_bot.chat(
                 query,
                 chat_bot.get_channel_file_scope(str(message.channel.id)),
@@ -69,6 +73,8 @@ class DirectlyChat(commands.Cog):
                 view=view,
             )
             view.add_item(reference_button)
+
+            await processing_message.delete()
 
         return await message.channel.send(ans, view=view)
 

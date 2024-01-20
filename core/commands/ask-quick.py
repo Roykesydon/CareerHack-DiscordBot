@@ -32,6 +32,8 @@ class AskQuickCommand(commands.Cog):
         upload_file_manager = UploadFileManager()
 
         async with interaction.channel.typing():
+            await interaction.response.defer()
+
             selected_file_id_list = upload_file_manager.get_available_file_list(
                 str(interaction.user.id)
             )
@@ -39,6 +41,10 @@ class AskQuickCommand(commands.Cog):
                 map(lambda x: x["file_id"], selected_file_id_list)
             )
             file_name_list = chat_bot.get_file_name_list(selected_file_id_list)
+
+            processing_message = await interaction.channel.send(
+                LANG_DATA["commands"]["ask"]["processing"]
+            )
 
             ans, contents, metadatas = chat_bot.chat(
                 query,
@@ -103,7 +109,8 @@ class AskQuickCommand(commands.Cog):
             view.add_item(good_response_button)
             view.add_item(bad_response_button)
 
-        return await interaction.response.send_message(ans, view=view)
+        await interaction.followup.send(ans, view=view)
+        await processing_message.delete()
 
 
 async def setup(bot):
