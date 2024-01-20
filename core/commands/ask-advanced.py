@@ -24,6 +24,7 @@ class AskAdvancedScopeSelect(ui.Select):
         options = [
             SelectOption(
                 label=LANG_DATA["commands"]["ask"]["all_file"],
+                emoji="📁",
                 value=f"all-{LANG_DATA['commands']['ask']['all_file']}",
             ),
         ]
@@ -33,6 +34,7 @@ class AskAdvancedScopeSelect(ui.Select):
             options.append(
                 SelectOption(
                     label=file["file_name"],
+                    emoji=file["emoji"],
                     value=f"{file['file_id']}-{file['file_name']}",
                 )
             )

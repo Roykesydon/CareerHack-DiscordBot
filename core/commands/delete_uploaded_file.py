@@ -28,7 +28,11 @@ class DeleteUploadedFileSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
-            options.append(SelectOption(label=file["file_name"], value=file["file_id"]))
+            options.append(
+                SelectOption(
+                    label=file["file_name"], emoji=file["emoji"], value=file["file_id"]
+                )
+            )
 
         super().__init__(
             placeholder=LANG_DATA["commands"]["delete-uploaded-file"]["placeholder"],
@@ -76,6 +80,9 @@ class DeleteUploadedFileCommand(commands.Cog):
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )
             return
+
+        # print username
+        print(f"User {interaction.user.name}#{interaction.user.discriminator} ")
 
         async with interaction.channel.typing():
             view = DeleteUploadedFileSelectView(
