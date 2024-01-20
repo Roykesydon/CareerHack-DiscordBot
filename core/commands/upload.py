@@ -8,7 +8,7 @@ from discord.ext import commands
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
-from main import channel_validator, hacker_rank_tools
+from main import channel_validator, chat_bot
 
 
 class UploadFileCommand(commands.Cog):
@@ -103,7 +103,7 @@ class UploadFileCommand(commands.Cog):
                 file_paths = [
                     f"{CONFIG['storage_path']}/{file_name}.{UploadFileCommand.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}"
                 ]
-                hacker_rank_tools.add_documents_to_vdb(file_paths)
+                chat_bot.add_documents_to_vector_db(file_paths)
 
         return await interaction.followup.send(
             LANG_DATA["commands"]["upload"]["success"]

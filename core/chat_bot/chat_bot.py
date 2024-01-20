@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
+from VDB_API.hacker_rank_tools import HackerRankTools
 
 
 class ChatBot:
@@ -16,6 +17,30 @@ class ChatBot:
         self.text_manager = TextManager()
 
         self.offline_channel_set = set()
+
+        """
+        LLM API
+        """
+        self.hacker_rank_tools = HackerRankTools()
+        self.hacker_rank_tools.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
+
+        self.hacker_rank_tools_offline = HackerRankTools()
+        self.hacker_rank_tools_offline.vectordb_manager.set_vector_db(
+            CONFIG["vector_db_name"]
+        )
+
+        # 設置線上/線下模型
+        self.hacker_rank_tools.set_llm_type(isOnline=True)
+        self.hacker_rank_tools_offline.set_llm_type(isOnline=False)
+
+    def chat(self, query, file_scope, channel_id: str):
+        if self.is_online(channel_id):
+            ans, contents, metadatas = self.hacker_rank_tools.chat(query, file_scope)
+        else:
+            ans, contents, metadatas = self.hacker_rank_tools_offline.chat(
+                query, file_scope
+            )
+        return ans, contents, metadatas
 
     def get_show_reference_callback(
         self, channel_id, contents, metadatas, reference_button, view
@@ -88,6 +113,25 @@ class ChatBot:
     def is_online(self, channel_id: str):
         return channel_id not in self.offline_channel_set
 
+    def get_file_list(self, file_id_list: list):
+        file_list = []
+        db_collection = mongo_database.get_collection("UserUploadFile")
+
+        for file_id in file_id_list:
+            file = db_collection.find_one({"_id": ObjectId(file_id)})
+            if file is not None:
+                file_list.append(file)
+
+        return file_list
+
+    def get_file_name_list(self, file_id_list: list):
+        file_list = self.get_file_list(file_id_list)
+        file_name_list = [
+            f"{str(x['_id'])}.{x['filename_extension']}" for x in file_list
+        ]
+
+        return file_name_list
+
     """
     Setters and getters
     """
@@ -99,20 +143,18 @@ class ChatBot:
         self.start_chat_channel_set.remove(channel_id)
 
     def set_channel_file_scope(self, channel_id: str, file_id_list: list):
-        filename_list = []
-        db_collection = mongo_database.get_collection("UserUploadFile")
+        file_name_list = self.get_file_name_list(file_id_list)
 
-        for file_id in file_id_list:
-            # search for filename_extension
-            extension = db_collection.find_one({"_id": ObjectId(file_id)})
-            if extension is not None:
-                extension = extension["filename_extension"]
-            filename_list.append(f"{file_id}.{extension}")
-
-        self.channel_file_scope_dict[channel_id] = filename_list
+        self.channel_file_scope_dict[channel_id] = file_name_list
 
     def get_channel_file_scope(self, channel_id: str):
         return self.channel_file_scope_dict[channel_id]
 
     def get_start_chat_channel_set(self):
         return self.start_chat_channel_set
+
+    def add_documents_to_vector_db(self, documents):
+        self.hacker_rank_tools.add_documents_to_vdb(documents)
+
+    def delete_documents_from_vector_db(self, documents):
+        self.hacker_rank_tools.delete(documents)

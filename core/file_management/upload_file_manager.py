@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
-from main import hacker_rank_tools
+from main import chat_bot
 
 
 class UploadFileManager:
@@ -41,7 +41,7 @@ class UploadFileManager:
             extension = doc["filename_extension"]
 
             mongo_database["UserUploadFile"].delete_one({"_id": ObjectId(file_id)})
-            hacker_rank_tools.delete([f"{file_id}.{extension}"])
+            chat_bot.delete_documents_from_vector_db([f"{file_id}.{extension}"])
 
             # remove file from storage
             os.remove(f"storage/{file_id}.{extension}")
