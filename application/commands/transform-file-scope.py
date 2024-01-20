@@ -89,7 +89,7 @@ class TransformFileScopeCommand(commands.Cog):
             )
             return
 
-        private_only = not admin_validator.is_admin(str(interaction.user.id))
+        private_only = not admin_validator.is_admin(str(interaction.user.name))
         if (
             len(
                 upload_file_manager.get_available_file_list(

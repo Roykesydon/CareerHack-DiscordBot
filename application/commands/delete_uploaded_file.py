@@ -24,7 +24,10 @@ class DeleteUploadedFileSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
-            if not admin_validator.is_admin(user_id) and file["file_scope"] == "shared":
+            if (
+                not admin_validator.is_admin(username)
+                and file["file_scope"] == "shared"
+            ):
                 continue
 
             options.append(
@@ -82,7 +85,7 @@ class DeleteUploadedFileCommand(commands.Cog):
             )
             return
 
-        private_only = not admin_validator.is_admin(str(interaction.user.id))
+        private_only = not admin_validator.is_admin(str(interaction.user.name))
         if (
             len(
                 upload_file_manager.get_available_file_list(
