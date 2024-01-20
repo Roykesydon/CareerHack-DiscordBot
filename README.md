@@ -23,6 +23,22 @@
 - Look at [Developer Guide](docs/DEVELOPER.md) for more details about how to start developing this repository.
 - Refer to [Contributing Guidelines](docs/CONTRIBUTING.md) for the conventions and rules that contributors should follow.
 
+## Deployment (Docker)
+- Clone this repo
+    ```shell
+    $ git clone https://github.com/Roykesydon/Hacker-Rank-Discord-Bot.git
+    ```
+- Write `./config.json`
+    - You need to apply discord bot token from [Discord Developer Portal](https://discord.com/developers/applications)
+    - ```cp config.example.json config.json```
+- Write `.env`
+    - You need to apply OpenAI API and HuggingFace API token from [OpenAI](https://openai.com/blog/openai-api) and [HuggingFace](https://huggingface.co/inference-api)
+    - ```cp .env.example .env```
+- Run the code
+    ```shell
+    $ docker-compose up -d
+    ```
+
 ## Project Structure
 
 ```shell
