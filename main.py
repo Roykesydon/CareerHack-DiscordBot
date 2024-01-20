@@ -3,27 +3,29 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
+from core.chat_bot import ChatBot
+from core.feedback_manager import FeedbackManager
 from core.utils.config import CONFIG
-from VDB_API.hacker_rank_tools import HackerRankTools
+from core.validate.admin_validator import AdminValidator
+from core.validate.channel_validator import ChannelValidator
 
-hacker_rank_tools = HackerRankTools()
-hacker_rank_tools.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
-
-# 設置線上/線下模型
-hacker_rank_tools.set_llm_type(isOnline=True)
+chat_bot = ChatBot()
+channel_validator = ChannelValidator()
+admin_validator = AdminValidator()
+feedback_manager = FeedbackManager()
 
 
 # Load commands
 async def load_commands(bot):
-    for cog in [path.stem for path in Path("./core/commands").glob("*.py")]:
-        await bot.load_extension(f"core.commands.{cog}")
+    for cog in [path.stem for path in Path("./application/commands").glob("*.py")]:
+        await bot.load_extension(f"application.commands.{cog}")
         print(f"Loaded Command - {cog}")
 
 
 # Load events
 async def load_events(bot):
-    for cog in [path.stem for path in Path("./core/events").glob("*.py")]:
-        await bot.load_extension(f"core.events.{cog}")
+    for cog in [path.stem for path in Path("./application/events").glob("*.py")]:
+        await bot.load_extension(f"application.events.{cog}")
         print(f"Loaded Event - {cog}")
 
 

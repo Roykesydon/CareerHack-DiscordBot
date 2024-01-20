@@ -2,21 +2,20 @@ import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
 
-from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator, chat_bot
 
 
-class AskScopeSelectView(ui.View):
+class AskAdvancedScopeSelectView(ui.View):
     def __init__(self, channel_id, user_id):
         super().__init__()
 
         # Add the dropdown to our view object
-        self.add_item(AskScopeSelect(channel_id, user_id))
+        self.add_item(AskAdvancedScopeSelect(channel_id, user_id))
 
 
-class AskScopeSelect(ui.Select):
+class AskAdvancedScopeSelect(ui.Select):
     def __init__(self, channel_id, user_id):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
@@ -24,6 +23,7 @@ class AskScopeSelect(ui.Select):
         options = [
             SelectOption(
                 label=LANG_DATA["commands"]["ask"]["all_file"],
+                emoji="📁",
                 value=f"all-{LANG_DATA['commands']['ask']['all_file']}",
             ),
         ]
@@ -33,6 +33,7 @@ class AskScopeSelect(ui.Select):
             options.append(
                 SelectOption(
                     label=file["file_name"],
+                    emoji=file["emoji"],
                     value=f"{file['file_id']}-{file['file_name']}",
                 )
             )
@@ -54,6 +55,14 @@ class AskScopeSelect(ui.Select):
         selected_file_scope = self.values
         selected_file_scope = [x.split("-") for x in selected_file_scope]
 
+        if (
+            len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
+            == 0
+        ):
+            return_message = LANG_DATA["commands"]["ask"]["no-file"]
+            await interaction.response.send_message(return_message)
+            return
+
         # check if "all" is selected with lambda
         if any(list(map(lambda x: x[0] == "all", selected_file_scope))):
             selected_file_id_list = upload_file_manager.get_available_file_list(
@@ -74,8 +83,8 @@ class AskScopeSelect(ui.Select):
 
         return_message += "\n" + LANG_DATA["commands"]["ask"]["success2"]
 
-        DirectlyChat.insert_start_chat_channel(str(interaction.channel_id))
-        DirectlyChat.set_channel_file_scope(
+        chat_bot.insert_start_chat_channel(str(interaction.channel_id))
+        chat_bot.set_channel_file_scope(
             str(interaction.channel_id), selected_file_id_list
         )
 
@@ -88,26 +97,28 @@ class AskScopeSelect(ui.Select):
             await interaction.channel.send(return_message)
 
 
-class AskCommand(commands.Cog):
+class AskAdvancedCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="ask",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"]["description"],
+        name="ask-advanced",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask-advanced"][
+            "description"
+        ],
     )
     async def ask_questions(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
+        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )
             return
 
         async with interaction.channel.typing():
-            view = AskScopeSelectView(
+            view = AskAdvancedScopeSelectView(
                 str(interaction.channel_id), str(interaction.user.id)
             )
 
@@ -119,4 +130,4 @@ class AskCommand(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(AskCommand(bot))
+    await bot.add_cog(AskAdvancedCommand(bot))

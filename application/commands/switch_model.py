@@ -1,12 +1,10 @@
-import asyncio
-
 import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator, chat_bot
 
 
 class SwitchModelCommand(commands.Cog):
@@ -23,7 +21,7 @@ class SwitchModelCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
-        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
+        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
             )
@@ -36,29 +34,28 @@ class SwitchModelCommand(commands.Cog):
             SWITCH_MODEL_TEXT_DICT = LANG_DATA["commands"]["switch-model"]
 
             async def online_callback(interaction):
-                """
-                TODO: switch to online model
-                """
-
+                chat_bot.switch_model(
+                    channel_id=str(interaction.channel_id), online=False
+                )
                 await interaction.message.delete()
                 await interaction.channel.send(
                     SWITCH_MODEL_TEXT_DICT["online-response"]
                 )
 
             async def offline_callback(interaction):
-                """
-                TODO: switch to offline model
-                """
+                chat_bot.switch_model(
+                    channel_id=str(interaction.channel_id), online=False
+                )
                 await interaction.message.delete()
                 await interaction.channel.send(
                     SWITCH_MODEL_TEXT_DICT["offline-response"]
                 )
 
             # show current status
-            """
-            TODO: get current status
-            """
-            status = f"{SWITCH_MODEL_TEXT_DICT['current-model-prefix']}{SWITCH_MODEL_TEXT_DICT['online-model']}"
+            if chat_bot.is_online(str(interaction.channel_id)):
+                status = f"{SWITCH_MODEL_TEXT_DICT['current-model-prefix']}{SWITCH_MODEL_TEXT_DICT['online-model']}"
+            else:
+                status = f"{SWITCH_MODEL_TEXT_DICT['current-model-prefix']}{SWITCH_MODEL_TEXT_DICT['offline-model']}"
 
             response_message += f"{status}\n"
 

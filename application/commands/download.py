@@ -1,15 +1,10 @@
-import asyncio
-import os
-
 import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
-from discord.ui import Button, View
 
-from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from core.validate.channel_validator import ChannelValidator
+from main import channel_validator
 
 
 class DownloadSelectView(ui.View):
@@ -29,7 +24,11 @@ class DownloadSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
-            options.append(SelectOption(label=file["file_name"], value=file["file_id"]))
+            options.append(
+                SelectOption(
+                    label=file["file_name"], emoji=file["emoji"], value=file["file_id"]
+                )
+            )
 
         super().__init__(
             placeholder=LANG_DATA["commands"]["download"]["placeholder"],
@@ -80,10 +79,20 @@ class DownloadCommand(commands.Cog):
     async def ask_questions(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
+        upload_file_manager = UploadFileManager()
 
-        if not ChannelValidator.in_dm_or_enabled_channel(interaction.channel):
+        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+            )
+            return
+
+        if (
+            len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
+            == 0
+        ):
+            await interaction.response.send_message(
+                f"{LANG_DATA['commands']['download']['no-file']}"
             )
             return
 
