@@ -1,27 +1,22 @@
-import asyncio
-import os
-
 import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
-from discord.ui import Button, View
 
-from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
 from main import admin_validator, channel_validator
 
 
-class TransformFileScopeSelectView(ui.View):
-    def __init__(self, channel_id, user_id):
+class DeleteUploadedFileSelectView(ui.View):
+    def __init__(self, channel_id, user_id, username):
         super().__init__()
 
         # Add the dropdown to our view object
-        self.add_item(TransformFileScopeSelect(channel_id, user_id))
+        self.add_item(DeleteUploadedFileSelect(channel_id, user_id, username))
 
 
-class TransformFileScopeSelect(ui.Select):
-    def __init__(self, channel_id, user_id):
+class DeleteUploadedFileSelect(ui.Select):
+    def __init__(self, channel_id, user_id, username):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
 
@@ -29,6 +24,9 @@ class TransformFileScopeSelect(ui.Select):
         upload_file_manager = UploadFileManager()
 
         for file in upload_file_manager.get_available_file_list(user_id):
+            if not admin_validator.is_admin(user_id) and file["file_scope"] == "shared":
+                continue
+
             options.append(
                 SelectOption(
                     label=file["file_name"], emoji=file["emoji"], value=file["file_id"]
@@ -36,7 +34,7 @@ class TransformFileScopeSelect(ui.Select):
             )
 
         super().__init__(
-            placeholder=LANG_DATA["commands"]["transfrom-file-scope"]["placeholder"],
+            placeholder=LANG_DATA["commands"]["delete-uploaded-file"]["placeholder"],
             min_values=1,
             max_values=min(15, len(options)),
             options=options,
@@ -47,13 +45,9 @@ class TransformFileScopeSelect(ui.Select):
         text_manager = TextManager()
         upload_file_manager = UploadFileManager()
 
+        upload_file_manager.delete_file(selected_file)
+
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
-
-        available_file_list = upload_file_manager.get_available_file_list(
-            str(interaction.user.id)
-        )
-
-        upload_file_manager.toggle_file_scope(selected_file)
 
         if interaction.message is not None:
             await interaction.message.delete()
@@ -62,17 +56,17 @@ class TransformFileScopeSelect(ui.Select):
             interaction.channel, discord.channel.DMChannel
         ):
             await interaction.channel.send(
-                LANG_DATA["commands"]["transfrom-file-scope"]["success"]
+                LANG_DATA["commands"]["delete-uploaded-file"]["success"]
             )
 
 
-class TransformFileScopeCommand(commands.Cog):
+class DeleteUploadedFileCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="transfrom-file-scope",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["transfrom-file-scope"][
+        name="delete-uploaded-file",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["delete-uploaded-file"][
             "description"
         ],
     )
@@ -86,20 +80,16 @@ class TransformFileScopeCommand(commands.Cog):
             )
             return
 
-        if not admin_validator.is_admin(interaction.user.name):
-            await interaction.response.send_message(
-                f"{LANG_DATA['permission']['admin-only']}"
-            )
-            return
-
         async with interaction.channel.typing():
-            view = TransformFileScopeSelectView(
-                str(interaction.channel_id), str(interaction.user.id)
+            view = DeleteUploadedFileSelectView(
+                str(interaction.channel_id),
+                str(interaction.user.id),
+                str(interaction.user.name),
             )
             await interaction.response.send_message(
-                LANG_DATA["commands"]["transfrom-file-scope"]["message"], view=view
+                LANG_DATA["commands"]["delete-uploaded-file"]["message"], view=view
             )
 
 
 async def setup(bot):
-    await bot.add_cog(TransformFileScopeCommand(bot))
+    await bot.add_cog(DeleteUploadedFileCommand(bot))

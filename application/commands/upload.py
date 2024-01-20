@@ -1,15 +1,11 @@
-import time
-
 import discord
 import requests
-from discord import SelectOption, app_commands, ui
+from discord import app_commands
 from discord.ext import commands
 
 from core.file_management.upload_file_manager import UploadFileManager
-from core.utils.config import CONFIG
-from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
-from main import channel_validator, chat_bot
+from main import channel_validator
 
 
 class UploadFileCommand(commands.Cog):

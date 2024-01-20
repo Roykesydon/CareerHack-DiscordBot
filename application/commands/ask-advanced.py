@@ -2,7 +2,6 @@ import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
 
-from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
 from main import channel_validator, chat_bot

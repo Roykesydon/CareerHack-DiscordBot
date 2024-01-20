@@ -1,11 +1,7 @@
 import discord
-from bson.objectid import ObjectId
 from discord.ext import commands
 from discord.ui import Button, View
 
-from core.commands.switch_model import SwitchModelCommand
-from core.utils.config import CONFIG
-from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
 from main import channel_validator, chat_bot, feedback_manager
 

@@ -1,9 +1,6 @@
-import asyncio
-
 import discord
 from discord import SelectOption, app_commands, ui
 from discord.ext import commands
-from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
 
