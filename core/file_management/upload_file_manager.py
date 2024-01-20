@@ -1,4 +1,5 @@
 import os
+import time
 
 from bson import ObjectId
 
@@ -8,6 +9,12 @@ from main import chat_bot
 
 
 class UploadFileManager:
+    AVAILABLE_FILE_TYPE_DICT = {
+        "text/plain": "txt",
+        "application/pdf": "pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+    }
+
     def get_available_file_list(self, user_id: str):
         file_with_id_list = []
 
@@ -38,6 +45,51 @@ class UploadFileManager:
             )
 
         return file_with_id_list
+
+    def upload_file(
+        self, attachment, custom_file_name: str, attachment_response, user_id: str
+    ):
+        """
+        TODO: check document type, size
+        """
+
+        if attachment.content_type is None:
+            attachment.content_type = "text/plain"
+
+        file_name = attachment.filename
+        insert_data = {
+            "file_name": file_name,
+            "custom_file_name": custom_file_name
+            if custom_file_name != ""
+            else file_name,
+            "file_type": attachment.content_type,
+            "file_url": attachment.url,
+            "file_time": int(time.time()),
+            "file_scope": "private",
+            "user_id": user_id,
+            "filename_extension": UploadFileManager.AVAILABLE_FILE_TYPE_DICT[
+                attachment.content_type
+            ],
+        }
+        mongo_database["UserUploadFile"].insert_one(insert_data)
+
+        # get document id from mongo as file name
+        # save file to local storage
+        file = mongo_database["UserUploadFile"].find_one(insert_data)
+        if file is not None:
+            file_name = str(file["_id"])
+
+        if attachment.content_type is not None:
+            with open(
+                f"{CONFIG['storage_path']}/{file_name}.{UploadFileManager.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}",
+                "wb",
+            ) as file:
+                file.write(attachment_response.content)
+
+            file_paths = [
+                f"{CONFIG['storage_path']}/{file_name}.{UploadFileManager.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}"
+            ]
+            chat_bot.add_documents_to_vector_db(file_paths)
 
     def delete_file(self, file_id_list: list):
         for file_id in file_id_list:
