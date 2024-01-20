@@ -59,7 +59,7 @@ class AskAdvancedScopeSelect(ui.Select):
             len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
             == 0
         ):
-            return_message = LANG_DATA["commands"]["ask"]["no_file"]
+            return_message = LANG_DATA["commands"]["ask"]["no-file"]
             await interaction.response.send_message(return_message)
             return
 

@@ -15,20 +15,21 @@ class UploadFileManager:
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     }
 
-    def get_available_file_list(self, user_id: str):
+    def get_available_file_list(self, user_id: str, private_only: bool = False):
         file_with_id_list = []
 
         # get all shared file
-        docs = mongo_database["UserUploadFile"].find({"file_scope": "shared"})
-        for doc in docs:
-            file_with_id_list.append(
-                {
-                    "file_id": str(doc["_id"]),
-                    "file_name": doc["custom_file_name"],
-                    "file_scope": doc["file_scope"],
-                    "emoji": "🌐",
-                }
-            )
+        if not private_only:
+            docs = mongo_database["UserUploadFile"].find({"file_scope": "shared"})
+            for doc in docs:
+                file_with_id_list.append(
+                    {
+                        "file_id": str(doc["_id"]),
+                        "file_name": doc["custom_file_name"],
+                        "file_scope": doc["file_scope"],
+                        "emoji": "🌐",
+                    }
+                )
 
         # get user's private file
         docs = mongo_database["UserUploadFile"].find(

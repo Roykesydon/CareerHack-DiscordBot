@@ -67,7 +67,7 @@
             "success2": "已成功設置文件範圍，可以開始提問了！\n要結束提問只需輸入 /end 即可",
             "message": "請設置您想要使用的文件範圍，並提出你想詢問的問題",
             "end": "已關閉問答功能",
-            "no_file": "請先上傳文件",
+            "no-file": "請先上傳文件",
             "processing": "🖥️ 正在處理中，請稍後...",
             "reference": {
                 "reference_button_text": "查看參考資料",
@@ -100,7 +100,8 @@
             "description": "刪除已上傳的文件",
             "placeholder": "請選擇要刪除的文件",
             "success": "文件已成功刪除",
-            "message": "請選擇您想要刪除的文件"
+            "message": "請選擇您想要刪除的文件",
+            "no-file": "沒有可用的文件"
         },
         "download": {
             "field-name": "📄 文件操作",
@@ -129,7 +130,8 @@
             "description": "管理員限定 - 將指定的文件轉成 共享 / 私人",
             "placeholder": "請選擇要轉換的文件",
             "message": "請選擇您想要轉換的文件",
-            "success": "文件已成功轉換"
+            "success": "文件已成功轉換",
+            "no-file": "沒有可用的文件"
         }
     },
     "events": {},
