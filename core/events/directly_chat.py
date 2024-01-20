@@ -7,8 +7,7 @@ from core.commands.switch_model import SwitchModelCommand
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
-from main import (channel_validator, chat_bot, hacker_rank_tools,
-                  hacker_rank_tools_offline)
+from main import channel_validator, chat_bot
 
 
 class DirectlyChat(commands.Cog):
@@ -47,14 +46,11 @@ class DirectlyChat(commands.Cog):
         async with message.channel.typing():
             query = message.content
 
-            if chat_bot.is_online(str(message.channel.id)):
-                ans, contents, metadatas = hacker_rank_tools.chat(
-                    query, chat_bot.get_channel_file_scope(str(message.channel.id))
-                )
-            else:
-                ans, contents, metadatas = hacker_rank_tools_offline.chat(
-                    query, chat_bot.get_channel_file_scope(str(message.channel.id))
-                )
+            ans, contents, metadatas = chat_bot.chat(
+                query,
+                chat_bot.get_channel_file_scope(str(message.channel.id)),
+                str(message.channel.id),
+            )
 
             view = View()
             # check refernece button

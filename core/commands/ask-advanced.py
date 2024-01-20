@@ -8,15 +8,15 @@ from core.utils.text_manager import TextManager
 from main import channel_validator, chat_bot
 
 
-class AskScopeSelectView(ui.View):
+class AskAdvancedScopeSelectView(ui.View):
     def __init__(self, channel_id, user_id):
         super().__init__()
 
         # Add the dropdown to our view object
-        self.add_item(AskScopeSelect(channel_id, user_id))
+        self.add_item(AskAdvancedScopeSelect(channel_id, user_id))
 
 
-class AskScopeSelect(ui.Select):
+class AskAdvancedScopeSelect(ui.Select):
     def __init__(self, channel_id, user_id):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(channel_id)
@@ -88,13 +88,15 @@ class AskScopeSelect(ui.Select):
             await interaction.channel.send(return_message)
 
 
-class AskCommand(commands.Cog):
+class AskAdvancedCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="ask",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"]["description"],
+        name="ask-advanced",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"][
+            "description-advanced"
+        ],
     )
     async def ask_questions(self, interaction):
         text_manager = TextManager()
@@ -107,7 +109,7 @@ class AskCommand(commands.Cog):
             return
 
         async with interaction.channel.typing():
-            view = AskScopeSelectView(
+            view = AskAdvancedScopeSelectView(
                 str(interaction.channel_id), str(interaction.user.id)
             )
 
@@ -119,4 +121,4 @@ class AskCommand(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(AskCommand(bot))
+    await bot.add_cog(AskAdvancedCommand(bot))
