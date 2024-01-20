@@ -1,8 +1,9 @@
 import chromadb
 import torch
 from langchain.docstore.document import Document
-from langchain_community.embeddings.sentence_transformer import \
-    SentenceTransformerEmbeddings
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
 from langchain_community.vectorstores import Chroma
 
 from VDB_API.utils.config import CONFIG
