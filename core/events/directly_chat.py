@@ -55,7 +55,9 @@ class DirectlyChat(commands.Cog):
             view = View()
             # check refernece button
             reference_button = Button(
-                label=LANG_DATA["events"]["directly_chat"]["reference_button_text"],
+                label=LANG_DATA["commands"]["ask"]["reference"][
+                    "reference_button_text"
+                ],
                 style=discord.ButtonStyle.primary,
             )
 

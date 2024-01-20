@@ -58,17 +58,40 @@
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
         },
-        "ask":{
+        "ask": {
             "field-name": "🗨 問答",
             "icon": "💬",
             "all_file": "所有可用文件",
-            "description-quick": "快速詢問想問的問題",
             "description-advanced": "可設置詢問的文件範圍並向機器人進行多次提問",
             "placeholder": "請選擇文件範圍",
             "success": "您選擇的文件範圍是：",
             "success2": "已成功設置文件範圍，可以開始提問了！\n要結束提問只需輸入 /end 即可",
             "message": "請設置您想要使用的文件範圍，並提出你想詢問的問題",
-            "end": "已關閉問答功能"
+            "end": "已關閉問答功能",
+            "reference": {
+                "reference_button_text": "查看參考資料",
+                "reference_embed_title": "參考來源",
+                "content_prefix": "內容：",
+                "source_prefix": "來源：",
+                "page_prefix": "頁數：",
+                "field_name": "來源"
+            },
+            "feedback": {
+                "good_response_button_text": "👍 滿意回覆",
+                "bad_response_button_text": "👎 不滿意回覆",
+                "good_response": "感謝您的正面回饋，我會繼續努力！",
+                "bad_response": "感謝您的回饋，我會努力改進！"
+            }
+        },
+        "ask-quick": {
+            "field-name": "🗨 問答",
+            "icon": "⚡",
+            "description": "快速詢問想問的問題"
+        },
+        "ask-advanced": {
+            "field-name": "🗨 問答",
+            "icon": "💬",
+            "description": "進階詢問想問的問題"
         },
         "delete-uploaded-file": {
             "field-name": "📄 文件操作",
@@ -85,7 +108,7 @@
             "placeholder": "請選擇要下載的文件",
             "message": "請選擇您想要下載的文件"
         },
-        "switch-model":{
+        "switch-model": {
             "field-name": "🗨 問答",
             "icon": "🔄",
             "description": "切換線上 / 線下模型",
@@ -99,16 +122,7 @@
             "offline-response": "已切換至線下模型"
         }
     },
-    "events": {
-        "directly_chat":{
-            "reference_button_text": "查看參考資料",
-            "reference_embed_title": "參考來源",
-            "content_prefix": "內容：",
-            "source_prefix": "來源：",
-            "page_prefix": "頁數：",
-            "field_name": "來源"
-        }
-    },
+    "events": {},
     "permission": {
         "dm-not-allowed": "此指令在私訊中不允許使用",
         "dm-or-enabled-channel-only": "此指令僅允許在私訊或已啟用的頻道中使用"

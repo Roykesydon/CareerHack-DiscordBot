@@ -94,8 +94,8 @@ class AskAdvancedCommand(commands.Cog):
 
     @app_commands.command(
         name="ask-advanced",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"][
-            "description-advanced"
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask-advanced"][
+            "description"
         ],
     )
     async def ask_questions(self, interaction):

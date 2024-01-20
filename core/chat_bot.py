@@ -51,7 +51,9 @@ class ChatBot:
             color = CONFIG["primary_color"]
             color_int = int(color.replace("#", ""), 16)
             embed = discord.Embed(
-                title=LANG_DATA["events"]["directly_chat"]["reference_embed_title"],
+                title=LANG_DATA["commands"]["ask"]["reference"][
+                    "reference_embed_title"
+                ],
                 color=color_int,
             )
 
@@ -85,13 +87,13 @@ class ChatBot:
                                 + "..."
                             )
 
-                        source_info = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
-                            {reference_content}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
-                                {custom_file_name}\n{LANG_DATA['events']['directly_chat']['page_prefix']}\
+                        source_info = f"{LANG_DATA['commands']['ask']['reference']['content_prefix']}\
+                            {reference_content}\n{LANG_DATA['commands']['ask']['reference']['source_prefix']}\
+                                {custom_file_name}\n{LANG_DATA['commands']['ask']['reference']['page_prefix']}\
                                     {metadata['page']+1}"
 
                         embed.add_field(
-                            name=f"{LANG_DATA['events']['directly_chat']['field_name']} {index+1}",
+                            name=f"{LANG_DATA['commands']['ask']['reference']['field_name']} {index+1}",
                             value=source_info,
                             inline=False,
                         )
@@ -133,7 +135,7 @@ class ChatBot:
         return file_name_list
 
     """
-    Setters and getters
+    Dummy setters and getters
     """
 
     def insert_start_chat_channel(self, channel_id: str):
