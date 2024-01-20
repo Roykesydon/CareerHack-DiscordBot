@@ -40,7 +40,7 @@
         "channel": {
             "field-name": "⚙ Channel Management/Settings",
             "icon": "🚥",
-            "description": "Enable/Disable the bot in the current channel.",
+            "description": "Admin only - Enable/Disable the bot in the current channel.",
             "enable": "Enable",
             "disable": "Disable",
             "enabled": "Enabled",
@@ -62,13 +62,12 @@
             "field-name": "🗨 Q&A",
             "icon": "💬",
             "all_file": "All available documents",
-            "description-quick": "Quickly ask questions",
-            "description-advanced": "Set the document scope you wish to use and ask the bot multiple questions",
             "placeholder": "Select the document scope",
             "success": "The document scope you selected is:",
             "success2": "The document scope has been set successfully, you can start asking questions now!",
             "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end",
             "end": "The Q&A session has been closed",
+            "no_file": "Please upload a document first",
             "reference": {
                 "reference_button_text": "View Reference",
                 "reference_embed_title": "Reference",
@@ -79,8 +78,20 @@
             },
             "feedback": {
                 "good_response_button_text": "👍 Satisfied",
-                "bad_response_button_text": "👎 Dissatisfied"
+                "bad_response_button_text": "👎 Dissatisfied",
+                "good_response": "Thank you for your positive feedback, I will continue to work hard!",
+                "bad_response": "Thank you for your feedback, I will work hard to improve!"
             }
+        },
+        "ask-quick": {
+            "field-name": "🗨 Q&A",
+            "icon": "⚡",
+            "description": "Quickly ask the question you want to ask"
+        },
+        "ask-advanced": {
+            "field-name": "🗨 Q&A",
+            "icon": "💬",
+            "description": "Advanced ask the question you want to ask"
         },
         "delete-uploaded-file": {
             "field-name": "📄 File Operations",
@@ -95,7 +106,8 @@
             "icon": "📥",
             "description": "Download uploaded file",
             "placeholder": "Please select the file you wish to download",
-            "message": "Please select the file you wish to download"
+            "message": "Please select the file you wish to download",
+            "no-file": "No file uploaded"
         },
         "switch-model": {
             "field-name": "🗨 Q&A",
@@ -109,11 +121,20 @@
             "offline-button": "Offline model",
             "online-response": "Switched to online model",
             "offline-response": "Switched to offline model"
+        },
+        "transfrom-file-scope": {
+            "field-name": "📄 File Operations",
+            "icon": "🔄",
+            "description": "Admin only - Convert the specified file to shared / private",
+            "placeholder": "Please select the file you wish to convert",
+            "message": "Please select the file you wish to convert",
+            "success": "File converted successfully"
         }
     },
     "events": {},
     "permission": {
         "dm-not-allowed": "This command is not allowed in DMs",
-        "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels"
+        "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels",
+        "admin-only": "This command is only allowed for administrators"
     }
 }
