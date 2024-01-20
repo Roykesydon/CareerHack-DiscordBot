@@ -3,11 +3,12 @@ from bson.objectid import ObjectId
 from discord.ext import commands
 from discord.ui import Button, View
 
+from core.commands.switch_model import SwitchModelCommand
 from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
 from core.validate.channel_validator import ChannelValidator
-from main import hacker_rank_tools
+from main import hacker_rank_tools, hacker_rank_tools_offline
 
 
 class DirectlyChat(commands.Cog):
@@ -71,9 +72,14 @@ class DirectlyChat(commands.Cog):
         async with message.channel.typing():
             query = message.content
 
-            ans, contents, metadatas = hacker_rank_tools.chat(
-                query, DirectlyChat.CHANNEL_FILE_SCOPE_DICT[str(message.channel.id)]
-            )
+            if SwitchModelCommand.is_online(str(message.channel.id)):
+                ans, contents, metadatas = hacker_rank_tools.chat(
+                    query, DirectlyChat.CHANNEL_FILE_SCOPE_DICT[str(message.channel.id)]
+                )
+            else:
+                ans, contents, metadatas = hacker_rank_tools_offline.chat(
+                    query, DirectlyChat.CHANNEL_FILE_SCOPE_DICT[str(message.channel.id)]
+                )
 
             view = View()
             # check refernece button

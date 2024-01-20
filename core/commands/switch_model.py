@@ -10,6 +10,12 @@ from core.validate.channel_validator import ChannelValidator
 
 
 class SwitchModelCommand(commands.Cog):
+    offline_channel_set = set()
+
+    @staticmethod
+    def is_online(channel_id: str):
+        return channel_id not in SwitchModelCommand.offline_channel_set
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -40,6 +46,9 @@ class SwitchModelCommand(commands.Cog):
                 TODO: switch to online model
                 """
 
+                SwitchModelCommand.offline_channel_set.discard(
+                    str(interaction.channel_id)
+                )
                 await interaction.message.delete()
                 await interaction.channel.send(
                     SWITCH_MODEL_TEXT_DICT["online-response"]
@@ -49,6 +58,7 @@ class SwitchModelCommand(commands.Cog):
                 """
                 TODO: switch to offline model
                 """
+                SwitchModelCommand.offline_channel_set.add(str(interaction.channel_id))
                 await interaction.message.delete()
                 await interaction.channel.send(
                     SWITCH_MODEL_TEXT_DICT["offline-response"]
