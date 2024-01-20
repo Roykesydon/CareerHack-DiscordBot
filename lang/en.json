@@ -13,7 +13,7 @@
                 },
                 "example": {
                     "name": "Command Example",
-                    "value":"Enter `/help` to get a list of commands\nEnter `/description` to get the robot's self-introduction"
+                    "value": "Enter `/help` to get a list of commands\nEnter `/description` to get the robot's self-introduction"
                 }
             }
         }
@@ -25,7 +25,7 @@
             "title": "Command List",
             "description": "Show commands list"
         },
-        "description":{
+        "description": {
             "field-name": "📚 User's Guidance",
             "icon": "🤖",
             "description": "Show description of the bot"
@@ -58,7 +58,7 @@
             "placeholder": "Select the language you wish to set",
             "success": "Language set to English"
         },
-        "ask":{
+        "ask": {
             "field-name": "🗨 Q&A",
             "icon": "💬",
             "all_file": "All available documents",
@@ -68,7 +68,19 @@
             "success": "The document scope you selected is:",
             "success2": "The document scope has been set successfully, you can start asking questions now!",
             "message": "Please set the document scope you wish to use and ask your questions\nTo end the session just type /end",
-            "end": "The Q&A session has been closed"
+            "end": "The Q&A session has been closed",
+            "reference": {
+                "reference_button_text": "View Reference",
+                "reference_embed_title": "Reference",
+                "content_prefix": "Content: ",
+                "source_prefix": "Source: ",
+                "page_prefix": "Page: ",
+                "field_name": "Source"
+            },
+            "feedback": {
+                "good_response_button_text": "👍 Satisfied",
+                "bad_response_button_text": "👎 Dissatisfied"
+            }
         },
         "delete-uploaded-file": {
             "field-name": "📄 File Operations",
@@ -85,7 +97,7 @@
             "placeholder": "Please select the file you wish to download",
             "message": "Please select the file you wish to download"
         },
-        "switch-model":{
+        "switch-model": {
             "field-name": "🗨 Q&A",
             "icon": "🔄",
             "description": "Switch between online and offline models",
@@ -99,17 +111,8 @@
             "offline-response": "Switched to offline model"
         }
     },
-    "events": {
-        "directly_chat":{
-            "reference_button_text": "View Reference",
-            "reference_embed_title": "Reference",
-            "content_prefix": "Content: ",
-            "source_prefix": "Source: ",
-            "page_prefix": "Page: ",
-            "field_name": "Source"
-        }
-    },
-    "permission":{
+    "events": {},
+    "permission": {
         "dm-not-allowed": "This command is not allowed in DMs",
         "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels"
     }

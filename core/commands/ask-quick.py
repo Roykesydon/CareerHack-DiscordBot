@@ -6,7 +6,7 @@ from discord.ui import Button, View
 from core.events.directly_chat import DirectlyChat
 from core.file_management.upload_file_manager import UploadFileManager
 from core.utils.text_manager import TextManager
-from main import channel_validator, chat_bot
+from main import channel_validator, chat_bot, feedback_manager
 
 
 class AskQuickCommand(commands.Cog):
@@ -15,8 +15,8 @@ class AskQuickCommand(commands.Cog):
 
     @app_commands.command(
         name="ask-quick",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask"][
-            "description-quick"
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["ask-quick"][
+            "description"
         ],
     )
     async def ask_questions(self, interaction, query: str):
@@ -51,7 +51,9 @@ class AskQuickCommand(commands.Cog):
             view = View()
             # check refernece button
             reference_button = Button(
-                label=LANG_DATA["events"]["directly_chat"]["reference_button_text"],
+                label=LANG_DATA["commands"]["ask"]["reference"][
+                    "reference_button_text"
+                ],
                 style=discord.ButtonStyle.primary,
             )
 
@@ -62,7 +64,44 @@ class AskQuickCommand(commands.Cog):
                 reference_button=reference_button,
                 view=view,
             )
+
+            good_response_button = Button(
+                label=LANG_DATA["commands"]["ask"]["feedback"][
+                    "good_response_button_text"
+                ],
+                style=discord.ButtonStyle.success,
+            )
+            bad_response_button = Button(
+                label=LANG_DATA["commands"]["ask"]["feedback"][
+                    "bad_response_button_text"
+                ],
+                style=discord.ButtonStyle.danger,
+            )
+
+            good_response_button.callback = feedback_manager.get_good_response_callback(
+                channel_id=str(interaction.channel.id),
+                good_response_button=good_response_button,
+                bad_response_button=bad_response_button,
+                view=view,
+                query=query,
+                answer=ans,
+                contents=contents,
+                metadatas=metadatas,
+            )
+            bad_response_button.callback = feedback_manager.get_bad_response_callback(
+                channel_id=str(interaction.channel.id),
+                good_response_button=good_response_button,
+                bad_response_button=bad_response_button,
+                view=view,
+                query=query,
+                answer=ans,
+                contents=contents,
+                metadatas=metadatas,
+            )
+
             view.add_item(reference_button)
+            view.add_item(good_response_button)
+            view.add_item(bad_response_button)
 
         return await interaction.response.send_message(ans, view=view)
 

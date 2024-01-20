@@ -3,12 +3,14 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
-from core.chat_bot.chat_bot import ChatBot
+from core.chat_bot import ChatBot
+from core.feedback_manager import FeedbackManager
 from core.utils.config import CONFIG
 from core.validate.channel_validator import ChannelValidator
 
 chat_bot = ChatBot()
 channel_validator = ChannelValidator()
+feedback_manager = FeedbackManager()
 
 
 # Load commands
