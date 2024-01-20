@@ -14,6 +14,7 @@ from main import hacker_rank_tools, hacker_rank_tools_offline
 class DirectlyChat(commands.Cog):
     START_CHAT_CHANNEL_SET = set()
     CHANNEL_FILE_SCOPE_DICT = {}
+    TRUNCATE_CONTENT_THRESHOLD = 45
 
     @staticmethod
     def insert_start_chat_channel(channel_id: str):
@@ -115,14 +116,30 @@ class DirectlyChat(commands.Cog):
                                 inline=True,
                             )
                         if contents is not None:
-                            source_content = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
-                                {contents[index]}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
+                            reference_content = contents[index]
+
+                            reference_content = reference_content.replace("\n", " ")
+
+                            # truncate content
+                            if (
+                                len(reference_content)
+                                > DirectlyChat.TRUNCATE_CONTENT_THRESHOLD
+                            ):
+                                reference_content = (
+                                    reference_content[
+                                        : DirectlyChat.TRUNCATE_CONTENT_THRESHOLD
+                                    ]
+                                    + "..."
+                                )
+
+                            source_info = f"{LANG_DATA['events']['directly_chat']['content_prefix']}\
+                                {reference_content}\n{LANG_DATA['events']['directly_chat']['source_prefix']}\
                                     {custom_file_name}\n{LANG_DATA['events']['directly_chat']['page_prefix']}\
                                         {metadata['page']+1}"
 
                             embed.add_field(
                                 name=f"{LANG_DATA['events']['directly_chat']['field_name']} {index+1}",
-                                value=source_content,
+                                value=source_info,
                                 inline=False,
                             )
 
