@@ -45,7 +45,7 @@ class AskQuickCommand(commands.Cog):
                 )
                 == 0
             ):
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     f"{LANG_DATA['commands']['ask']['no-file']}"
                 )
                 return
