@@ -43,6 +43,27 @@ jobs:
             git pull origin main
             /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
             /home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/pip install -r requirements.txt
+          '
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 7414 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh -tt -p 7414 -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} '
+            cd /home/${{ secrets.SSH_USER }}/HackerRank-DiscordBot
+            /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
             tmux kill-session -t hacker_rank_app || true
             tmux new-session -d -s hacker_rank_app "/home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/python main.py"
           '
