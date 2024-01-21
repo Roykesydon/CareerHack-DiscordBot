@@ -132,12 +132,28 @@
             "message": "Please select the file you wish to convert",
             "success": "File converted successfully",
             "no-file": "No file uploaded"
+        },
+        "administrator": {
+            "field-name": "⚙ System Management/Settings",
+            "icon": "🔑",
+            "description": "Admin only - Set the administrator list",
+            "remove-admin-button": "✖ Remove administrator",
+            "add-admin-button": "✚ Add administrator",
+            "administrator": "Administrator",
+            "cannot-remove-self": "Cannot remove yourself",
+            "remove-success": "Removed % as administrator",
+            "add-message": "Please enter the user ID you want to add as an administrator:",
+            "add-timeout": "Too long without response, administrator addition cancelled",
+            "add-success": "Added % as administrator",
+            "invalid-user-id": "Invalid user ID",
+            "already-admin": "This user is already an administrator"
         }
     },
     "events": {},
     "permission": {
         "dm-not-allowed": "This command is not allowed in DMs",
         "dm-or-enabled-channel-only": "This command is only allowed in DMs or enabled channels",
+        "dm-only": "This command is only allowed in DMs",
         "admin-only": "This command is only allowed for administrators"
     }
 }
