@@ -1,6 +1,6 @@
 # prompt_generation.py
 import json
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 # 生成工具描述的模板
 TOOL_DESCRIPTION = """{name_for_model}: Call this tool to interact with the {name_for_human} API. What is the {name_for_human} API useful for? {description_for_model} Parameters: {parameters} Format the arguments as a JSON object."""

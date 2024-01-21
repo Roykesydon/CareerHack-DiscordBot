@@ -3,7 +3,8 @@ from typing import List
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader
+from langchain_community.document_loaders import (Docx2txtLoader, PyPDFLoader,
+                                                  TextLoader)
 
 EN_CHUNK_SIZE = 1000
 EN_CHUNK_OVERLAP = 400

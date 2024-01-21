@@ -1,5 +1,6 @@
+from typing import Any, Dict, List, Union
+
 from plugin_parser import extract_latest_plugin_call
-from typing import List, Dict, Any, Union
 
 
 def execute_api_call(
