@@ -65,5 +65,6 @@ jobs:
             cd /home/${{ secrets.SSH_USER }}/HackerRank-DiscordBot
             /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
             tmux kill-session -t hacker_rank_app || true
+            sleep 3
             tmux new-session -d -s hacker_rank_app "/home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/python main.py"
           '
