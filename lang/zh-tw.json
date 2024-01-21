@@ -23,24 +23,24 @@
             "field-name": "📚 使用指南",
             "icon": "❓",
             "title": "指令列表",
-            "description": "顯示指令列表"
+            "description": "顯示所有可用指令，並附帶簡單的說明"
         },
         "description": {
             "field-name": "📚 使用指南",
             "icon": "🤖",
-            "description": "顯示機器人的描述"
+            "description": "介紹機器人的功能和用途"
         },
         "upload": {
             "field-name": "📄 文件操作",
             "icon": "📤",
-            "description": "向機器人上傳文件",
+            "description": "向機器人上傳文件，用戶可用此上傳私人文件",
             "success": "文件上傳成功",
             "invalid-file-type": "無效的文件類型"
         },
         "channel": {
             "field-name": "⚙ 頻道管理/設定",
             "icon": "🚥",
-            "description": "管理員限定 - 在當前頻道啟用/禁用機器人",
+            "description": "管理員限定 - 在當前文字頻道啟用/禁用機器人",
             "enable": "啟用",
             "disable": "禁用",
             "enabled": "已啟用",
@@ -53,7 +53,7 @@
         "language": {
             "field-name": "⚙ 頻道管理/設定",
             "icon": "🌐",
-            "description": "更改機器人的語言",
+            "description": "更改機器人的語言，可切換中文或英文",
             "message": "請選擇您的語言：",
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
@@ -87,17 +87,17 @@
         "ask-quick": {
             "field-name": "🗨 問答",
             "icon": "⚡",
-            "description": "快速詢問想問的問題"
+            "description": "快速詢問想問的問題，機器人會搜索所有用戶可見的文件"
         },
         "ask-advanced": {
             "field-name": "🗨 問答",
             "icon": "💬",
-            "description": "進階詢問想問的問題"
+            "description": "詢問想問的問題，可以設定查閱文件的範圍並多次詢問"
         },
         "delete-uploaded-file": {
             "field-name": "📄 文件操作",
             "icon": "🗑️",
-            "description": "刪除已上傳的文件",
+            "description": "刪除自身上傳的文件",
             "placeholder": "請選擇要刪除的文件",
             "success": "文件已成功刪除",
             "message": "請選擇您想要刪除的文件",
@@ -106,7 +106,7 @@
         "download": {
             "field-name": "📄 文件操作",
             "icon": "📥",
-            "description": "下載已上傳的文件",
+            "description": "下載用戶可用的文件",
             "placeholder": "請選擇要下載的文件",
             "message": "請選擇您想要下載的文件",
             "no-file": "沒有可用的文件"
