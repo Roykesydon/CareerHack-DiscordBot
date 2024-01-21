@@ -35,11 +35,12 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -tt -p 7414 -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} '
-            cd /home/${{ secrets.SSH_USER }}/Hacker-Rank-Discord-Bot
+            cd /home/${{ secrets.SSH_USER }}/HackerRank-DiscordBot
             ssh-agent -s
             eval `ssh-agent -s`
             ssh-add ~/.ssh/id_rsa_github
-            git pull
+            git checkout main
+            git pull origin main
             /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
             /home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/pip install -r requirements.txt
             tmux kill-session -t hacker_rank_app || true
