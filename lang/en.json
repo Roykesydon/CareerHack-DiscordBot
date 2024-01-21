@@ -38,7 +38,7 @@
             "invalid-file-type": "Invalid file type."
         },
         "channel": {
-            "field-name": "⚙ Channel Management/Settings",
+            "field-name": "⚙ System Management/Settings",
             "icon": "🚥",
             "description": "Admin only - Enable/Disable the bot in the current channel.",
             "enable": "Enable",
@@ -51,7 +51,7 @@
             "disable-response": "Bot disabled for this channel"
         },
         "language": {
-            "field-name": "⚙ Channel Management/Settings",
+            "field-name": "⚙ System Management/Settings",
             "icon": "🌐",
             "description": "Set the language of the bot",
             "message": "Please select your language:",
