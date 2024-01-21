@@ -8,8 +8,8 @@ Bot response permission Control
 
 
 class AdminValidator:
-    def __init__(self):
-        self._admin_username_list = CONFIG["admin_username_list"]
+    def __init__(self, administrator_manager):
+        self._administrator_manager = administrator_manager
 
-    def is_admin(self, username: str):
-        return username in self._admin_username_list
+    def is_admin(self, user_id: str):
+        return user_id in self._administrator_manager.get_admin_id_list()

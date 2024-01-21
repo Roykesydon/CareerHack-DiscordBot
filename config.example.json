@@ -9,7 +9,7 @@
     "discord": {
         "token": ""
     },
-    "admin_username_list": [
+    "admin_user_id_list": [
         ""
     ],
     "language": "zh-tw",
