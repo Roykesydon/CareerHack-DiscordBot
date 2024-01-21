@@ -76,7 +76,7 @@ class DownloadCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction):
+    async def download_documents(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
         upload_file_manager = UploadFileManager()

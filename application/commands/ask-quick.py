@@ -18,7 +18,7 @@ class AskQuickCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction, query: str):
+    async def ask_quick(self, interaction, query: str):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 

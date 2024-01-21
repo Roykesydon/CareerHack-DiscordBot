@@ -71,7 +71,7 @@ class TransformFileScopeCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction):
+    async def transformFileScope(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
@@ -83,13 +83,13 @@ class TransformFileScopeCommand(commands.Cog):
             )
             return
 
-        if not admin_validator.is_admin(interaction.user.name):
+        if not admin_validator.is_admin(str(interaction.user.id)):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['admin-only']}"
             )
             return
 
-        private_only = not admin_validator.is_admin(str(interaction.user.name))
+        private_only = not admin_validator.is_admin(str(interaction.user.id))
         if (
             len(
                 upload_file_manager.get_available_file_list(
