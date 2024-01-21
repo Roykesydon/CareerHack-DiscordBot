@@ -6,25 +6,24 @@ from langchain_community.embeddings.sentence_transformer import (
 )
 from langchain_community.vectorstores import Chroma
 
-from VDB_API.utils.config import CONFIG
-
+from VDB_API.utils.config import HUGGINGFACE_MODEL_NAME, DB_PATH, COLLECTION_NAME
 
 class VectordbManager:
     _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("你的裝置是：", _device)
     _emb_fn = SentenceTransformerEmbeddings(
-        model_name=CONFIG["HuggingFace"]["model_name"], model_kwargs={"device": _device}
+        model_name=HUGGINGFACE_MODEL_NAME, model_kwargs={"device": _device}
     )
     _chroma_client = chromadb.PersistentClient(
-        path=CONFIG["db_path"]
+        path=DB_PATH
     )  # Load the Database from disk
 
     def __init__(self):
         self.vectordb = Chroma(
             client=VectordbManager._chroma_client,
             embedding_function=VectordbManager._emb_fn,
-            persist_directory=CONFIG["db_path"],
-            collection_name=CONFIG["collections"]["basic"],
+            persist_directory=DB_PATH,
+            collection_name=COLLECTION_NAME,
             collection_metadata={"hnsw:space": "cosine"},  # l2 is the default
         )
 
@@ -33,7 +32,7 @@ class VectordbManager:
         self.vectordb = Chroma(
             client=VectordbManager._chroma_client,
             embedding_function=VectordbManager._emb_fn,
-            persist_directory=CONFIG["db_path"],
+            persist_directory=DB_PATH,
             collection_name=collection_name,
             collection_metadata={"hnsw:space": "cosine"},  # l2 is the default
         )

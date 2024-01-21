@@ -5,10 +5,7 @@ from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader
 
-EN_CHUNK_SIZE = 1000
-EN_CHUNK_OVERLAP = 400
-ZH_CHUNK_SIZE = 400
-ZH_CHUNK_OVERLAP = 200
+from .config import EN_CHUNK_SIZE, EN_CHUNK_OVERLAP, ZH_CHUNK_SIZE, ZH_CHUNK_OVERLAP
 
 
 # 根據檔案前面的 2000 長度的字串，檢驗是否含有中文字符
@@ -18,7 +15,6 @@ def _is_contains_chinese(str, size=2000):
         if "\u4e00" <= _char <= "\u9fa5":
             return True
     return False
-
 
 def _get_loader(file_type, file_path):
     if file_type == ".pdf":
