@@ -4,6 +4,11 @@
 
 本項目使用 GPT API 作為語言模型，以實現一個高效的對話和信息處理系統。系統通過一系列專門設計的模組來處理和回應用戶請求，使得對話流程更為流暢和準確。
 
+## 事前準備
+1. 至 [SerpApi 網站](https://serpapi.com/manage-api-key) 申請帳號，獲取 API_KEP
+2. 在 `.env` 中設置 `SERPAPI_API_KEY="YOUR_API_KEY"`
+3. 提醒 : 免費版只有 100 次搜尋次數可用
+
 ## 文件結構和內容
 
 ### `tool_config.py`
