@@ -4,7 +4,18 @@ DB_PATH = "./chroma_db"
 COLLECTION_NAME = "basic"
 
 # file_processor.py setting
+LANG_SEARCH_SIZE = 2000
 EN_CHUNK_SIZE = 1000
 EN_CHUNK_OVERLAP = 400
 ZH_CHUNK_SIZE = 400
 ZH_CHUNK_OVERLAP = 200
+
+# for hacker_rank_tools.py
+OFFLINE_MODEL = "Qwen/Qwen-7B-Chat"
+CONTINUE_SEARCH_WORD = "繼續搜尋"
+PROMPT_TEMPLATE = (
+    """
+{query} 若參考資料中有提到需要參考其他資料，請回答「%s」，並簡單說明可能需要參考的文件；否則直接用繁體中文回答即可。
+"""
+    % CONTINUE_SEARCH_WORD
+)

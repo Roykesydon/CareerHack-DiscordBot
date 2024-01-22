@@ -1,12 +1,12 @@
 import chromadb
 import torch
-from langchain.docstore.document import Document
 from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
 )
 from langchain_community.vectorstores import Chroma
 
 from VDB_API.utils.config import HUGGINGFACE_MODEL_NAME, DB_PATH, COLLECTION_NAME
+
 
 class VectordbManager:
     _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
