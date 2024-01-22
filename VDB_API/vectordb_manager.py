@@ -5,7 +5,12 @@ from langchain_community.embeddings.sentence_transformer import (
 )
 from langchain_community.vectorstores import Chroma
 
-from VDB_API.utils.config import HUGGINGFACE_MODEL_NAME, DB_PATH, COLLECTION_NAME, DEVICE
+from VDB_API.utils.config import (
+    HUGGINGFACE_MODEL_NAME,
+    DB_PATH,
+    COLLECTION_NAME,
+    DEVICE,
+)
 
 
 class VectordbManager:

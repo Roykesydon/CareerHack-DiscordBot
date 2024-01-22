@@ -4,8 +4,12 @@ from discord.ext import commands
 from discord.ui import Button, View
 
 from core.utils.text_manager import TextManager
-from main import (admin_validator, administrator_manager, channel_validator,
-                  user_validator)
+from main import (
+    admin_validator,
+    administrator_manager,
+    channel_validator,
+    user_validator,
+)
 
 
 class AdministratorCommand(commands.Cog):
