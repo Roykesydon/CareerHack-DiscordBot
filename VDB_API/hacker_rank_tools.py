@@ -8,7 +8,12 @@ from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from VDB_API.utils import file_processor
-from VDB_API.utils.config import PROMPT_TEMPLATE, CONTINUE_SEARCH_WORD, CHAT_MODELS, DEVICE
+from VDB_API.utils.config import (
+    PROMPT_TEMPLATE,
+    CONTINUE_SEARCH_WORD,
+    CHAT_MODELS,
+    DEVICE,
+)
 from VDB_API.vectordb_manager import VectordbManager
 
 load_dotenv()  # 加載.env檔案
@@ -29,13 +34,13 @@ class HackerRankTools:
             if llm_type == "offline":
                 print("Your device: ", DEVICE)
                 model = AutoModelForCausalLM.from_pretrained(
-                    CHAT_MODELS["offline"], device_map="auto", trust_remote_code=True
+                    CHAT_MODELS["offline"]
                 ).eval()
                 pipe = pipeline(
                     "text-generation",
                     model=model.to(DEVICE),
                     tokenizer=self.tokenizer,
-                    max_new_tokens=10,
+                    max_new_tokens=100,
                 )
                 self.llm = HuggingFacePipeline(pipeline=pipe)
             else:
@@ -44,7 +49,7 @@ class HackerRankTools:
             print("Model type not found, keeping it unchanged.")
 
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
-        print("set chat model to ", llm_type)
+        print("set chat model to ", CHAT_MODELS[llm_type])
 
     def set_secondary_search(self, secondary_search: bool):
         self.secondary_search = secondary_search

@@ -14,7 +14,7 @@ ZH_CHUNK_OVERLAP = 200
 CHAT_MODELS = {
     "gpt3": "gpt-3.5-turbo",
     "gpt4": "gpt-4-0613",
-    "offline": "Qwen/Qwen-7B-Chat",
+    "offline": "bigscience/bloomz-1b1",
 }
 CONTINUE_SEARCH_WORD = "繼續搜尋"
 PROMPT_TEMPLATE = (
@@ -26,4 +26,5 @@ PROMPT_TEMPLATE = (
 
 # general
 import torch
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

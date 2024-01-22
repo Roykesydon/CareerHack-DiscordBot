@@ -17,7 +17,6 @@ tools.add_documents_to_vdb(file_paths)
 # tools.delete(["Retentive Network_A Successor to Transformer.pdf"])
 
 # 設置線上/線下模型
-# tools.set_llm_type(isOnline=True)
 tools.set_llm_type("gpt3")  # gpt3、gpt4、offline
 
 # 設置是否自動執行二次搜尋
