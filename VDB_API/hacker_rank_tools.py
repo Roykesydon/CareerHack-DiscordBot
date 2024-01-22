@@ -1,10 +1,14 @@
-from typing import List, Tuple, Union
+from typing import List, Dict, Any, Tuple, Union
 
 from dotenv import load_dotenv
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain_openai import OpenAI
 
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+
 from VDB_API.utils import file_processor
+from VDB_API.utils.config import PROMPT_TEMPLATE, CONTINUE_SEARCH_WORD, OFFLINE_MODEL
 from VDB_API.vectordb_manager import VectordbManager
 
 load_dotenv()  # 加載.env檔案
@@ -15,13 +19,35 @@ class HackerRankTools:
         self.llm = OpenAI(temperature=0)
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         self.vectordb_manager = VectordbManager()
+        self.secondary_search = True
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            OFFLINE_MODEL, trust_remote_code=True
+        )
 
-    def set_llm_type(self, isOnline: bool):
-        if isOnline:
-            self.llm = OpenAI(temperature=0)
-            self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
+    def set_llm_type(self, llm_type: str):
+        if llm_type == "offline":
+            model = AutoModelForCausalLM.from_pretrained(
+                OFFLINE_MODEL, device_map="auto", trust_remote_code=True
+            ).eval()
+            pipe = pipeline(
+                "text-generation",
+                model=model,
+                tokenizer=self.tokenizer,
+                max_new_tokens=10,
+            )
+            self.llm = HuggingFacePipeline(pipeline=pipe)
+            print(f"set to offline model : {OFFLINE_MODEL}")
+        elif llm_type == "gpt4":
+            self.llm = OpenAI(model_name="gpt-4", temperature=0)
         else:
-            print("set to offline model，待辦!")
+            self.llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0)
+
+        self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
+        print("set chat model to ", llm_type)
+
+    def set_secondary_search(self, secondary_search: bool):
+        self.secondary_search = secondary_search
+        print("set secondary_search to ", secondary_search)
 
     def add_documents_to_vdb(self, file_paths: List[str]):
         """
@@ -50,13 +76,14 @@ class HackerRankTools:
 
     # 模型問答
     def chat(
-        self, query, refFileNameList=None, refAll=False
+        self, query, specified_files=None, all_accessible_files=None, ref_all=False
     ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
         """
         Args:
             query: user query
-            refFileNameList: list of specified reference file names
-            refAll: if True, ignore refFileNameList, use all reference files
+            specified_files: list of specified reference file names
+            all_accessible_files: list of all accessible file names
+            ref_all: if True, ignore specified_files, use all_accessible_files
         Returns:
             ans: model reply
             contents: list of reference document paragraphs
@@ -64,14 +91,13 @@ class HackerRankTools:
                 pdf: {'source': 檔名, 'page': 頁碼}
                 txt: {'source': 檔名}
         """
-        if refAll:
-            where = None
-        elif refFileNameList is None:
-            return self.llm(prompt=query), None, None
-        elif len(refFileNameList) == 1:
-            where = {"source": refFileNameList[0]}
+        if ref_all:
+            where = self._get_filter(all_accessible_files)
+        elif specified_files is None:
+            response = self.llm.invoke(query + "請用繁體中文回答")
+            return response, None, None
         else:
-            where = {"$or": [{"source": name} for name in refFileNameList]}
+            where = self._get_filter(specified_files)
         docs = self.vectordb_manager.query(query, n_results=3, where=where)
 
         contents, metadatas = [], []
@@ -79,9 +105,28 @@ class HackerRankTools:
             contents.append(doc.page_content)
             metadatas.append(doc.metadata)
 
-        ans = self.chain(
-            {"input_documents": docs, "question": query}, return_only_outputs=True
+        templated_query = PROMPT_TEMPLATE.format(query=query)
+        ans = self.chain.invoke(
+            {"input_documents": docs, "question": templated_query},
+            return_only_outputs=True,
         )["output_text"]
         ans = ans.split("\nSOURCES:")[0]
 
+        # 二次搜索
+        if (
+            (not ref_all)
+            and self.secondary_search
+            and (all_accessible_files != None)
+            and (CONTINUE_SEARCH_WORD in ans)
+        ):
+            print("\n有其他參考資料需要，進行二次搜索...")
+            return self.chat(query, all_accessible_files, None, False)
         return ans, contents, metadatas
+
+    def _get_filter(self, file_list) -> Union[Dict[str, Any], None]:
+        if len(file_list) == 1:
+            return {"source": file_list[0]}
+        elif len(file_list) > 1:
+            return {"$or": [{"source": name} for name in file_list]}
+        else:
+            return None

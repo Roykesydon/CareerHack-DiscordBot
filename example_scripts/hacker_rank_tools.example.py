@@ -10,33 +10,36 @@ tools = HackerRankTools()
 tools.vectordb_manager.set_vector_db("test_db")
 
 # 添加資料
-file_paths = ["./docs/112,訴,1085,20240110,1.pdf", "./docs/tt.txt", "tt.docx"]
+file_paths = ["./VDB_API/docs/tt.txt", "./VDB_API/docs/tt.doc"]
 tools.add_documents_to_vdb(file_paths)
-
-# 設置線上/線下模型
-tools.set_llm_type(isOnline=True)
 
 # 刪除指定文件資料
 # tools.delete(["Retentive Network_A Successor to Transformer.pdf"])
 
-# 純問答
-query = "這個案件涉及甚麼法條?"
-ans, _, _ = tools.chat(query)
-print("純問答 : ")
-print("Q : ", query)
-print("A : ", ans)
+# 設置線上/線下模型
+# tools.set_llm_type(isOnline=True)
+tools.set_llm_type("gpt3")  # gpt3、gpt4、offline
 
-# 有參考資料的問答
-query = "這個案件涉及甚麼法條?"
-refFileNameList = ["112,訴,1085,20240110,1.pdf"]
-ans, contents, metadatas = tools.chat(query, refFileNameList)
+# 設置是否自動執行二次搜尋
+tools.set_secondary_search(True)  # default: True
+
+# 純問答
+query = "請問小美的職業是甚麼?"
+# ans, _, _ = tools.chat(query)
+# print("\n純問答 : ")
+# print("Q : ", query)
+# print("A : ", ans)
+
+# # 有參考資料的問答
+refFileNameList = ["tt.doc"]
+searchableFileNameList = ["tt.doc", "tt.txt"]
+ans, contents, metadatas = tools.chat(query, refFileNameList, searchableFileNameList)
 print("\n\n有參考資料的問答 : ")
 print("Q : ", query)
 print("A : ", ans)
 print("\n參考資料 : ")
 print("contents : ", contents)
 print("metadatas : ", metadatas)
-
 
 # 刪除測試用的 vector database(小心使用)
 tools.vectordb_manager.vectordb.delete_collection()
