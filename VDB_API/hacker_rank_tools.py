@@ -36,6 +36,7 @@ class HackerRankTools:
                     model=model.to(DEVICE),
                     tokenizer=self.tokenizer,
                     max_new_tokens=100,
+                    device=DEVICE,
                 )
                 self.llm = HuggingFacePipeline(pipeline=pipe)
             else:
