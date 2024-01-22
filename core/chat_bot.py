@@ -24,11 +24,15 @@ class ChatBot:
 
         self.text_manager = TextManager()
 
-        self.channel_llm_type_dict = {}
-
-        self.MODEL_TYPE = {"gpt3": "gpt3", "gpt4": "gpt4", "offline": "offline"}
+        self.MODEL_TYPE = {
+            LLMType.GPT3.value: "gpt3",
+            LLMType.GPT4.value: "gpt4",
+            LLMType.OFFLINE.value: "offline",
+        }
 
         self.ai_engine_api_dict = {}
+
+        self.channel_model_setting_dict = {}
 
         """
         LLM API
@@ -40,10 +44,21 @@ class ChatBot:
             )
             self.ai_engine_api_dict[key].set_llm_type(llm_type=value)
 
+    def _get_default_model_setting_template(self):
+        return {
+            "model_type": LLMType.GPT3.value,
+            "secondary_search": True,
+        }
+
     def chat(self, query, file_scope, channel_id: str):
-        ans, contents, metadatas = self.ai_engine_api_dict[
-            self.get_llm_type(channel_id)
-        ].chat(query, file_scope)
+        ai_engine_api = self.ai_engine_api_dict[self.get_llm_type(channel_id)]
+        ai_engine_api.set_secondary_search(
+            secondary_search=self.channel_model_setting_dict[channel_id][
+                "secondary_search"
+            ]
+        )
+
+        ans, contents, metadatas = ai_engine_api.chat(query, file_scope)
         return ans, contents, metadatas
 
     def get_show_reference_callback(
@@ -110,13 +125,39 @@ class ChatBot:
 
         return show_reference
 
+    def set_secondary_search(self, channel_id: str, secondary_search: bool):
+        if channel_id not in self.channel_model_setting_dict:
+            self.channel_model_setting_dict[
+                channel_id
+            ] = self._get_default_model_setting_template()
+
+        self.channel_model_setting_dict[channel_id][
+            "secondary_search"
+        ] = secondary_search
+
+    def get_model_setting(self, channel_id: str):
+        if channel_id not in self.channel_model_setting_dict:
+            self.channel_model_setting_dict[
+                channel_id
+            ] = self._get_default_model_setting_template()
+
+        return self.channel_model_setting_dict[channel_id]
+
     def switch_model(self, channel_id: str, llm_type: LLMType):
-        self.channel_llm_type_dict[channel_id] = llm_type.value
+        if channel_id not in self.channel_model_setting_dict:
+            self.channel_model_setting_dict[
+                channel_id
+            ] = self._get_default_model_setting_template()
+
+        self.channel_model_setting_dict[channel_id]["model_type"] = llm_type.value
 
     def get_llm_type(self, channel_id: str):
-        if channel_id not in self.channel_llm_type_dict:
-            self.channel_llm_type_dict[channel_id] = LLMType.GPT3.value
-        return self.channel_llm_type_dict[channel_id]
+        if channel_id not in self.channel_model_setting_dict:
+            self.channel_model_setting_dict[
+                channel_id
+            ] = self._get_default_model_setting_template()
+
+        return self.channel_model_setting_dict[channel_id]["model_type"]
 
     def get_file_list(self, file_id_list: list):
         file_list = []

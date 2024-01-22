@@ -112,16 +112,19 @@
             "message": "請選擇您想要下載的文件",
             "no-file": "沒有可用的文件"
         },
-        "switch-model": {
+        "model-setting": {
             "field-name": "🗨 問答",
             "icon": "🔄",
-            "description": "切換到不同的 LLM 模型",
+            "description": "LLM 相關設置",
             "current-model-prefix": "當前模型：",
+            "current-secondary-search-prefix": "二次搜索：",
             "button-above-message": "點選以下按鈕，切換聊天模型的種類",
             "response-prefix": "已切換至 ",
             "gpt3": "GPT 3.5",
             "gpt4": "GPT 4",
-            "offline": "線下模型"
+            "offline": "線下模型",
+            "open-secondary-search": "開啟二次搜索功能",
+            "close-secondary-search": "關閉二次搜索功能"
         },
         "transfrom-file-scope": {
             "field-name": "📄 文件操作",

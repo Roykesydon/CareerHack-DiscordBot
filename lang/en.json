@@ -112,16 +112,19 @@
             "message": "Please select the file you wish to download",
             "no-file": "No file uploaded"
         },
-        "switch-model": {
+        "model-setting": {
             "field-name": "🗨 Q&A",
             "icon": "🔄",
-            "description": "Switch to different LLM models",
+            "description": "Related settings of LLM",
             "current-model-prefix": "Current model: ",
+            "current-secondary-search-prefix": "Secondary search: ",
             "button-above-message": "Click the button below to switch the type of chat model",
             "response-prefix": "Switched to ",
             "gpt3": "GPT 3.5",
             "gpt4": "GPT 4",
-            "offline": "Offline model"
+            "offline": "Offline model",
+            "open-secondary-search": "Open secondary search function",
+            "close-secondary-search": "Close secondary search function"
         },
         "transfrom-file-scope": {
             "field-name": "📄 File Operations",
