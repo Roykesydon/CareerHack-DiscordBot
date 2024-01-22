@@ -3,16 +3,22 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
+from core.administrator_manager import AdministratorManager
 from core.chat_bot import ChatBot
 from core.feedback_manager import FeedbackManager
 from core.utils.config import CONFIG
 from core.validate.admin_validator import AdminValidator
 from core.validate.channel_validator import ChannelValidator
+from core.validate.user_validator import UserValidator
 
 chat_bot = ChatBot()
-channel_validator = ChannelValidator()
-admin_validator = AdminValidator()
+
 feedback_manager = FeedbackManager()
+administrator_manager = AdministratorManager()
+
+channel_validator = ChannelValidator()
+admin_validator = AdminValidator(administrator_manager)
+user_validator = UserValidator()
 
 
 # Load commands

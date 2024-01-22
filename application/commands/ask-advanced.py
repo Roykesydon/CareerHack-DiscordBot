@@ -107,7 +107,7 @@ class AskAdvancedCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction):
+    async def ask_advanced(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 

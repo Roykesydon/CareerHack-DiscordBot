@@ -25,7 +25,7 @@ class DeleteUploadedFileSelect(ui.Select):
 
         for file in upload_file_manager.get_available_file_list(user_id):
             if (
-                not admin_validator.is_admin(username)
+                not admin_validator.is_admin(str(user_id))
                 and file["file_scope"] == "shared"
             ):
                 continue
@@ -73,7 +73,7 @@ class DeleteUploadedFileCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction):
+    async def delete_uploaded_file(self, interaction):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
@@ -85,7 +85,7 @@ class DeleteUploadedFileCommand(commands.Cog):
             )
             return
 
-        private_only = not admin_validator.is_admin(str(interaction.user.name))
+        private_only = not admin_validator.is_admin(str(interaction.user.id))
         if (
             len(
                 upload_file_manager.get_available_file_list(

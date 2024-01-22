@@ -18,7 +18,7 @@ class AskQuickCommand(commands.Cog):
             "description"
         ],
     )
-    async def ask_questions(self, interaction, query: str):
+    async def ask_quick(self, interaction, query: str):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
@@ -45,7 +45,7 @@ class AskQuickCommand(commands.Cog):
                 )
                 == 0
             ):
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     f"{LANG_DATA['commands']['ask']['no-file']}"
                 )
                 return

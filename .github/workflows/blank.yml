@@ -6,9 +6,9 @@ name: Auto Deploy
 on:
   # Triggers the workflow on push or pull request events but only for the "develop" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,18 +32,39 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p 7414 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
+      - name: Install dependencies
         run: |
           ssh -tt -p 7414 -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} '
-            cd /home/${{ secrets.SSH_USER }}/Hacker-Rank-Discord-Bot
+            cd /home/${{ secrets.SSH_USER }}/HackerRank-DiscordBot
             ssh-agent -s
             eval `ssh-agent -s`
             ssh-add ~/.ssh/id_rsa_github
-            git pull
+            git checkout main
+            git pull origin main
             /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
             /home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/pip install -r requirements.txt
-            tmux kill-session -t hacker_rank_app || true
-            tmux new-session -d -s hacker_rank_app "/home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/python main.py"
           '
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 7414 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh -tt -p 7414 -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} '
+            cd /home/${{ secrets.SSH_USER }}/HackerRank-DiscordBot
+            /home/${{ secrets.SSH_USER }}/anaconda3/bin/conda activate hacker_rank
+            tmux kill-session -t hacker_rank_app || true
+            sleep 3
+            tmux new-session -d -s hacker_rank_app "/home/${{ secrets.SSH_USER }}/anaconda3/envs/hacker_rank/bin/python main.py"
+          '

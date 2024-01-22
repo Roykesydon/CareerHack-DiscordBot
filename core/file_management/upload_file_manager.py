@@ -107,7 +107,8 @@ class UploadFileManager:
             chat_bot.delete_documents_from_vector_db([f"{file_id}.{extension}"])
 
             # remove file from storage
-            os.remove(f"storage/{file_id}.{extension}")
+            if os.path.exists(f"storage/{file_id}.{extension}"):
+                os.remove(f"storage/{file_id}.{extension}")
 
     def toggle_file_scope(self, file_id_list: list):
         for file_id in file_id_list:

@@ -27,7 +27,7 @@ class ChannelCommand(commands.Cog):
             return
 
         # check if user is admin
-        if not admin_validator.is_admin(interaction.user.name):
+        if not admin_validator.is_admin(str(interaction.user.id)):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['admin-only']}"
             )
