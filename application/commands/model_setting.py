@@ -17,7 +17,9 @@ class ModelSettingCommand(commands.Cog):
 
         response_message = f"{SWITCH_MODEL_TEXT_DICT['current-model-prefix']}"
         response_message += f"{SWITCH_MODEL_TEXT_DICT[chat_bot.get_llm_type(str(interaction.channel_id))]}"
-        response_message += f"\n{SWITCH_MODEL_TEXT_DICT['current-secondary-search-prefix']}"
+        response_message += (
+            f"\n{SWITCH_MODEL_TEXT_DICT['current-secondary-search-prefix']}"
+        )
         # emoji check or not
         response_message += "✅" if model_setting["secondary_search"] else "❌"
         response_message += f"\n{SWITCH_MODEL_TEXT_DICT['button-above-message']}"
