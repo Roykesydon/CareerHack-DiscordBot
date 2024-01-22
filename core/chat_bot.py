@@ -1,3 +1,5 @@
+from enum import Enum
+
 import discord
 from bson.objectid import ObjectId
 
@@ -5,6 +7,12 @@ from core.utils.config import CONFIG
 from core.utils.database import mongo_database
 from core.utils.text_manager import TextManager
 from VDB_API.hacker_rank_tools import HackerRankTools
+
+
+class LLMType(Enum):
+    GPT3 = "gpt3"
+    GPT4 = "gpt4"
+    OFFLINE = "offline"
 
 
 class ChatBot:
@@ -16,30 +24,26 @@ class ChatBot:
 
         self.text_manager = TextManager()
 
-        self.offline_channel_set = set()
+        self.channel_llm_type_dict = {}
+
+        self.MODEL_TYPE = {"gpt3": "gpt3", "gpt4": "gpt4", "offline": "offline"}
+
+        self.ai_engine_api_dict = {}
 
         """
         LLM API
         """
-        self.hacker_rank_tools = HackerRankTools()
-        self.hacker_rank_tools.vectordb_manager.set_vector_db(CONFIG["vector_db_name"])
-
-        self.hacker_rank_tools_offline = HackerRankTools()
-        self.hacker_rank_tools_offline.vectordb_manager.set_vector_db(
-            CONFIG["vector_db_name"]
-        )
-
-        # 設置線上/線下模型
-        self.hacker_rank_tools.set_llm_type(isOnline=True)
-        self.hacker_rank_tools_offline.set_llm_type(isOnline=False)
+        for key, value in self.MODEL_TYPE.items():
+            self.ai_engine_api_dict[key] = HackerRankTools()
+            self.ai_engine_api_dict[key].vectordb_manager.set_vector_db(
+                CONFIG["vector_db_name"]
+            )
+            self.ai_engine_api_dict[key].set_llm_type(llm_type=value)
 
     def chat(self, query, file_scope, channel_id: str):
-        if self.is_online(channel_id):
-            ans, contents, metadatas = self.hacker_rank_tools.chat(query, file_scope)
-        else:
-            ans, contents, metadatas = self.hacker_rank_tools_offline.chat(
-                query, file_scope
-            )
+        ans, contents, metadatas = self.ai_engine_api_dict[
+            self.get_llm_type(channel_id)
+        ].chat(query, file_scope)
         return ans, contents, metadatas
 
     def get_show_reference_callback(
@@ -106,14 +110,13 @@ class ChatBot:
 
         return show_reference
 
-    def switch_model(self, channel_id: str, online: bool):
-        if online:
-            self.offline_channel_set.discard(str(channel_id))
-        else:
-            self.offline_channel_set.add(str(channel_id))
+    def switch_model(self, channel_id: str, llm_type: LLMType):
+        self.channel_llm_type_dict[channel_id] = llm_type.value
 
-    def is_online(self, channel_id: str):
-        return channel_id not in self.offline_channel_set
+    def get_llm_type(self, channel_id: str):
+        if channel_id not in self.channel_llm_type_dict:
+            self.channel_llm_type_dict[channel_id] = LLMType.GPT3.value
+        return self.channel_llm_type_dict[channel_id]
 
     def get_file_list(self, file_id_list: list):
         file_list = []
@@ -156,7 +159,7 @@ class ChatBot:
         return self.start_chat_channel_set
 
     def add_documents_to_vector_db(self, documents):
-        self.hacker_rank_tools.add_documents_to_vdb(documents)
+        self.ai_engine_api_dict["gpt3"].add_documents_to_vdb(documents)
 
     def delete_documents_from_vector_db(self, documents):
-        self.hacker_rank_tools.delete(documents)
+        self.ai_engine_api_dict["gpt3"].delete_documents_from_vdb(documents)
