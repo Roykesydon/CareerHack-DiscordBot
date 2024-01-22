@@ -16,8 +16,7 @@ load_dotenv()  # 加載.env檔案
 
 class HackerRankTools:
     def __init__(self):
-        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+        self.llm = ChatOpenAI(temperature=0, model_name=CHAT_MODELS["gpt3"])
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         self.vectordb_manager = VectordbManager()
         self.secondary_search = True
