@@ -4,7 +4,7 @@
 
 - Clone this repo
     ```shell
-    $ git clone https://github.com/Roykesydon/Hacker-Rank-Discord-Bot.git
+    $ git clone https://github.com/Roykesydon/HackerRank-DiscordBot.git
     ```
 - Install the Python dependencies
     ```shell
@@ -26,7 +26,7 @@
 ## Deployment (Docker)
 - Clone this repo
     ```shell
-    $ git clone https://github.com/Roykesydon/Hacker-Rank-Discord-Bot.git
+    $ git clone https://github.com/Roykesydon/HackerRank-DiscordBot.git
     ```
 - Write `./config.json`
     - You need to apply discord bot token from [Discord Developer Portal](https://discord.com/developers/applications)
