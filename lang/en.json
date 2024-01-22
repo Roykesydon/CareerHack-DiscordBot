@@ -87,7 +87,8 @@
         "ask-quick": {
             "field-name": "🗨 Q&A",
             "icon": "⚡",
-            "description": "Quickly ask the question you want to ask"
+            "description": "Quickly ask the question you want to ask",
+            "query_prefix": "Your question:"
         },
         "ask-advanced": {
             "field-name": "🗨 Q&A",
@@ -114,15 +115,13 @@
         "switch-model": {
             "field-name": "🗨 Q&A",
             "icon": "🔄",
-            "description": "Switch between online and offline models",
+            "description": "Switch to different LLM models",
             "current-model-prefix": "Current model: ",
-            "button-above-message": "Click the button below to switch the chat model mode: ",
-            "online-model": "Online model",
-            "offline-model": "Offline model",
-            "online-button": "Online model",
-            "offline-button": "Offline model",
-            "online-response": "Switched to online model",
-            "offline-response": "Switched to offline model"
+            "button-above-message": "Click the button below to switch the type of chat model",
+            "response-prefix": "Switched to ",
+            "gpt3": "GPT 3.5",
+            "gpt4": "GPT 4",
+            "offline": "Offline model"
         },
         "transfrom-file-scope": {
             "field-name": "📄 File Operations",

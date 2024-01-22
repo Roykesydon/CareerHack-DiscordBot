@@ -87,7 +87,8 @@
         "ask-quick": {
             "field-name": "🗨 問答",
             "icon": "⚡",
-            "description": "快速詢問想問的問題，機器人會搜索所有用戶可見的文件"
+            "description": "快速詢問想問的問題，機器人會搜索所有用戶可見的文件",
+            "query_prefix": "您的問題："
         },
         "ask-advanced": {
             "field-name": "🗨 問答",
@@ -114,15 +115,13 @@
         "switch-model": {
             "field-name": "🗨 問答",
             "icon": "🔄",
-            "description": "切換線上 / 線下模型",
+            "description": "切換到不同的 LLM 模型",
             "current-model-prefix": "當前模型：",
-            "button-above-message": "點選以下按鈕，切換聊天模型的模式：",
-            "online-model": "線上模型",
-            "offline-model": "線下模型",
-            "online-button": "線上模型",
-            "offline-button": "線下模型",
-            "online-response": "已切換至線上模型",
-            "offline-response": "已切換至線下模型"
+            "button-above-message": "點選以下按鈕，切換聊天模型的種類",
+            "response-prefix": "已切換至 ",
+            "gpt3": "GPT 3.5",
+            "gpt4": "GPT 4",
+            "offline": "線下模型"
         },
         "transfrom-file-scope": {
             "field-name": "📄 文件操作",
