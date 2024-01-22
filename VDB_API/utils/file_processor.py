@@ -1,16 +1,13 @@
 import os
 from typing import List
+
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader
+from langchain_community.document_loaders import (Docx2txtLoader, PyPDFLoader,
+                                                  TextLoader)
 
-from .config import (
-    EN_CHUNK_SIZE,
-    EN_CHUNK_OVERLAP,
-    ZH_CHUNK_SIZE,
-    ZH_CHUNK_OVERLAP,
-    LANG_SEARCH_SIZE,
-)
+from .config import (EN_CHUNK_OVERLAP, EN_CHUNK_SIZE, LANG_SEARCH_SIZE,
+                     ZH_CHUNK_OVERLAP, ZH_CHUNK_SIZE)
 
 
 def _is_contains_chinese(str, size=LANG_SEARCH_SIZE):

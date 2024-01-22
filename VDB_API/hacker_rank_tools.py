@@ -1,19 +1,14 @@
-from typing import List, Dict, Any, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from dotenv import load_dotenv
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-from langchain_openai import ChatOpenAI
-
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from langchain_openai import ChatOpenAI
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from VDB_API.utils import file_processor
-from VDB_API.utils.config import (
-    PROMPT_TEMPLATE,
-    CONTINUE_SEARCH_WORD,
-    CHAT_MODELS,
-    DEVICE,
-)
+from VDB_API.utils.config import (CHAT_MODELS, CONTINUE_SEARCH_WORD, DEVICE,
+                                  PROMPT_TEMPLATE)
 from VDB_API.vectordb_manager import VectordbManager
 
 load_dotenv()  # 加載.env檔案
