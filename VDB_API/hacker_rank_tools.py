@@ -95,7 +95,11 @@ class HackerRankTools:
         if ref_all:
             where = self._get_filter(all_accessible_files)
         elif specified_files is None:
-            response = self.llm.invoke(query + "請用繁體中文回答")
+            if isinstance(self.llm, ChatOpenAI):
+                response = self.llm.invoke(query + " 請用繁體中文回答").content
+            else:
+                print("是線下模型")
+                response = self.llm.invoke(query)
             return response, None, None
         else:
             where = self._get_filter(specified_files)
