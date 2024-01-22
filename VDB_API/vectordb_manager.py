@@ -5,14 +5,13 @@ from langchain_community.embeddings.sentence_transformer import (
 )
 from langchain_community.vectorstores import Chroma
 
-from VDB_API.utils.config import HUGGINGFACE_MODEL_NAME, DB_PATH, COLLECTION_NAME
+from VDB_API.utils.config import HUGGINGFACE_MODEL_NAME, DB_PATH, COLLECTION_NAME, DEVICE
 
 
 class VectordbManager:
-    _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("你的裝置是：", _device)
+    print("你的裝置是：", DEVICE)
     _emb_fn = SentenceTransformerEmbeddings(
-        model_name=HUGGINGFACE_MODEL_NAME, model_kwargs={"device": _device}
+        model_name=HUGGINGFACE_MODEL_NAME, model_kwargs={"device": DEVICE}
     )
     _chroma_client = chromadb.PersistentClient(
         path=DB_PATH

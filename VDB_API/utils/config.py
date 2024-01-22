@@ -19,3 +19,7 @@ PROMPT_TEMPLATE = (
 """
     % CONTINUE_SEARCH_WORD
 )
+
+# general
+import torch
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
