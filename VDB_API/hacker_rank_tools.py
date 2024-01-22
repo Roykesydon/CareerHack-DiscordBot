@@ -8,7 +8,7 @@ from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from VDB_API.utils import file_processor
-from VDB_API.utils.config import PROMPT_TEMPLATE, CONTINUE_SEARCH_WORD, OFFLINE_MODEL, DEVICE
+from VDB_API.utils.config import PROMPT_TEMPLATE, CONTINUE_SEARCH_WORD, CHAT_MODELS, DEVICE
 from VDB_API.vectordb_manager import VectordbManager
 
 load_dotenv()  # 加載.env檔案
@@ -17,31 +17,32 @@ load_dotenv()  # 加載.env檔案
 class HackerRankTools:
     def __init__(self):
         self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         self.vectordb_manager = VectordbManager()
         self.secondary_search = True
         self.tokenizer = AutoTokenizer.from_pretrained(
-            OFFLINE_MODEL, trust_remote_code=True
+            CHAT_MODELS["offline"], trust_remote_code=True
         )
 
     def set_llm_type(self, llm_type: str):
-        if llm_type == "offline":
-            print("你的裝置是：", DEVICE)
-            model = AutoModelForCausalLM.from_pretrained(
-                OFFLINE_MODEL, device_map="auto", trust_remote_code=True
-            ).eval()
-            pipe = pipeline(
-                "text-generation",
-                model=model.to(DEVICE),
-                tokenizer=self.tokenizer,
-                max_new_tokens=10,
-            )
-            self.llm = HuggingFacePipeline(pipeline=pipe)
-            print(f"set to offline model : {OFFLINE_MODEL}")
-        elif llm_type == "gpt4":
-            self.llm = ChatOpenAI(temperature=0, model_name="gpt-4-0613")
+        if llm_type in CHAT_MODELS.keys():
+            if llm_type == "offline":
+                print("Your device: ", DEVICE)
+                model = AutoModelForCausalLM.from_pretrained(
+                    CHAT_MODELS["offline"], device_map="auto", trust_remote_code=True
+                ).eval()
+                pipe = pipeline(
+                    "text-generation",
+                    model=model.to(DEVICE),
+                    tokenizer=self.tokenizer,
+                    max_new_tokens=10,
+                )
+                self.llm = HuggingFacePipeline(pipeline=pipe)
+            else:
+                self.llm = ChatOpenAI(temperature=0, model_name=CHAT_MODELS[llm_type])
         else:
-            self.llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+            print("Model type not found, keeping it unchanged.")
 
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         print("set chat model to ", llm_type)

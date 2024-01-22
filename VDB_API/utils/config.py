@@ -11,7 +11,11 @@ ZH_CHUNK_SIZE = 400
 ZH_CHUNK_OVERLAP = 200
 
 # for hacker_rank_tools.py
-OFFLINE_MODEL = "Qwen/Qwen-7B-Chat"
+CHAT_MODELS = {
+    "gpt3": "gpt-3.5-turbo",
+    "gpt4": "gpt-4-0613",
+    "offline": "Qwen/Qwen-7B-Chat",
+}
 CONTINUE_SEARCH_WORD = "繼續搜尋"
 PROMPT_TEMPLATE = (
     """
