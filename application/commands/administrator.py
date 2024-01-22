@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ui import Button, View
 
+from core.discord_api import DiscordAPI
 from core.utils.text_manager import TextManager
 from main import (admin_validator, administrator_manager, channel_validator,
                   user_validator)
@@ -11,6 +12,7 @@ from main import (admin_validator, administrator_manager, channel_validator,
 class AdministratorCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.discord_api = DiscordAPI()
 
     @app_commands.command(
         name="administrator",
@@ -23,7 +25,7 @@ class AdministratorCommand(commands.Cog):
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
 
         # check in DM or not
-        if not isinstance(interaction.channel, discord.DMChannel):
+        if not channel_validator.in_dm(interaction.channel):
             await interaction.response.send_message(
                 f"{LANG_DATA['permission']['dm-only']}"
             )
@@ -150,11 +152,6 @@ class AdministratorCommand(commands.Cog):
                 )
 
             async def new_admin_callback(interaction):
-                (
-                    current_admin_id,
-                    current_admin_name,
-                ) = administrator_manager.get_current_admin(str(interaction.channel_id))
-
                 await interaction.message.delete()
                 # wait for user to send a id
                 await interaction.channel.send(
@@ -193,8 +190,11 @@ class AdministratorCommand(commands.Cog):
                             add_prefix = add_success.split("%")[0]
                             add_suffix = add_success.split("%")[1]
 
+                            user_info = self.discord_api.get_user_info(user_id)
+                            new_admin_name = user_info["global_name"]
+
                             await interaction.channel.send(
-                                f"{add_prefix} {current_admin_name} {add_suffix}"
+                                f"{add_prefix} {new_admin_name} {add_suffix}"
                             )
                         return
 

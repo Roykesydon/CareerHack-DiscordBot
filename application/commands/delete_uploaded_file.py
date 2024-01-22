@@ -79,9 +79,10 @@ class DeleteUploadedFileCommand(commands.Cog):
 
         upload_file_manager = UploadFileManager()
 
-        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
+        # check in DM or not
+        if not channel_validator.in_dm(interaction.channel):
             await interaction.response.send_message(
-                f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
+                f"{LANG_DATA['permission']['dm-only']}"
             )
             return
 

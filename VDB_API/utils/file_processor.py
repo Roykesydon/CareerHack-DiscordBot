@@ -6,14 +6,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import (Docx2txtLoader, PyPDFLoader,
                                                   TextLoader)
 
-EN_CHUNK_SIZE = 1000
-EN_CHUNK_OVERLAP = 400
-ZH_CHUNK_SIZE = 400
-ZH_CHUNK_OVERLAP = 200
+from .config import (EN_CHUNK_OVERLAP, EN_CHUNK_SIZE, LANG_SEARCH_SIZE,
+                     ZH_CHUNK_OVERLAP, ZH_CHUNK_SIZE)
 
 
-# 根據檔案前面的 2000 長度的字串，檢驗是否含有中文字符
-def _is_contains_chinese(str, size=2000):
+def _is_contains_chinese(str, size=LANG_SEARCH_SIZE):
     sample_str = str[:size]
     for _char in sample_str:
         if "\u4e00" <= _char <= "\u9fa5":

@@ -28,7 +28,7 @@ class DescriptionCommand(commands.Cog):
             return
 
         async with interaction.channel.typing():
-            logo = discord.File("./assets/logo.png")
+            logo = discord.File("./assets/hacker_rank_logo.png")
             description = LANG_DATA["description"]["content"]
 
             # set embed fields

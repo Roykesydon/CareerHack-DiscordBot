@@ -61,7 +61,8 @@ class UploadFileCommand(commands.Cog):
             )
 
         return await interaction.followup.send(
-            LANG_DATA["commands"]["upload"]["success"]
+            LANG_DATA["commands"]["upload"]["success"],
+            ephemeral=True,
         )
 
     def cog_check(self, ctx):

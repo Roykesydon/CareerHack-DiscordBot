@@ -122,6 +122,9 @@ class AskQuickCommand(commands.Cog):
             view.add_item(good_response_button)
             view.add_item(bad_response_button)
 
+        await interaction.followup.send(
+            LANG_DATA["commands"]["ask-quick"]["query_prefix"] + query
+        )
         await interaction.followup.send(ans, view=view)
         await processing_message.delete()
 
