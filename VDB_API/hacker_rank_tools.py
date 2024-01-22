@@ -131,4 +131,4 @@ class HackerRankTools:
         elif len(file_list) > 1:
             return {"$or": [{"source": name} for name in file_list]}
         else:
-            return None
+            raise ValueError("file_list is empty")
