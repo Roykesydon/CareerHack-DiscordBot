@@ -82,14 +82,13 @@ class HackerRankTools:
 
     # 模型問答
     def chat(
-        self, query, specified_files=None, all_accessible_files=None, ref_all=False
+        self, query, all_accessible_files, specified_files=None
     ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
         """
         Args:
             query: user query
-            specified_files: list of specified reference file names
             all_accessible_files: list of all accessible file names
-            ref_all: if True, ignore specified_files, use all_accessible_files
+            specified_files: list of specified reference file names
         Returns:
             ans: model reply
             contents: list of reference document paragraphs
@@ -97,40 +96,35 @@ class HackerRankTools:
                 pdf: {'source': 檔名, 'page': 頁碼}
                 txt: {'source': 檔名}
         """
-        if ref_all:
-            where = self._get_filter(all_accessible_files)
-        elif specified_files is None:
-            if isinstance(self.llm, ChatOpenAI):
-                response = self.llm.invoke(query + " 請用繁體中文回答").content
-            else:
-                print("是線下模型")
-                response = self.llm.invoke(query)
-            return response, None, None
-        else:
-            where = self._get_filter(specified_files)
-        docs = self.vectordb_manager.query(query, n_results=3, where=where)
-
+        # contents = set()
+        # metadatas = set() # bug: 會過度刪除，變成長度與 contents 不同
         contents, metadatas = [], []
-        for doc in docs:
-            contents.append(doc.page_content)
-            metadatas.append(doc.metadata)
 
-        templated_query = PROMPT_TEMPLATE.format(query=query)
-        ans = self.chain.invoke(
-            {"input_documents": docs, "question": templated_query},
-            return_only_outputs=True,
-        )["output_text"]
-        ans = ans.split("\nSOURCES:")[0]
+        if specified_files is None:
+            docs, tmp_contents, tmp_metadatas = self._search_vdb(
+                query, all_accessible_files
+            )
+        else:
+            docs, tmp_contents, tmp_metadatas = self._search_vdb(query, specified_files)
+        contents.extend(tmp_contents)
+        metadatas.extend(tmp_metadatas)
+        ans = self._get_llm_reply(query, docs)
 
         # 二次搜索
         if (
-            (not ref_all)
-            and self.secondary_search
-            and (all_accessible_files != None)
+            self.secondary_search
+            and (specified_files != None)
             and (CONTINUE_SEARCH_WORD in ans)
         ):
+            # 快速問答不應觸發到這裡
             print("\n有其他參考資料需要，進行二次搜索...")
-            return self.chat(query, all_accessible_files, None, False)
+            docs, tmp_contents, tmp_metadatas = self._search_vdb(
+                query, all_accessible_files
+            )
+            contents.extend(tmp_contents)
+            metadatas.extend(tmp_metadatas)
+            ans = self._get_llm_reply(query, docs)
+
         return ans, contents, metadatas
 
     def _get_filter(self, file_list) -> Union[Dict[str, Any], None]:
@@ -140,3 +134,23 @@ class HackerRankTools:
             return {"$or": [{"source": name} for name in file_list]}
         else:
             raise ValueError("file_list is empty")
+
+    def _search_vdb(self, query, file_list):
+        where = self._get_filter(file_list)
+        docs = self.vectordb_manager.query(query, n_results=3, where=where)
+
+        contents, metadatas = [], []
+        for doc in docs:
+            contents.append(doc.page_content)
+            metadatas.append(doc.metadata)
+
+        return docs, contents, metadatas
+
+    def _get_llm_reply(self, query, docs):
+        templated_query = PROMPT_TEMPLATE.format(query=query)
+        ans = self.chain.invoke(
+            {"input_documents": docs, "question": templated_query},
+            return_only_outputs=True,
+        )["output_text"]
+        ans = ans.split("\nSOURCES:")[0]
+        return ans
