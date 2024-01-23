@@ -56,10 +56,6 @@ class ModelSettingCommand(commands.Cog):
                     interaction, SWITCH_MODEL_TEXT_DICT
                 )
 
-                await interaction.channel.send(
-                    SWITCH_MODEL_TEXT_DICT["response-prefix"]
-                    + SWITCH_MODEL_TEXT_DICT["gpt3"]
-                )
                 await interaction.response.edit_message(
                     content=response_message, view=view
                 )
@@ -73,10 +69,6 @@ class ModelSettingCommand(commands.Cog):
                     interaction, SWITCH_MODEL_TEXT_DICT
                 )
 
-                await interaction.channel.send(
-                    SWITCH_MODEL_TEXT_DICT["response-prefix"]
-                    + SWITCH_MODEL_TEXT_DICT["gpt4"]
-                )
                 await interaction.response.edit_message(
                     content=response_message, view=view
                 )
@@ -90,10 +82,6 @@ class ModelSettingCommand(commands.Cog):
                     interaction, SWITCH_MODEL_TEXT_DICT
                 )
 
-                await interaction.channel.send(
-                    SWITCH_MODEL_TEXT_DICT["response-prefix"]
-                    + SWITCH_MODEL_TEXT_DICT["offline"]
-                )
                 await interaction.response.edit_message(
                     content=response_message, view=view
                 )
@@ -106,9 +94,6 @@ class ModelSettingCommand(commands.Cog):
                     interaction, SWITCH_MODEL_TEXT_DICT
                 )
 
-                await interaction.channel.send(
-                    SWITCH_MODEL_TEXT_DICT["open-secondary-search"]
-                )
                 await interaction.response.edit_message(
                     content=response_message, view=view
                 )
@@ -121,9 +106,6 @@ class ModelSettingCommand(commands.Cog):
                     interaction, SWITCH_MODEL_TEXT_DICT
                 )
 
-                await interaction.channel.send(
-                    SWITCH_MODEL_TEXT_DICT["close-secondary-search"]
-                )
                 await interaction.response.edit_message(
                     content=response_message, view=view
                 )

@@ -50,6 +50,7 @@ class DirectlyChat(commands.Cog):
                 query,
                 chat_bot.get_channel_file_scope(str(message.channel.id)),
                 str(message.channel.id),
+                str(message.author.id),
             )
 
             view = View()
