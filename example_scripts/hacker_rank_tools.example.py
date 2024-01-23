@@ -19,21 +19,37 @@ tools.add_documents_to_vdb(file_paths)
 # 設置線上/線下模型
 tools.set_llm_type("gpt3")  # gpt3、gpt4、offline
 
-# 設置是否自動執行二次搜尋
+# 設置自動執行二次搜尋
 tools.set_secondary_search(True)  # default: True
 
-# 純問答
-query = "請問小美的職業是甚麼?"
-# ans, _, _ = tools.chat(query)
-# print("\n純問答 : ")
-# print("Q : ", query)
-# print("A : ", ans)
-
-# # 有參考資料的問答
-refFileNameList = ["tt.doc"]
+# 準備所有可用文件名稱
 searchableFileNameList = ["tt.doc", "tt.txt"]
-ans, contents, metadatas = tools.chat(query, refFileNameList, searchableFileNameList)
+
+# 快速問答(將搜索所有可用文件)
+query = "請問小美的職業是甚麼?"
+ans, _, _ = tools.chat(query, searchableFileNameList)
+print("\n快速問答 : ")
+print("Q : ", query)
+print("A : ", ans)
+
+# 有限定參考資料的問答
+refFileNameList = ["tt.doc"]
+ans, contents, metadatas = tools.chat(query, searchableFileNameList, refFileNameList)
 print("\n\n有參考資料的問答 : ")
+print("Q : ", query)
+print("A : ", ans)
+print("\n參考資料 : ")
+print("contents : ", contents)
+print("metadatas : ", metadatas)
+
+
+# 設置不執行二次搜尋
+tools.set_secondary_search(False)
+
+# 有限定參考資料，但沒有二次搜索的問答
+refFileNameList = ["tt.doc"]
+ans, contents, metadatas = tools.chat(query, searchableFileNameList, refFileNameList)
+print("\n\n有參考資料，但沒有二次搜索的問答 : ")
 print("Q : ", query)
 print("A : ", ans)
 print("\n參考資料 : ")
