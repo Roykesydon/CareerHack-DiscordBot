@@ -98,7 +98,7 @@
         "delete-uploaded-file": {
             "field-name": "File Operations",
             "icon": "🗑️",
-            "description": "Delete uploaded file",
+            "description": "`Private messages only` Delete uploaded file",
             "placeholder": "Please select the file you wish to delete",
             "success": "File deleted successfully",
             "message": "Please select the file you wish to delete",
@@ -107,7 +107,7 @@
         "download": {
             "field-name": "File Operations",
             "icon": "📥",
-            "description": "Download uploaded file",
+            "description": "`Private messages only` Download uploaded file",
             "placeholder": "Please select the file you wish to download",
             "message": "Please select the file you wish to download",
             "no-file": "No file uploaded"
@@ -129,7 +129,7 @@
         "transfrom-file-scope": {
             "field-name": "Admin only",
             "icon": "🔄",
-            "description": "Convert the specified file to shared / private",
+            "description": "`Private messages only` Convert the specified file to shared / private",
             "placeholder": "Please select the file you wish to convert",
             "message": "Please select the file you wish to convert",
             "success": "File converted successfully",
@@ -138,7 +138,7 @@
         "administrator": {
             "field-name": "Admin only",
             "icon": "🔑",
-            "description": "Set the administrator list",
+            "description": "`Private messages only` Set the administrator list",
             "remove-admin-button": "✖ Remove administrator",
             "add-admin-button": "✚ Add administrator",
             "administrator": "Administrator",
