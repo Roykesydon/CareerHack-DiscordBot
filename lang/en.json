@@ -20,27 +20,27 @@
     },
     "commands": {
         "help": {
-            "field-name": "📚 User's Guidance",
+            "field-name": "User's Guidance",
             "icon": "❓",
             "title": "Command List",
             "description": "Show commands list"
         },
         "description": {
-            "field-name": "📚 User's Guidance",
+            "field-name": "User's Guidance",
             "icon": "🤖",
             "description": "Show description of the bot"
         },
         "upload": {
-            "field-name": "📄 File Operations",
+            "field-name": "File Operations",
             "icon": "📤",
             "description": "Upload a document to the bot",
             "success": "Document uploaded successfully",
             "invalid-file-type": "Invalid file type."
         },
         "channel": {
-            "field-name": "⚙ System Management/Settings",
+            "field-name": "Admin only",
             "icon": "🚥",
-            "description": "Admin only - Enable/Disable the bot in the current channel.",
+            "description": "Enable/Disable the bot in the current channel.",
             "enable": "Enable",
             "disable": "Disable",
             "enabled": "Enabled",
@@ -51,7 +51,7 @@
             "disable-response": "Bot disabled for this channel"
         },
         "language": {
-            "field-name": "⚙ System Management/Settings",
+            "field-name": "System Settings",
             "icon": "🌐",
             "description": "Set the language of the bot",
             "message": "Please select your language:",
@@ -59,7 +59,7 @@
             "success": "Language set to English"
         },
         "ask": {
-            "field-name": "🗨 Q&A",
+            "field-name": "Q&A",
             "icon": "💬",
             "all_file": "All available documents",
             "placeholder": "Select the document scope",
@@ -85,18 +85,18 @@
             }
         },
         "ask-quick": {
-            "field-name": "🗨 Q&A",
+            "field-name": "Q&A",
             "icon": "⚡",
             "description": "Quickly ask the question you want to ask",
             "query_prefix": "Your question:"
         },
         "ask-advanced": {
-            "field-name": "🗨 Q&A",
+            "field-name": "Q&A",
             "icon": "💬",
             "description": "Advanced ask the question you want to ask"
         },
         "delete-uploaded-file": {
-            "field-name": "📄 File Operations",
+            "field-name": "File Operations",
             "icon": "🗑️",
             "description": "Delete uploaded file",
             "placeholder": "Please select the file you wish to delete",
@@ -105,7 +105,7 @@
             "no-file": "No file uploaded"
         },
         "download": {
-            "field-name": "📄 File Operations",
+            "field-name": "File Operations",
             "icon": "📥",
             "description": "Download uploaded file",
             "placeholder": "Please select the file you wish to download",
@@ -113,7 +113,7 @@
             "no-file": "No file uploaded"
         },
         "model-setting": {
-            "field-name": "🗨 Q&A",
+            "field-name": "Q&A",
             "icon": "🔄",
             "description": "Related settings of LLM",
             "current-model-prefix": "Current model: ",
@@ -127,18 +127,18 @@
             "close-secondary-search": "Close secondary search function"
         },
         "transfrom-file-scope": {
-            "field-name": "📄 File Operations",
+            "field-name": "Admin only",
             "icon": "🔄",
-            "description": "Admin only - Convert the specified file to shared / private",
+            "description": "Convert the specified file to shared / private",
             "placeholder": "Please select the file you wish to convert",
             "message": "Please select the file you wish to convert",
             "success": "File converted successfully",
             "no-file": "No file uploaded"
         },
         "administrator": {
-            "field-name": "⚙ System Management/Settings",
+            "field-name": "Admin only",
             "icon": "🔑",
-            "description": "Admin only - Set the administrator list",
+            "description": "Set the administrator list",
             "remove-admin-button": "✖ Remove administrator",
             "add-admin-button": "✚ Add administrator",
             "administrator": "Administrator",
