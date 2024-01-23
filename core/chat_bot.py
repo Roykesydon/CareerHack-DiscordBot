@@ -50,7 +50,7 @@ class ChatBot:
             "secondary_search": True,
         }
 
-    def chat(self, query, file_scope, channel_id: str):
+    def chat(self, query, file_scope, channel_id: str, user_id: str):
         ai_engine_api = self.ai_engine_api_dict[self.get_llm_type(channel_id)]
         ai_engine_api.set_secondary_search(
             secondary_search=self.channel_model_setting_dict[channel_id][
@@ -58,7 +58,21 @@ class ChatBot:
             ]
         )
 
-        ans, contents, metadatas = ai_engine_api.chat(query, file_scope)
+        available_file_list = []
+        docs = mongo_database["UserUploadFile"].find({"file_scope": "shared"})
+        for doc in docs:
+            available_file_list.append(f"{str(doc['_id'])}.{doc['filename_extension']}")
+        docs = mongo_database["UserUploadFile"].find(
+            {"user_id": user_id, "file_scope": "private"}
+        )
+        for doc in docs:
+            available_file_list.append(f"{str(doc['_id'])}.{doc['filename_extension']}")
+
+        ans, contents, metadatas = ai_engine_api.chat(
+            query=query,
+            specified_files=file_scope,
+            all_accessible_files=available_file_list,
+        )
         return ans, contents, metadatas
 
     def get_show_reference_callback(

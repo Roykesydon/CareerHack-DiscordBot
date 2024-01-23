@@ -63,6 +63,7 @@ class AskQuickCommand(commands.Cog):
                 query,
                 file_name_list,
                 str(interaction.channel.id),
+                user_id=str(interaction.user.id),
             )
 
             print(metadatas)
