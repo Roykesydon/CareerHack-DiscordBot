@@ -16,7 +16,7 @@ load_dotenv()  # 加載.env檔案
 
 class HackerRankTools:
     def __init__(self):
-        self.llm = ChatOpenAI(temperature=0, model_name=CHAT_MODELS["gpt3"])
+        self.llm = ChatOpenAI(temperature=0, model=CHAT_MODELS["gpt3"])
         self.chain = load_qa_with_sources_chain(self.llm, chain_type="map_reduce")
         self.vectordb_manager = VectordbManager()
         self.secondary_search = True
@@ -40,7 +40,7 @@ class HackerRankTools:
                 )
                 self.llm = HuggingFacePipeline(pipeline=pipe)
             else:
-                self.llm = ChatOpenAI(temperature=0, model_name=CHAT_MODELS[llm_type])
+                self.llm = ChatOpenAI(temperature=0, model=CHAT_MODELS[llm_type])
         else:
             print("Model type not found, keeping it unchanged.")
 
@@ -92,18 +92,12 @@ class HackerRankTools:
                 pdf: {'source': 檔名, 'page': 頁碼}
                 txt: {'source': 檔名}
         """
-        # contents = set()
-        # metadatas = set() # bug: 會過度刪除，變成長度與 contents 不同
-        contents, metadatas = [], []
-
+        docs = []
         if specified_files is None:
-            docs, tmp_contents, tmp_metadatas = self._search_vdb(
-                query, all_accessible_files
-            )
+            tmp_docs = self._search_vdb(query, all_accessible_files)
         else:
-            docs, tmp_contents, tmp_metadatas = self._search_vdb(query, specified_files)
-        contents.extend(tmp_contents)
-        metadatas.extend(tmp_metadatas)
+            tmp_docs = self._search_vdb(query, specified_files)
+        docs = self._add_unique_docs(docs, tmp_docs)
         ans = self._get_llm_reply(query, docs)
 
         # 二次搜索
@@ -114,14 +108,28 @@ class HackerRankTools:
         ):
             # 快速問答不應觸發到這裡
             print("\n有其他參考資料需要，進行二次搜索...")
-            docs, tmp_contents, tmp_metadatas = self._search_vdb(
-                query, all_accessible_files
-            )
-            contents.extend(tmp_contents)
-            metadatas.extend(tmp_metadatas)
-            ans = self._get_llm_reply(query, docs)
+            tmp_docs = self._search_vdb(query, all_accessible_files)
+            docs = self._add_unique_docs(docs, tmp_docs)
+            ans = self._get_llm_reply(query, docs)  # 只要二次搜尋找到的相關結果...(如果agent是傳送小問題給我的話就要用這個)? 還是要所有累積的資料都要(目前用這個)?
+
+        # 整理出需要的東西
+        contents, metadatas = [], []
+        for doc in docs:
+            contents.append(doc.page_content)
+            metadatas.append(doc.metadata)
 
         return ans, contents, metadatas
+
+    def _add_unique_docs(self, docs, new_docs):
+        seen_contents = set(doc.page_content for doc in docs)
+        unique_new_docs = [
+            doc
+            for doc in new_docs
+            if doc.page_content not in seen_contents
+            and not seen_contents.add(doc.page_content)
+        ]
+        docs.extend(unique_new_docs)
+        return docs
 
     def _get_filter(self, file_list) -> Union[Dict[str, Any], None]:
         if len(file_list) == 1:
@@ -134,13 +142,7 @@ class HackerRankTools:
     def _search_vdb(self, query, file_list):
         where = self._get_filter(file_list)
         docs = self.vectordb_manager.query(query, n_results=3, where=where)
-
-        contents, metadatas = [], []
-        for doc in docs:
-            contents.append(doc.page_content)
-            metadatas.append(doc.metadata)
-
-        return docs, contents, metadatas
+        return docs
 
     def _get_llm_reply(self, query, docs):
         templated_query = PROMPT_TEMPLATE.format(query=query)
