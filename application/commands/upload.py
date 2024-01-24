@@ -37,7 +37,7 @@ class UploadFileCommand(commands.Cog):
             return
 
         """
-        TODO: check document type, size
+        TODO: check document size
         """
         response = requests.get(attachment.url)
 
