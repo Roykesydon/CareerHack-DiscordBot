@@ -12,7 +12,7 @@ from main import (admin_validator, administrator_manager, channel_validator,
 class AdministratorCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.discord_api = DiscordAPI()
+        self._discord_api = DiscordAPI()
 
     @app_commands.command(
         name="administrator",
@@ -190,7 +190,7 @@ class AdministratorCommand(commands.Cog):
                             add_prefix = add_success.split("%")[0]
                             add_suffix = add_success.split("%")[1]
 
-                            user_info = self.discord_api.get_user_info(user_id)
+                            user_info = self._discord_api.get_user_info(user_id)
                             new_admin_name = user_info["global_name"]
 
                             await interaction.channel.send(
