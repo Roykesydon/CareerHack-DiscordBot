@@ -31,7 +31,7 @@ class TransformFileScopeSelect(ui.Select):
             )
 
         super().__init__(
-            placeholder=LANG_DATA["commands"]["transfrom-file-scope"]["placeholder"],
+            placeholder=LANG_DATA["commands"]["transform-file-scope"]["placeholder"],
             min_values=1,
             max_values=min(15, len(options)),
             options=options,
@@ -57,7 +57,7 @@ class TransformFileScopeSelect(ui.Select):
             interaction.channel, discord.channel.DMChannel
         ):
             await interaction.channel.send(
-                LANG_DATA["commands"]["transfrom-file-scope"]["success"]
+                LANG_DATA["commands"]["transform-file-scope"]["success"]
             )
 
 
@@ -66,8 +66,8 @@ class TransformFileScopeCommand(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="transfrom-file-scope",
-        description=TextManager.DEFAULT_LANG_DATA["commands"]["transfrom-file-scope"][
+        name="transform-file-scope",
+        description=TextManager.DEFAULT_LANG_DATA["commands"]["transform-file-scope"][
             "description"
         ],
     )
@@ -109,7 +109,7 @@ class TransformFileScopeCommand(commands.Cog):
                 str(interaction.channel_id), str(interaction.user.id)
             )
             await interaction.response.send_message(
-                LANG_DATA["commands"]["transfrom-file-scope"]["message"], view=view
+                LANG_DATA["commands"]["transform-file-scope"]["message"], view=view
             )
 
 
