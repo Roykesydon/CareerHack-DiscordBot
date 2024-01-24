@@ -110,7 +110,9 @@ class HackerRankTools:
             print("\n有其他參考資料需要，進行二次搜索...")
             tmp_docs = self._search_vdb(query, all_accessible_files)
             docs = self._add_unique_docs(docs, tmp_docs)
-            ans = self._get_llm_reply(query, docs)  # 只要二次搜尋找到的相關結果...(如果agent是傳送小問題給我的話就要用這個)? 還是要所有累積的資料都要(目前用這個)?
+            ans = self._get_llm_reply(
+                query, docs
+            )  # 只要二次搜尋找到的相關結果...(如果agent是傳送小問題給我的話就要用這個)? 還是要所有累積的資料都要(目前用這個)?
 
         # 整理出需要的東西
         contents, metadatas = [], []

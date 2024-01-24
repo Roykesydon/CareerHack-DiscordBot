@@ -20,4 +20,3 @@ Final Answer: the final answer to the original input question
 Begin!
 
 Question: {query}"""
-
