@@ -114,7 +114,7 @@
         },
         "model-setting": {
             "field-name": "Q&A",
-            "icon": "🔄",
+            "icon": "⚙",
             "description": "Related settings of LLM",
             "current-model-prefix": "Current model: ",
             "current-secondary-search-prefix": "Secondary search: ",
@@ -126,7 +126,7 @@
             "open-secondary-search": "Open secondary search function",
             "close-secondary-search": "Close secondary search function"
         },
-        "transfrom-file-scope": {
+        "transform-file-scope": {
             "field-name": "Admin only",
             "icon": "🔄",
             "description": "`Private messages only` Convert the specified file to shared / private",

@@ -114,7 +114,7 @@
         },
         "model-setting": {
             "field-name": "問答",
-            "icon": "🔄",
+            "icon": "⚙",
             "description": "LLM 相關設置",
             "current-model-prefix": "當前模型：",
             "current-secondary-search-prefix": "二次搜索：",
@@ -126,7 +126,7 @@
             "open-secondary-search": "開啟二次搜索功能",
             "close-secondary-search": "關閉二次搜索功能"
         },
-        "transfrom-file-scope": {
+        "transform-file-scope": {
             "field-name": "管理員限定",
             "icon": "🔄",
             "description": "`限私訊` 將指定的文件轉成 共享 / 私人",
