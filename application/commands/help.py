@@ -13,7 +13,6 @@ class HelpCommand(commands.Cog):
         self.administrator_manager = AdministratorManager()
         self.admin_id_list = self.administrator_manager.get_admin_id_list()
 
-
     @app_commands.command(
         name="help",
         description=TextManager.DEFAULT_LANG_DATA["commands"]["help"]["description"],
@@ -50,14 +49,14 @@ class HelpCommand(commands.Cog):
                 LANG_DATA["commands"]["ask"]["field-name"],
                 LANG_DATA["commands"]["upload"]["field-name"],
                 LANG_DATA["commands"]["language"]["field-name"],
-                LANG_DATA["commands"]["channel"]["field-name"]
-            ]                
+                LANG_DATA["commands"]["channel"]["field-name"],
+            ]
 
             # sort commands using custom order
             commands_list_with_description.sort(
                 key=lambda x: custom_order.index(x["field-name"])
             )
-    
+
             # set embed fields
             embed_text = {}
             for command in commands_list_with_description:
