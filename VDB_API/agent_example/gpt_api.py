@@ -13,7 +13,6 @@ model = ChatOpenAI(temperature=0)
 def llm_agent(query, model, selected_tools):
     docs = []
     prompt = generate_planning_prompt(selected_tools, query)  # 建立設定好的 prompt
-    print("prompt : \n", prompt)
     stop = ["Observation:", "Observation:\n"]
     if isinstance(model, HuggingFacePipeline):
         response = model.invoke(prompt, stop=stop)  # 生成 response
@@ -21,7 +20,6 @@ def llm_agent(query, model, selected_tools):
         response = model.invoke(prompt, stop=stop).content
     for i in range(3):
         if "Final Answer:" in response:  # 若回應中出現 "Final Answer:" 則停止
-            print("有 Final Answer !!!!!!!!")
             break
         api_output, tmp_docs = execute_api_call(
             selected_tools,
@@ -29,9 +27,6 @@ def llm_agent(query, model, selected_tools):
         )  # 透過 parser 解析 response 並執行對應的 api
         docs = add_unique_docs(docs, tmp_docs)
         api_output = str(api_output)  # 將 api 輸出轉為字串
-        if "no tool founds" == api_output:
-            print("hhhhhhhhhhhhhhhhhhhhhhhhhhh")
-            break
         print(
             "\033[32m"
             + response
@@ -41,6 +36,8 @@ def llm_agent(query, model, selected_tools):
             + api_output
             + "\033[0m"
         )
+        if "no tool founds" == api_output:
+            break
         if CONTINUE_SEARCH_WORD in api_output:
             return "No Answer !", docs
 
@@ -54,12 +51,17 @@ def llm_agent(query, model, selected_tools):
                 prompt, stop=stop
             )  # 生成新的 response，直到出現 "Final Answer:"
         else:
-            response = model.invoke(prompt, stop=stop).content
-
+            response = model.invoke(
+                prompt, stop=stop
+            ).content
+    else:
+        prompt = prompt + response + "Thought: I now know the final answer"
+        response = model.invoke(prompt).content 
     print("\033[32m" + response + "\033[0m")
     print("-" * 20)
-    final_answer_index = response.rfind("\nFinal Answer:")
-    final_answer = response[final_answer_index + len("\nFinal Answer:") :].strip()
+    final_answer_index = response.rfind("Final Answer:")
+    additional_length = len("Final Answer:") if final_answer_index != -1 else 0
+    final_answer = response[final_answer_index + additional_length :].strip()
     return final_answer, docs
 
 

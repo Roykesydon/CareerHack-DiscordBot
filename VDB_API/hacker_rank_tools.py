@@ -88,15 +88,18 @@ class HackerRankTools:
         self, query, all_accessible_files, specified_files=None
     ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
         tools = deepcopy(TOOLS)
-        tools[-1]["tool_api"] = self._tool_wrapper(
-            all_accessible_files, specified_files
+        tools[0]["tool_api"] = self._tool_wrapper(all_accessible_files, specified_files)
+        ans, docs = llm_agent(
+            query, self.llm, tools
         )
         ans, docs = llm_agent(query, self.llm, tools)
 
         # 整理出需要的東西
         contents, metadatas = [], []
         for doc in docs:
-            contents.append(doc.page_content)
+            tmp_content = doc.page_content.split("--")
+            tmp_content = "".join(tmp_content[1:])
+            contents.append(tmp_content)
             metadatas.append(doc.metadata)
         return ans, contents, metadatas
 
