@@ -90,7 +90,9 @@ class UploadFileManager:
             file_paths = [
                 f"{CONFIG['storage_path']}/{file_name}.{UploadFileManager.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}"
             ]
-            chat_bot.add_documents_to_vector_db(file_paths)
+            chat_bot.add_documents_to_vector_db(
+                documents=file_paths, original_file_names=[file_name]
+            )
 
     def delete_file(self, file_id_list: list):
         for file_id in file_id_list:
