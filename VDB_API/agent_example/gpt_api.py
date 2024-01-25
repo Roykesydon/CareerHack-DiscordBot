@@ -39,7 +39,7 @@ def llm_agent(query, model, selected_tools):
         if "no tool founds" == api_output:
             break
         if CONTINUE_SEARCH_WORD in api_output:
-            return "No Answer !", docs
+            return "抱歉我無法解決您的問題，但您可以點擊以下參考按鈕，獲得更多資訊", docs
 
         print("-" * 20)
         prompt = (
@@ -51,12 +51,10 @@ def llm_agent(query, model, selected_tools):
                 prompt, stop=stop
             )  # 生成新的 response，直到出現 "Final Answer:"
         else:
-            response = model.invoke(
-                prompt, stop=stop
-            ).content
+            response = model.invoke(prompt, stop=stop).content
     else:
         prompt = prompt + response + "Thought: I now know the final answer"
-        response = model.invoke(prompt).content 
+        response = model.invoke(prompt).content
     print("\033[32m" + response + "\033[0m")
     print("-" * 20)
     final_answer_index = response.rfind("Final Answer:")
