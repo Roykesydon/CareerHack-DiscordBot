@@ -10,8 +10,8 @@ from main import channel_validator
 class HelpCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.administrator_manager = AdministratorManager()
-        self.admin_id_list = self.administrator_manager.get_admin_id_list()
+        self._administrator_manager = AdministratorManager()
+        self._admin_id_list = self._administrator_manager.get_admin_id_list()
 
     @app_commands.command(
         name="help",
@@ -21,6 +21,7 @@ class HelpCommand(commands.Cog):
         text_manager = TextManager()
         LANG_DATA = text_manager.get_selected_language(str(interaction.channel_id))
         user_id = str(interaction.user.id)
+        self._admin_id_list = self._administrator_manager.get_admin_id_list()
 
         if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
             await interaction.response.send_message(
@@ -71,7 +72,7 @@ class HelpCommand(commands.Cog):
                             field_title
                         ] = f"{command['icon']} `/{command['name']}` - {command['description']}\n"
                 else:
-                    if user_id in self.admin_id_list:
+                    if user_id in self._admin_id_list:
                         if field_title in embed_text:
                             embed_text[
                                 field_title

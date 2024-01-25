@@ -33,7 +33,7 @@
         "upload": {
             "field-name": "文件操作",
             "icon": "📤",
-            "description": "向機器人上傳文件，用戶可用此上傳私人文件",
+            "description": "向機器人上傳私人文件",
             "success": "文件上傳成功",
             "invalid-file-type": "無效的文件類型"
         },
@@ -53,7 +53,7 @@
         "language": {
             "field-name": "系統設定",
             "icon": "🌐",
-            "description": "更改機器人的語言，可切換中文或英文",
+            "description": "更改介面語言（中文／英文）",
             "message": "請選擇您的語言：",
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
@@ -87,13 +87,13 @@
         "ask-quick": {
             "field-name": "問答",
             "icon": "⚡",
-            "description": "快速詢問想問的問題，機器人會搜索所有用戶可見的文件",
+            "description": "快速詢問問題，機器人會搜索所有用戶可用的文件",
             "query_prefix": "您的問題："
         },
         "ask-advanced": {
             "field-name": "問答",
             "icon": "💬",
-            "description": "詢問想問的問題，可以設定查閱文件的範圍並多次詢問"
+            "description": "詢問問題，可以設定查閱文件的範圍並多次詢問"
         },
         "delete-uploaded-file": {
             "field-name": "文件操作",

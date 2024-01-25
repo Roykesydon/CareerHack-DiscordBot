@@ -6,7 +6,7 @@ from core.utils.text_manager import TextManager
 
 class FeedbackManager:
     def __init__(self):
-        self.text_manager = TextManager()
+        self._text_manager = TextManager()
 
     def get_feedback_collection(self):
         return mongo_database.get_collection("Feedback")
@@ -36,7 +36,7 @@ class FeedbackManager:
         contents,
         metadatas,
     ):
-        LANG_DATA = self.text_manager.get_selected_language(str(channel_id))
+        LANG_DATA = self._text_manager.get_selected_language(str(channel_id))
 
         async def response_callback(interaction):
             self.insert_feedback(
@@ -70,7 +70,7 @@ class FeedbackManager:
         contents,
         metadatas,
     ):
-        LANG_DATA = self.text_manager.get_selected_language(str(channel_id))
+        LANG_DATA = self._text_manager.get_selected_language(str(channel_id))
 
         async def response_callback(interaction):
             self.insert_feedback(

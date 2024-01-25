@@ -19,30 +19,30 @@ class ChatBot:
     def __init__(self):
         self.TRUNCATE_CONTENT_THRESHOLD = 45
 
-        self.start_chat_channel_set = set()
-        self.channel_file_scope_dict = {}
+        self._start_chat_channel_set = set()
+        self._channel_file_scope_dict = {}
 
-        self.text_manager = TextManager()
+        self._text_manager = TextManager()
 
-        self.MODEL_TYPE = {
+        self._MODEL_TYPE = {
             LLMType.GPT3.value: "gpt3",
             LLMType.GPT4.value: "gpt4",
             LLMType.OFFLINE.value: "offline",
         }
 
-        self.ai_engine_api_dict = {}
+        self._ai_engine_api_dict = {}
 
-        self.channel_model_setting_dict = {}
+        self._channel_model_setting_dict = {}
 
         """
         LLM API
         """
-        for key, value in self.MODEL_TYPE.items():
-            self.ai_engine_api_dict[key] = HackerRankTools()
-            self.ai_engine_api_dict[key].vectordb_manager.set_vector_db(
+        for key, value in self._MODEL_TYPE.items():
+            self._ai_engine_api_dict[key] = HackerRankTools()
+            self._ai_engine_api_dict[key].vectordb_manager.set_vector_db(
                 CONFIG["vector_db_name"]
             )
-            self.ai_engine_api_dict[key].set_llm_type(llm_type=value)
+            self._ai_engine_api_dict[key].set_llm_type(llm_type=value)
 
     def _get_default_model_setting_template(self):
         return {
@@ -51,9 +51,9 @@ class ChatBot:
         }
 
     def chat(self, query, file_scope, channel_id: str, user_id: str):
-        ai_engine_api = self.ai_engine_api_dict[self.get_llm_type(channel_id)]
+        ai_engine_api = self._ai_engine_api_dict[self.get_llm_type(channel_id)]
         ai_engine_api.set_secondary_search(
-            secondary_search=self.channel_model_setting_dict[channel_id][
+            secondary_search=self._channel_model_setting_dict[channel_id][
                 "secondary_search"
             ]
         )
@@ -78,7 +78,7 @@ class ChatBot:
     def get_show_reference_callback(
         self, channel_id, contents, metadatas, reference_button, view
     ):
-        LANG_DATA = self.text_manager.get_selected_language(str(channel_id))
+        LANG_DATA = self._text_manager.get_selected_language(str(channel_id))
 
         async def show_reference(interaction):
             color = CONFIG["primary_color"]
@@ -140,38 +140,38 @@ class ChatBot:
         return show_reference
 
     def set_secondary_search(self, channel_id: str, secondary_search: bool):
-        if channel_id not in self.channel_model_setting_dict:
-            self.channel_model_setting_dict[
+        if channel_id not in self._channel_model_setting_dict:
+            self._channel_model_setting_dict[
                 channel_id
             ] = self._get_default_model_setting_template()
 
-        self.channel_model_setting_dict[channel_id][
+        self._channel_model_setting_dict[channel_id][
             "secondary_search"
         ] = secondary_search
 
     def get_model_setting(self, channel_id: str):
-        if channel_id not in self.channel_model_setting_dict:
-            self.channel_model_setting_dict[
+        if channel_id not in self._channel_model_setting_dict:
+            self._channel_model_setting_dict[
                 channel_id
             ] = self._get_default_model_setting_template()
 
-        return self.channel_model_setting_dict[channel_id]
+        return self._channel_model_setting_dict[channel_id]
 
     def switch_model(self, channel_id: str, llm_type: LLMType):
-        if channel_id not in self.channel_model_setting_dict:
-            self.channel_model_setting_dict[
+        if channel_id not in self._channel_model_setting_dict:
+            self._channel_model_setting_dict[
                 channel_id
             ] = self._get_default_model_setting_template()
 
-        self.channel_model_setting_dict[channel_id]["model_type"] = llm_type.value
+        self._channel_model_setting_dict[channel_id]["model_type"] = llm_type.value
 
     def get_llm_type(self, channel_id: str):
-        if channel_id not in self.channel_model_setting_dict:
-            self.channel_model_setting_dict[
+        if channel_id not in self._channel_model_setting_dict:
+            self._channel_model_setting_dict[
                 channel_id
             ] = self._get_default_model_setting_template()
 
-        return self.channel_model_setting_dict[channel_id]["model_type"]
+        return self._channel_model_setting_dict[channel_id]["model_type"]
 
     def get_file_list(self, file_id_list: list):
         file_list = []
@@ -197,24 +197,24 @@ class ChatBot:
     """
 
     def insert_start_chat_channel(self, channel_id: str):
-        self.start_chat_channel_set.add(channel_id)
+        self._start_chat_channel_set.add(channel_id)
 
     def remove_start_chat_channel(self, channel_id: str):
-        self.start_chat_channel_set.remove(channel_id)
+        self._start_chat_channel_set.remove(channel_id)
 
     def set_channel_file_scope(self, channel_id: str, file_id_list: list):
         file_name_list = self.get_file_name_list(file_id_list)
 
-        self.channel_file_scope_dict[channel_id] = file_name_list
+        self._channel_file_scope_dict[channel_id] = file_name_list
 
     def get_channel_file_scope(self, channel_id: str):
-        return self.channel_file_scope_dict[channel_id]
+        return self._channel_file_scope_dict[channel_id]
 
     def get_start_chat_channel_set(self):
-        return self.start_chat_channel_set
+        return self._start_chat_channel_set
 
     def add_documents_to_vector_db(self, documents):
-        self.ai_engine_api_dict["gpt3"].add_documents_to_vdb(documents)
+        self._ai_engine_api_dict["gpt3"].add_documents_to_vdb(documents)
 
     def delete_documents_from_vector_db(self, documents):
-        self.ai_engine_api_dict["gpt3"].delete_documents_from_vdb(documents)
+        self._ai_engine_api_dict["gpt3"].delete(documents)
