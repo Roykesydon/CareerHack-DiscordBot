@@ -4,7 +4,7 @@
     "description": {
         "content": "👋 哈囉！我是您的友善 Discord 機器人，專為協助您根據上傳文件提供專業知識和答案而設計。無論您有技術問題、需要特定主題的見解，或只是想探索新資訊，我都在這裡幫忙。只需上傳您的文件、提出問題，我將盡我所能為您提供精確和資訊豐富的回應。讓學習和信息收集變得簡單又有趣！\n\n有問題、有趣事，都歡迎與我分享。快來開啟一段精彩的對話吧！\n",
         "embed": {
-            "title": "Discord Bot 機星人",
+            "title": "Discord Bot Assistant",
             "embed-description": "",
             "fields": {
                 "prefix": {
@@ -33,14 +33,14 @@
         "upload": {
             "field-name": "文件操作",
             "icon": "📤",
-            "description": "向機器人上傳文件，用戶可用此上傳私人文件",
+            "description": "向機器人上傳私人文件",
             "success": "文件上傳成功",
             "invalid-file-type": "無效的文件類型"
         },
         "channel": {
             "field-name": "管理員限定",
             "icon": "🚥",
-            "description": "在當前文字頻道啟用/禁用機器人",
+            "description": "在當前文字頻道啟用／禁用機器人",
             "enable": "啟用",
             "disable": "禁用",
             "enabled": "已啟用",
@@ -53,7 +53,7 @@
         "language": {
             "field-name": "系統設定",
             "icon": "🌐",
-            "description": "更改機器人的語言，可切換中文或英文",
+            "description": "更改介面語言（中文／英文）",
             "message": "請選擇您的語言：",
             "placeholder": "請選擇想設置的語言",
             "success": "語言已更改為中文"
@@ -80,20 +80,20 @@
             "feedback": {
                 "good_response_button_text": "👍 滿意回覆",
                 "bad_response_button_text": "👎 不滿意回覆",
-                "good_response": "感謝您的正面回饋，我會繼續努力！",
-                "bad_response": "感謝您的回饋，我會努力改進！"
+                "good_response": "感謝您的正面回饋，我會繼續努力 😊",
+                "bad_response": "感謝您的回饋，我會努力改進 💪"
             }
         },
         "ask-quick": {
             "field-name": "問答",
             "icon": "⚡",
-            "description": "快速詢問想問的問題，機器人會搜索所有用戶可見的文件",
+            "description": "快速詢問問題，機器人會搜索所有用戶可用的文件",
             "query_prefix": "您的問題："
         },
         "ask-advanced": {
             "field-name": "問答",
             "icon": "💬",
-            "description": "詢問想問的問題，可以設定查閱文件的範圍並多次詢問"
+            "description": "詢問問題，可以設定查閱文件的範圍並多次詢問"
         },
         "delete-uploaded-file": {
             "field-name": "文件操作",

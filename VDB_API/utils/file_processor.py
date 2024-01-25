@@ -30,6 +30,21 @@ def _get_loader(file_type, file_path):
         return None
 
 
+def add_unique_docs(docs, new_docs):
+    if len(docs) == 0:
+        docs.extend(new_docs)
+        return docs
+    seen_contents = set(doc.page_content for doc in docs)
+    unique_new_docs = [
+        doc
+        for doc in new_docs
+        if doc.page_content not in seen_contents
+        and not seen_contents.add(doc.page_content)
+    ]
+    docs.extend(unique_new_docs)
+    return docs
+
+
 def get_split_data(file_path) -> List[Document]:
     file_name = os.path.basename(file_path)
     _, file_extension = os.path.splitext(file_path)

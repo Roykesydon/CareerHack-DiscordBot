@@ -16,7 +16,6 @@ def search_wrapper(tool):
 
     Args:
         tool: 一個具有 run 方法的工具實例。
-
     Returns:
         包裝後的函數，接受一個包含查詢字符串的JSON字串，執行工具的查詢，並返回結果。
     """
@@ -39,7 +38,7 @@ def tool_wrapper(tool):
 # 初始化各個API工具實例
 search_api = SerpAPIWrapper()
 arxiv_api = ArxivAPIWrapper()
-open_ai = OpenAI(temperature=0.1)
+open_ai = OpenAI(temperature=0)
 llm_math_chain = LLMMathChain.from_llm(open_ai, verbose=False)
 
 
@@ -91,8 +90,8 @@ TOOLS = [
     },
     {
         "name_for_human": "response",
-        "name_for_model": "TSMC LLM",
-        "description_for_model": "nless there is a specific request for an online search or for performing mathematical calculations, please always opt for the LLMChain, which is activated to provide highly accurate responses, particularly for questions pertaining to TSMC",
+        "name_for_model": "TSMC_LLM",
+        "description_for_model": "unless there is a specific request for an online search or for performing mathematical calculations, please always opt for the LLMChain, which is activated to provide highly accurate responses, particularly for questions pertaining to TSMC",
         "parameters": [
             {
                 "name": "query",

@@ -1,4 +1,4 @@
-from plugin_parser import extract_latest_plugin_call
+from VDB_API.agent_example.plugin_parser import extract_latest_plugin_call
 
 
 def execute_api_call(tools, response):
@@ -18,16 +18,20 @@ def execute_api_call(tools, response):
 
     # 如果沒有找到對應工具，返回錯誤訊息
     if use_toolname == "":
-        return "no tool founds"
+        return "no tool founds", []
 
     # 在 tools 列表中查找對應的工具
     used_tool_meta = list(filter(lambda x: x["name_for_model"] == use_toolname, tools))
     if len(used_tool_meta) == 0:
-        return "no tool founds"
+        return "no tool founds", []
 
     # 調用工具的 API 函數，獲取輸出結果
-    api_output = used_tool_meta[0]["tool_api"](action_input)
-    return api_output
+    if use_toolname == "TSMC_LLM":
+        api_output, docs = used_tool_meta[0]["tool_api"](action_input)
+        return api_output, docs
+    else:
+        api_output = used_tool_meta[0]["tool_api"](action_input)
+        return api_output, []
 
 
 if __name__ == "__main__":

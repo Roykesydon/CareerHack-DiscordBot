@@ -4,7 +4,7 @@
     "description": {
         "content": "👋 Hello there! I'm your friendly Discord Bot, designed to assist you with expert knowledge and answers based on your uploaded documents. Whether you have technical queries, need insights on specific topics, or just want to explore new information, I'm here to help. Just upload your document, ask your question, and I'll do my best to provide you with a precise and informative response. Let's make learning and information gathering easy and fun!\n\nIf you have any questions or interesting things, feel free to share them with me. Come and start a great conversation!\n",
         "embed": {
-            "title": "Discord Bot ",
+            "title": "Discord Bot Assistant",
             "embed-description": "",
             "fields": {
                 "prefix": {
@@ -53,7 +53,7 @@
         "language": {
             "field-name": "System Settings",
             "icon": "🌐",
-            "description": "Set the language of the bot",
+            "description": "Set interface language（Chinese／English）",
             "message": "Please select your language:",
             "placeholder": "Select the language you wish to set",
             "success": "Language set to English"
@@ -80,8 +80,8 @@
             "feedback": {
                 "good_response_button_text": "👍 Satisfied",
                 "bad_response_button_text": "👎 Dissatisfied",
-                "good_response": "Thank you for your positive feedback, I will continue to work hard!",
-                "bad_response": "Thank you for your feedback, I will work hard to improve!"
+                "good_response": "Thank you for your positive feedback, I will continue to work hard 😊",
+                "bad_response": "Thank you for your feedback, I will work hard to improve 💪"
             }
         },
         "ask-quick": {

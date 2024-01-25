@@ -213,8 +213,10 @@ class ChatBot:
     def get_start_chat_channel_set(self):
         return self._start_chat_channel_set
 
-    def add_documents_to_vector_db(self, documents):
-        self._ai_engine_api_dict["gpt3"].add_documents_to_vdb(documents)
+    def add_documents_to_vector_db(self, documents, original_file_names):
+        self._ai_engine_api_dict["gpt3"].add_documents_to_vdb(
+            documents, original_file_names
+        )
 
     def delete_documents_from_vector_db(self, documents):
         self._ai_engine_api_dict["gpt3"].delete(documents)
