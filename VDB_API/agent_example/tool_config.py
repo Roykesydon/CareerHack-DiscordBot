@@ -23,6 +23,7 @@ def search_wrapper(tool):
     def wrapper(query):
         query = json.loads(query)["query"]
         return tool.run(query)
+
     return wrapper
 
 
@@ -30,6 +31,7 @@ def tool_wrapper(tool):
     def wrapper(query):
         query = json.loads(query)["query"]
         return tool.invoke(query)
+
     return wrapper
 
 

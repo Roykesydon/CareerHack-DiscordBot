@@ -108,7 +108,7 @@ class VectordbManager:
         """
         docs = self.vectordb.similarity_search(query, k=n_results, filter=where)
         for i in range(len(docs)):
-            docs[i].page_content = docs[i].page_content.replace('\n', '')
+            docs[i].page_content = docs[i].page_content.replace("\n", "")
         return docs
 
     # 刪除 _collection 中指定條件的資料
