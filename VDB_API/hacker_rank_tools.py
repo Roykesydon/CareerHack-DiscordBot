@@ -92,6 +92,7 @@ class HackerRankTools:
         ans, docs = llm_agent(
             query, self.llm, tools
         )
+        ans, docs = llm_agent(query, self.llm, tools)
 
         # 整理出需要的東西
         contents, metadatas = [], []

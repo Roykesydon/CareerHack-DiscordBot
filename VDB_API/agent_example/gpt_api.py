@@ -1,5 +1,6 @@
-from langchain_openai import ChatOpenAI
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from langchain_openai import ChatOpenAI
+
 from VDB_API.agent_example.api_executor import execute_api_call
 from VDB_API.agent_example.prompt_generation import generate_planning_prompt
 from VDB_API.agent_example.tool_config import TOOLS
@@ -16,7 +17,7 @@ def llm_agent(query, model, selected_tools):
     if isinstance(model, HuggingFacePipeline):
         response = model.invoke(prompt, stop=stop)  # 生成 response
     else:
-        response = model.invoke(prompt, stop=stop).content 
+        response = model.invoke(prompt, stop=stop).content
     for i in range(3):
         if "Final Answer:" in response:  # 若回應中出現 "Final Answer:" 則停止
             break
@@ -44,11 +45,11 @@ def llm_agent(query, model, selected_tools):
         prompt = (
             prompt + response + "Observation: " + api_output
         )  # 將 Api 輸出放到 observation 中，並更新 prompt
-        
+
         if isinstance(model, HuggingFacePipeline):
             response = model.invoke(
                 prompt, stop=stop
-            ) # 生成新的 response，直到出現 "Final Answer:"
+            )  # 生成新的 response，直到出現 "Final Answer:"
         else:
             response = model.invoke(
                 prompt, stop=stop
