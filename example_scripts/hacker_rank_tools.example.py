@@ -11,7 +11,8 @@ tools.vectordb_manager.set_vector_db("test_db")
 
 # 添加資料
 file_paths = ["./VDB_API/docs/tt.txt", "./VDB_API/docs/tt.doc"]
-tools.add_documents_to_vdb(file_paths)
+ori_names = ["333.txt", "333.doc"]
+tools.add_documents_to_vdb(file_paths, ori_names)
 
 # 刪除指定文件資料
 # tools.delete(["Retentive Network_A Successor to Transformer.pdf"])

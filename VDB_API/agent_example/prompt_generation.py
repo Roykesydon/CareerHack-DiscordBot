@@ -1,8 +1,9 @@
 # prompt_generation.py
 import json
 
-from prompt_templates import REACT_PROMPT_TEMPLATE, TOOL_DESCRIPTION
-
+from VDB_API.agent_example.prompt_templates import (REACT_PROMPT_TEMPLATE,
+                                                    TOOL_DESCRIPTION)
+# from prompt_templates import (REACT_PROMPT_TEMPLATE, TOOL_DESCRIPTION)
 
 def generate_planning_prompt(tools, user_query):
     """
@@ -34,6 +35,7 @@ def generate_planning_prompt(tools, user_query):
         tool_names=combined_tool_names,
         query=user_query,
     )
+
     return prompt
 
 

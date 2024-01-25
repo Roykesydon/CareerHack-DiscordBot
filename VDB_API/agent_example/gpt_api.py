@@ -1,22 +1,35 @@
-from api_executor import execute_api_call
 from langchain_openai import ChatOpenAI
-from opencc import OpenCC
-from prompt_generation import generate_planning_prompt
-from tool_config import TOOLS
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from VDB_API.agent_example.api_executor import execute_api_call
+from VDB_API.agent_example.prompt_generation import generate_planning_prompt
+from VDB_API.agent_example.tool_config import TOOLS
+from VDB_API.utils.config import CONTINUE_SEARCH_WORD
+from VDB_API.utils.file_processor import add_unique_docs
 
-model = ChatOpenAI(temperature=0.1)
+model = ChatOpenAI(temperature=0)
 
 
 def llm_agent(query, model, selected_tools):
+    docs = []
     prompt = generate_planning_prompt(selected_tools, query)  # 建立設定好的 prompt
+    print("prompt : \n", prompt)
     stop = ["Observation:", "Observation:\n"]
-    response = model.invoke(prompt, temperature=0.1, stop=stop).content  # 生成 response
-    while "Final Answer:" not in response:  # 若回應中出現 "Final Answer:" 則停止
-        api_output = execute_api_call(
-            selected_tools, response
+    if isinstance(model, HuggingFacePipeline):
+        response = model.invoke(prompt, stop=stop)  # 生成 response
+    else:
+        response = model.invoke(prompt, stop=stop).content 
+    for i in range(3):
+        if "Final Answer:" in response:  # 若回應中出現 "Final Answer:" 則停止
+            print("有 Final Answer !!!!!!!!")
+            break
+        api_output, tmp_docs = execute_api_call(
+            selected_tools,
+            response,
         )  # 透過 parser 解析 response 並執行對應的 api
+        docs = add_unique_docs(docs, tmp_docs)
         api_output = str(api_output)  # 將 api 輸出轉為字串
         if "no tool founds" == api_output:
+            print("hhhhhhhhhhhhhhhhhhhhhhhhhhh")
             break
         print(
             "\033[32m"
@@ -27,18 +40,28 @@ def llm_agent(query, model, selected_tools):
             + api_output
             + "\033[0m"
         )
+        if CONTINUE_SEARCH_WORD in api_output:
+            return "No Answer !", docs
+
         print("-" * 20)
         prompt = (
             prompt + response + "Observation: " + api_output
         )  # 將 Api 輸出放到 observation 中，並更新 prompt
-        response = model.invoke(
-            prompt, temperature=0.1, stop=stop
-        ).content  # 生成新的 response，直到出現 "Final Answer:"
-    print("\033[32m" + response + "\033[0m" + "\033[34m")
+        
+        if isinstance(model, HuggingFacePipeline):
+            response = model.invoke(
+                prompt, stop=stop
+            ) # 生成新的 response，直到出現 "Final Answer:"
+        else:
+            response = model.invoke(
+                prompt, stop=stop
+            ).content
+
+    print("\033[32m" + response + "\033[0m")
     print("-" * 20)
     final_answer_index = response.rfind("\nFinal Answer:")
     final_answer = response[final_answer_index + len("\nFinal Answer:") :].strip()
-    return final_answer
+    return final_answer, docs
 
 
 if __name__ == "__main__":

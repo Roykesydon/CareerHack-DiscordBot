@@ -4,6 +4,8 @@ __pycache__/
 
 /config.json
 
+hacker_rank_tools.example.py
+
 .env
 
 
