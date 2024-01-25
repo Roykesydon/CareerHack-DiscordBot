@@ -53,7 +53,7 @@
         "language": {
             "field-name": "System Settings",
             "icon": "🌐",
-            "description": "Set the language of the bot",
+            "description": "Set interface language（Chinese／English）",
             "message": "Please select your language:",
             "placeholder": "Select the language you wish to set",
             "success": "Language set to English"
