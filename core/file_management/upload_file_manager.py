@@ -91,7 +91,8 @@ class UploadFileManager:
                 f"{CONFIG['storage_path']}/{file_name}.{UploadFileManager.AVAILABLE_FILE_TYPE_DICT[attachment.content_type]}"
             ]
             chat_bot.add_documents_to_vector_db(
-                documents=file_paths, original_file_names=[file_name]
+                documents=file_paths,
+                original_file_names=[f"{file_name}-{custom_file_name}"],
             )
 
     def delete_file(self, file_id_list: list):
