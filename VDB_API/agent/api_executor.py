@@ -1,4 +1,5 @@
-from VDB_API.agent_example.plugin_parser import extract_latest_plugin_call
+from VDB_API.agent.plugin_parser import extract_latest_plugin_call
+
 
 def execute_api_call(tools, response):
     """

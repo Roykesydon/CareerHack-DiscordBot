@@ -1,8 +1,7 @@
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 
-from VDB_API.agent_example.api_executor import execute_api_call
-from VDB_API.agent_example.prompt_generation import generate_planning_prompt
-from VDB_API.agent_example.tool_config import TOOLS
+from VDB_API.agent.api_executor import execute_api_call
+from VDB_API.agent.prompt_generation import generate_planning_prompt
 from VDB_API.utils.config import CONTINUE_SEARCH_WORD
 from VDB_API.utils.file_processor import add_unique_docs
 
