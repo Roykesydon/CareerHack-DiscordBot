@@ -5,9 +5,6 @@ from VDB_API.agent.prompt_generation import generate_planning_prompt
 from VDB_API.utils.config import CONTINUE_SEARCH_WORD
 from VDB_API.utils.file_processor import add_unique_docs
 
-# model = ChatOpenAI(temperature=0)
-
-
 async def update_new_processing_message(response, processing_message):
     action_text_dict = {
         "DCBA_LLM": "🔍 正在用 DCBA 機器人查找...",
