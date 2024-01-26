@@ -24,7 +24,7 @@ class AskAdvancedScopeSelect(ui.Select):
             SelectOption(
                 label=LANG_DATA["commands"]["ask"]["all_file"],
                 emoji="📁",
-                value=f"all-{LANG_DATA['commands']['ask']['all_file']}",
+                value=f"all${LANG_DATA['commands']['ask']['all_file']}",
             ),
         ]
         upload_file_manager = UploadFileManager()
@@ -34,7 +34,7 @@ class AskAdvancedScopeSelect(ui.Select):
                 SelectOption(
                     label=file["file_name"],
                     emoji=file["emoji"],
-                    value=f"{file['file_id']}-{file['file_name']}",
+                    value=f"{file['file_id']}${file['file_name']}",
                 )
             )
 
@@ -53,7 +53,7 @@ class AskAdvancedScopeSelect(ui.Select):
         return_message = LANG_DATA["commands"]["ask"]["success"]
 
         selected_file_scope = self.values
-        selected_file_scope = [x.split("-") for x in selected_file_scope]
+        selected_file_scope = [x.split("$") for x in selected_file_scope]
 
         if (
             len(upload_file_manager.get_available_file_list(str(interaction.user.id)))
