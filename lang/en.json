@@ -23,24 +23,24 @@
             "field-name": "User's Guidance",
             "icon": "❓",
             "title": "Command List",
-            "description": "Show commands list"
+            "description": "Show all available commands with brief descriptions"
         },
         "description": {
             "field-name": "User's Guidance",
             "icon": "🤖",
-            "description": "Show description of the bot"
+            "description": "Introduce the function and purpose of the robot"
         },
         "upload": {
             "field-name": "File Operations",
             "icon": "📤",
-            "description": "Upload a document to the bot",
+            "description": "Upload private files to the bot",
             "success": "Document uploaded successfully",
             "invalid-file-type": "Invalid file type."
         },
         "channel": {
             "field-name": "Admin only",
             "icon": "🚥",
-            "description": "Enable/Disable the bot in the current channel.",
+            "description": "Enable or disable the bot for the current text channel",
             "enable": "Enable",
             "disable": "Disable",
             "enabled": "Enabled",
@@ -87,13 +87,13 @@
         "ask-quick": {
             "field-name": "Q&A",
             "icon": "⚡",
-            "description": "Quickly ask the question you want to ask",
+            "description": "Quickly ask questions, the bot will search all available documents for users",
             "query_prefix": "Your question:"
         },
         "ask-advanced": {
             "field-name": "Q&A",
             "icon": "💬",
-            "description": "Advanced ask the question you want to ask"
+            "description": "Ask questions, you can set the scope of the document and ask multiple questions"
         },
         "delete-uploaded-file": {
             "field-name": "File Operations",
@@ -107,7 +107,7 @@
         "download": {
             "field-name": "File Operations",
             "icon": "📥",
-            "description": "`Private messages only` Download uploaded file",
+            "description": "`Private messages only` Download the files available to the user",
             "placeholder": "Please select the file you wish to download",
             "message": "Please select the file you wish to download",
             "no-file": "No file uploaded"
