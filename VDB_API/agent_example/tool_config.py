@@ -45,7 +45,7 @@ llm_math_chain = LLMMathChain.from_llm(open_ai, verbose=False)
 TOOLS = [
     {
         "name_for_human": "response",
-        "name_for_model": "TSMC_LLM",
+        "name_for_model": "DCBA_LLM",
         "description_for_model": "unless there is a specific request for an online search or for performing mathematical calculations, please always opt for the LLMChain, which is activated to provide highly accurate responses, particularly for questions pertaining to TSMC",
         "parameters": [
             {

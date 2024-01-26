@@ -1,6 +1,5 @@
 from VDB_API.agent_example.plugin_parser import extract_latest_plugin_call
 
-
 def execute_api_call(tools, response):
     """
     根據解析出的插件名稱和參數執行相應的 API。
@@ -26,7 +25,7 @@ def execute_api_call(tools, response):
         return "no tool founds", []
 
     # 調用工具的 API 函數，獲取輸出結果
-    if use_toolname == "TSMC_LLM":
+    if use_toolname == "DCBA_LLM":
         api_output, docs = used_tool_meta[0]["tool_api"](action_input)
         return api_output, docs
     else:
