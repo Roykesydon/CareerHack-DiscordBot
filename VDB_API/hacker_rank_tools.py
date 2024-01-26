@@ -84,12 +84,14 @@ class HackerRankTools:
         return fileNameList
 
     # 模型問答
-    def chat(
-        self, query, all_accessible_files, specified_files=None
+    async def chat(
+        self, query, all_accessible_files, specified_files=None, processing_message=None
     ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
         tools = deepcopy(TOOLS)
         tools[0]["tool_api"] = self._tool_wrapper(all_accessible_files, specified_files)
-        ans, docs = llm_agent(query, self.llm, tools)
+        ans, docs = await llm_agent(
+            query, self.llm, tools, processing_message=processing_message
+        )
 
         # 整理出需要的東西
         contents, metadatas = [], []

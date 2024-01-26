@@ -59,11 +59,12 @@ class AskQuickCommand(commands.Cog):
                 LANG_DATA["commands"]["ask"]["processing"]
             )
 
-            ans, contents, metadatas = chat_bot.chat(
+            ans, contents, metadatas = await chat_bot.chat(
                 query,
                 file_name_list,
                 str(interaction.channel.id),
                 user_id=str(interaction.user.id),
+                processing_message=processing_message,
             )
 
             print(metadatas)
