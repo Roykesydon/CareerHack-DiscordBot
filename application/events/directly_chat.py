@@ -102,6 +102,9 @@ class DirectlyChat(commands.Cog):
                 metadatas=metadatas,
             )
 
+            if len(metadatas) == 0:
+                reference_button.disabled = True
+
             view.add_item(reference_button)
             view.add_item(good_response_button)
             view.add_item(bad_response_button)
