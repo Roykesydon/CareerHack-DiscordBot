@@ -8,7 +8,53 @@ from VDB_API.utils.file_processor import add_unique_docs
 # model = ChatOpenAI(temperature=0)
 
 
-def llm_agent(query, model, selected_tools):
+async def update_new_processing_message(response, processing_message):
+    action_text_dict = {
+        "DCBA_LLM": "🔍 正在用 DCBA 機器人查找...",
+        "Search": "🔍 正在用 Google 搜尋...",
+        "Arxiv": "🔍 正在 Arxiv 上搜尋...",
+        "LLMMathChain": "🔍 正在用數學機器人...",
+    }
+    action = None
+    query = None
+
+    response_split_list = response.split()
+    response_split_list = [x.strip() for x in response_split_list]
+
+    # get action
+    try:
+        action_index = response_split_list.index("Action:")
+        if action_index != -1:
+            action = response_split_list[action_index + 1]
+    except:
+        pass
+
+    # get query
+    try:
+        action_input_index = response_split_list.index("Input:")
+        if action_input_index != -1:
+            query = "".join(response_split_list[action_input_index + 2 :])
+            query = query.replace('"', "")
+            query = query.replace("}", "")
+            query = query.replace("{", "")
+
+    except:
+        pass
+
+    if action is not None and action in action_text_dict.keys() and query is not None:
+        return_message = action_text_dict[action]
+        # replace ...
+        return_message = return_message.replace("...", "：")
+        await processing_message.edit(content=return_message + query)
+        return
+
+    if action is not None and action in action_text_dict.keys():
+        return_message = action_text_dict[action]
+        await processing_message.edit(content=return_message)
+        return
+
+
+async def llm_agent(query, model, selected_tools, processing_message=None):
     docs = []
     prompt = generate_planning_prompt(selected_tools, query)  # 建立設定好的 prompt
     stop = ["Observation:", "Observation:\n"]
@@ -16,6 +62,9 @@ def llm_agent(query, model, selected_tools):
         response = model.invoke(prompt, stop=stop)  # 生成 response
     else:
         response = model.invoke(prompt, stop=stop).content
+
+    if processing_message is not None:
+        await update_new_processing_message(response, processing_message)
     for i in range(3):
         if "Final Answer:" in response:  # 若回應中出現 "Final Answer:" 則停止
             break
@@ -50,6 +99,9 @@ def llm_agent(query, model, selected_tools):
             )  # 生成新的 response，直到出現 "Final Answer:"
         else:
             response = model.invoke(prompt, stop=stop).content
+        print(f"response: {response}")
+        if processing_message is not None:
+            await update_new_processing_message(response, processing_message)
     else:
         prompt = prompt + response + "Thought: I now know the final answer"
         response = model.invoke(prompt).content

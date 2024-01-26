@@ -50,7 +50,9 @@ class ChatBot:
             "secondary_search": True,
         }
 
-    def chat(self, query, file_scope, channel_id: str, user_id: str):
+    async def chat(
+        self, query, file_scope, channel_id: str, user_id: str, processing_message=None
+    ):
         ai_engine_api = self._ai_engine_api_dict[self.get_llm_type(channel_id)]
         ai_engine_api.set_secondary_search(
             secondary_search=self._channel_model_setting_dict[channel_id][
@@ -68,10 +70,11 @@ class ChatBot:
         for doc in docs:
             available_file_list.append(f"{str(doc['_id'])}.{doc['filename_extension']}")
 
-        ans, contents, metadatas = ai_engine_api.chat(
+        ans, contents, metadatas = await ai_engine_api.chat(
             query=query,
             specified_files=file_scope,
             all_accessible_files=available_file_list,
+            processing_message=processing_message,
         )
         return ans, contents, metadatas
 

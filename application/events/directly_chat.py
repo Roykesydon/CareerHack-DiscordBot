@@ -46,11 +46,12 @@ class DirectlyChat(commands.Cog):
                 LANG_DATA["commands"]["ask"]["processing"]
             )
 
-            ans, contents, metadatas = chat_bot.chat(
+            ans, contents, metadatas = await chat_bot.chat(
                 query,
                 chat_bot.get_channel_file_scope(str(message.channel.id)),
                 str(message.channel.id),
                 str(message.author.id),
+                processing_message=processing_message,
             )
 
             view = View()
