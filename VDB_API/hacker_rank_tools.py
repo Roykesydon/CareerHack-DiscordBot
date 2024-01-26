@@ -8,8 +8,8 @@ from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 from langchain_openai import ChatOpenAI
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-from VDB_API.agent_example.gpt_api import llm_agent
-from VDB_API.agent_example.tool_config import TOOLS
+from VDB_API.agent.gpt_api import llm_agent
+from VDB_API.agent.tool_config import TOOLS
 from VDB_API.utils import file_processor
 from VDB_API.utils.config import (CHAT_MODELS, CONTINUE_SEARCH_WORD, DEVICE,
                                   PROMPT_TEMPLATE)
@@ -90,7 +90,6 @@ class HackerRankTools:
         tools = deepcopy(TOOLS)
         tools[0]["tool_api"] = self._tool_wrapper(all_accessible_files, specified_files)
         ans, docs = llm_agent(query, self.llm, tools)
-        ans, docs = llm_agent(query, self.llm, tools)
 
         # 整理出需要的東西
         contents, metadatas = [], []
@@ -100,52 +99,6 @@ class HackerRankTools:
             contents.append(tmp_content)
             metadatas.append(doc.metadata)
         return ans, contents, metadatas
-
-    # def chat(
-    #     self, query, all_accessible_files, specified_files=None
-    # ) -> Tuple[str, Union[List[str], None], Union[List[dict], None]]:
-    #     """
-    #     Args:
-    #         query: user query
-    #         all_accessible_files: list of all accessible file names
-    #         specified_files: list of specified reference file names
-    #     Returns:
-    #         ans: model reply
-    #         contents: list of reference document paragraphs
-    #         metadatas: list of reference document info
-    #             pdf: {'source': 檔名, 'page': 頁碼}
-    #             txt: {'source': 檔名}
-    #     """
-    #     docs = []
-    #     if specified_files is None:
-    #         tmp_docs = self._search_vdb(query, all_accessible_files)
-    #     else:
-    #         tmp_docs = self._search_vdb(query, specified_files)
-    #     docs = self._add_unique_docs(docs, tmp_docs)
-    #     ans = self._get_llm_reply(query, docs)
-
-    #     # 二次搜索
-    #     if (
-    #         self.secondary_search
-    #         and (specified_files != None)
-    #         and (CONTINUE_SEARCH_WORD in ans)
-    #     ):
-    #         # 快速問答不應觸發到這裡
-    #         print("\n有其他參考資料需要，進行二次搜索...")
-    #         tmp_docs = self._search_vdb(query, all_accessible_files)
-    #         # docs = self._add_unique_docs(docs, tmp_docs)
-    #         docs.append()
-    #         ans = self._get_llm_reply(
-    #             query, docs
-    #         )
-
-    #     # 整理出需要的東西
-    #     contents, metadatas = [], []
-    #     for doc in docs:
-    #         contents.append(doc.page_content)
-    #         metadatas.append(doc.metadata)
-
-    #     return ans, contents, metadatas
 
     def _tool_wrapper(self, all_accessible_files, specified_files=None):
         def wrapper(query):
@@ -189,11 +142,9 @@ class HackerRankTools:
 
     def _get_llm_reply(self, query, docs):
         templated_query = PROMPT_TEMPLATE.format(query=query)
-        # print("templated_query : \n", templated_query)
         ans = self.chain.invoke(
             {"input_documents": docs, "question": templated_query},
             return_only_outputs=True,
         )["output_text"]
         ans = ans.split("\nSOURCES:")[0]
-        # print("ans : \n", ans)
         return ans

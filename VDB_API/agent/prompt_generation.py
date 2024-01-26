@@ -1,8 +1,8 @@
 # prompt_generation.py
 import json
 
-from VDB_API.agent_example.prompt_templates import (REACT_PROMPT_TEMPLATE,
-                                                    TOOL_DESCRIPTION)
+from VDB_API.agent.prompt_templates import (REACT_PROMPT_TEMPLATE,
+                                            TOOL_DESCRIPTION)
 
 # from prompt_templates import (REACT_PROMPT_TEMPLATE, TOOL_DESCRIPTION)
 

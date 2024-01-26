@@ -1,13 +1,11 @@
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
-from langchain_openai import ChatOpenAI
 
-from VDB_API.agent_example.api_executor import execute_api_call
-from VDB_API.agent_example.prompt_generation import generate_planning_prompt
-from VDB_API.agent_example.tool_config import TOOLS
+from VDB_API.agent.api_executor import execute_api_call
+from VDB_API.agent.prompt_generation import generate_planning_prompt
 from VDB_API.utils.config import CONTINUE_SEARCH_WORD
 from VDB_API.utils.file_processor import add_unique_docs
 
-model = ChatOpenAI(temperature=0)
+# model = ChatOpenAI(temperature=0)
 
 
 def llm_agent(query, model, selected_tools):
@@ -63,22 +61,18 @@ def llm_agent(query, model, selected_tools):
     return final_answer, docs
 
 
-if __name__ == "__main__":
-    # query = "我現在162公分，請問我的身高和台積電員工身高平均相差多少？"
-    # query = '台積電一年有多少天的假期？請用繁體中文回答。'
-    # query = '台積電一年有多少天的假期？'
-    # query = '請根據網路訊息，請問台積電一年有多少天的假期？請用繁體中文回答。'
-    # query = '請問我一年有多少天的假期？'
-    query = "請問員工一年有多少天的假期？請用繁體中文回答。"
-    # query = '請問台積電提供哪些產品和服務？'
+# query = "我現在162公分，請問我的身高和台積電員工身高平均相差多少？"
+# query = '台積電一年有多少天的假期？請用繁體中文回答。'
+# query = '台積電一年有多少天的假期？'
+# query = '請根據網路訊息，請問台積電一年有多少天的假期？請用繁體中文回答。'
+# query = '請問我一年有多少天的假期？'
+# query = "請問員工一年有多少天的假期？請用繁體中文回答。"
+# query = '請問台積電提供哪些產品和服務？'
 
-    # query = '請根據網路上的資料，告訴我台積電提供哪些產品和服務？'
-    # query = '台積電是什麼公司，他們主要從事什麼業務？'
-    # query = '請介紹台積電這間公司？請用繁體中文回答。'
-    # query = '請根據網路上的資料，介紹台積電這間公司，並以繁體中文回答。'
-    # query = '台積電是半導體製造業的領先者嗎？請用繁體中文回答'
-    # 他們有哪些先進製程技術？
-    # query = '請問最先進的製程在哪個廠區？請用繁體中文回答。'
-
-    response = llm_agent(query, model, TOOLS)
-    print(response)
+# query = '請根據網路上的資料，告訴我台積電提供哪些產品和服務？'
+# query = '台積電是什麼公司，他們主要從事什麼業務？'
+# query = '請介紹台積電這間公司？請用繁體中文回答。'
+# query = '請根據網路上的資料，介紹台積電這間公司，並以繁體中文回答。'
+# query = '台積電是半導體製造業的領先者嗎？請用繁體中文回答'
+# 他們有哪些先進製程技術？
+# query = '請問最先進的製程在哪個廠區？請用繁體中文回答。'
