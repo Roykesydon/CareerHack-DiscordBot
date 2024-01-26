@@ -23,6 +23,7 @@ def search_wrapper(tool):
     def wrapper(query):
         query = json.loads(query)["query"]
         return tool.run(query)
+
     return wrapper
 
 
@@ -30,6 +31,7 @@ def tool_wrapper(tool):
     def wrapper(query):
         query = json.loads(query)["query"]
         return tool.invoke(query)
+
     return wrapper
 
 
@@ -41,11 +43,25 @@ llm_math_chain = LLMMathChain.from_llm(open_ai, verbose=False)
 
 
 TOOLS = [
+    {
+        "name_for_human": "response",
+        "name_for_model": "DCBA_LLM",
+        "description_for_model": "unless there is a specific request for an online search or for performing mathematical calculations, please always opt for the LLMChain, which is activated to provide highly accurate responses, particularly for questions pertaining to TSMC",
+        "parameters": [
+            {
+                "name": "query",
+                "type": "string",
+                "description": "default response",
+                "required": True,
+            }
+        ],
+        "tool_api": tool_wrapper(open_ai),
+    },
     # google search 工具
     {
         "name_for_human": "google search",
         "name_for_model": "Search",
-        "description_for_model": "This browser tool is used for current events inquiries and is activated only when there is an explicit request to go online to search for the latest or specific information, ensuring the provision of accurate and timely responses.",
+        "description_for_model": "This browser tool is unstable and is used for current events inquiries, activated only when there is an explicit request to go online to search for the latest or specific information, ensuring the provision of accurate and timely responses.",
         "parameters": [
             {
                 "name": "query",
@@ -85,19 +101,5 @@ TOOLS = [
             }
         ],
         "tool_api": tool_wrapper(llm_math_chain),
-    },
-    {
-        "name_for_human": "response",
-        "name_for_model": "TSMC_LLM",
-        "description_for_model": "unless there is a specific request for an online search or for performing mathematical calculations, please always opt for the LLMChain, which is activated to provide highly accurate responses, particularly for questions pertaining to TSMC",
-        "parameters": [
-            {
-                "name": "query",
-                "type": "string",
-                "description": "default response",
-                "required": True,
-            }
-        ],
-        "tool_api": tool_wrapper(open_ai),
     },
 ]

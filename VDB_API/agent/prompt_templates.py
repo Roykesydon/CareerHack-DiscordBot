@@ -2,7 +2,7 @@
 TOOL_DESCRIPTION = """{name_for_model}: Call this tool to interact with the {name_for_human} API. What is the {name_for_human} API useful for? {description_for_model} Parameters: {parameters} Format the arguments as a JSON object."""
 
 # 生成互動提示的模板
-REACT_PROMPT_TEMPLATE = """Please answer the following questions about TSMC to the best of your ability. Note that responses should be in Traditional Chinese unless specifically instructed otherwise. You have access to the following tools for this task.:
+REACT_PROMPT_TEMPLATE = """Please answer the following questions to the best of your ability. Note that responses should be in Traditional Chinese unless specifically instructed otherwise. You have access to the following tools for this task.:
 
 {tool_descs}
 

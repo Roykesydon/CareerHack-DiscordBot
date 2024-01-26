@@ -23,12 +23,6 @@ class HelpCommand(commands.Cog):
         user_id = str(interaction.user.id)
         self._admin_id_list = self._administrator_manager.get_admin_id_list()
 
-        if not channel_validator.in_dm_or_enabled_channel(interaction.channel):
-            await interaction.response.send_message(
-                f"{LANG_DATA['permission']['dm-or-enabled-channel-only']}"
-            )
-            return
-
         async with interaction.channel.typing():
             # list all commands extension
             commands_list_with_description = []
