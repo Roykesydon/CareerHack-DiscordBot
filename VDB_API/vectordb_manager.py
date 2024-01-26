@@ -58,6 +58,9 @@ class VectordbManager:
             ids: id of each document in vector database
         """
         print("adding data...")
+        # 將多餘的換行移除
+        for i in range(len(texts)):
+            texts[i].page_content = texts[i].page_content.replace("\n", "")
         ids = self.vectordb.add_documents(texts)
         self.vectordb.persist()  # ensure the embeddings are written to disk
         return ids
@@ -107,8 +110,6 @@ class VectordbManager:
             docs: list of documents.
         """
         docs = self.vectordb.similarity_search(query, k=n_results, filter=where)
-        for i in range(len(docs)):
-            docs[i].page_content = docs[i].page_content.replace("\n", "")
         return docs
 
     # 刪除 _collection 中指定條件的資料

@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 from langchain.chains import LLMMathChain
 from langchain_community.utilities import ArxivAPIWrapper, SerpAPIWrapper
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 
 # 加載環境變數，用於設定如API金鑰等
 load_dotenv()
@@ -38,7 +38,7 @@ def tool_wrapper(tool):
 # 初始化各個API工具實例
 search_api = SerpAPIWrapper()
 arxiv_api = ArxivAPIWrapper()
-open_ai = OpenAI(temperature=0)
+open_ai = ChatOpenAI(temperature=0)
 llm_math_chain = LLMMathChain.from_llm(open_ai, verbose=False)
 
 

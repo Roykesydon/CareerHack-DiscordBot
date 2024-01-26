@@ -5,9 +5,6 @@ from VDB_API.agent.prompt_generation import generate_planning_prompt
 from VDB_API.utils.config import CONTINUE_SEARCH_WORD
 from VDB_API.utils.file_processor import add_unique_docs
 
-# model = ChatOpenAI(temperature=0)
-
-
 def llm_agent(query, model, selected_tools):
     docs = []
     prompt = generate_planning_prompt(selected_tools, query)  # 建立設定好的 prompt
