@@ -85,6 +85,9 @@ class AskQuickCommand(commands.Cog):
                 view=view,
             )
 
+            if len(metadatas) == 0:
+                reference_button.disabled = True
+
             good_response_button = Button(
                 label=LANG_DATA["commands"]["ask"]["feedback"][
                     "good_response_button_text"
