@@ -144,9 +144,14 @@ class HackerRankTools:
 
     def _get_llm_reply(self, query, docs):
         templated_query = PROMPT_TEMPLATE.format(query=query)
-        ans = self.chain.invoke(
-            {"input_documents": docs, "question": templated_query},
-            return_only_outputs=True,
-        )["output_text"]
-        ans = ans.split("\nSOURCES:")[0]
+        # ans = self.chain.invoke(
+        #     {"input_documents": docs, "question": templated_query},
+        #     return_only_outputs=True,
+        # )["output_text"]
+        # ans = ans.split("\nSOURCES:")[0]
+        contents = ""
+        for doc in docs:
+            contents += doc.page_content + "\n"
+        ans = self.llm.invoke(f"[參考資料] {contents} \n" + templated_query).content
+
         return ans
