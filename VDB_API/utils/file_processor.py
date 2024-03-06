@@ -10,7 +10,7 @@ from .config import (EN_CHUNK_OVERLAP, EN_CHUNK_SIZE, LANG_SEARCH_SIZE,
                      ZH_CHUNK_OVERLAP, ZH_CHUNK_SIZE)
 
 
-def _is_contains_chinese(str, size=LANG_SEARCH_SIZE):
+def contains_chinese(str, size=LANG_SEARCH_SIZE):
     sample_str = str[:size]
     for _char in sample_str:
         if "\u4e00" <= _char <= "\u9fa5":
@@ -52,7 +52,7 @@ def get_split_data(file_path) -> List[Document]:
 
     if loader is not None:
         doc = loader.load()
-        if _is_contains_chinese(doc[0].page_content):
+        if contains_chinese(doc[0].page_content):
             splitter = RecursiveCharacterTextSplitter(
                 chunk_size=ZH_CHUNK_SIZE,
                 chunk_overlap=ZH_CHUNK_OVERLAP,
